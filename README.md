@@ -1,2 +1,2 @@
 # BookingApp
-BookingApp project with Bart and Michael
+BookingApp project with Bart, Michael and Tim
