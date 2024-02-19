@@ -17,7 +17,7 @@ public class HotelController {
     }
 
     @PostMapping
-    public Hotel newHotel(Hotel hotel) {
+    public Hotel newHotel(@RequestBody Hotel hotel) {
         return hotelRepository.save(hotel);
     }
 }
