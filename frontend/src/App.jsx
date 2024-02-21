@@ -1,5 +1,5 @@
-import Dialog from './components/Dialog';
-import ManageHotel from './components/ManageHotel';
+import Dialog from '@/components/common/Dialog';
+import ManageHotel from '@/components/hotel/ManageHotel';
 
 const App = () => {
   return (
