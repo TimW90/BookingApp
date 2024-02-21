@@ -1,9 +1,6 @@
-package nl.itvitae.BookingApp.hotels;
+package nl.itvitae.BookingApp.hotel;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,8 +17,12 @@ public class Hotel {
     private String name;
     private int rating;
 
-    public Hotel(String name, int rating) {
+    @Enumerated(EnumType.STRING)
+    private Location location;
+
+    public Hotel(String name, int rating, Location location) {
         this.name = name;
         this.rating = rating;
+        this.location = location;
     }
 }

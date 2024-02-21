@@ -1,9 +1,10 @@
-package nl.itvitae.BookingApp.hotels.seeder;
+package nl.itvitae.BookingApp.seeder;
 
 
 import lombok.RequiredArgsConstructor;
-import nl.itvitae.BookingApp.hotels.Hotel;
-import nl.itvitae.BookingApp.hotels.HotelRepository;
+import nl.itvitae.BookingApp.hotel.Hotel;
+import nl.itvitae.BookingApp.hotel.HotelRepository;
+import nl.itvitae.BookingApp.hotel.Location;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class Seeder implements CommandLineRunner {
     }
 
     public void seedHotels() {
-        hotelRepository.saveAll(List.of(new Hotel("Hotel", 3), new Hotel("Motel", 1)));
+    hotelRepository.saveAll(
+        List.of(new Hotel("Hotel", 3, Location.AMSTERDAM), new Hotel("Motel", 1, Location.ROTTERDAM)));
     }
 }

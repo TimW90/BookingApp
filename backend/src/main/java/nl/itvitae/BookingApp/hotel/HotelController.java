@@ -1,6 +1,7 @@
-package nl.itvitae.BookingApp.hotels;
+package nl.itvitae.BookingApp.hotel;
 
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.exception.LocationNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +15,13 @@ public class HotelController {
     @GetMapping
     public Iterable<Hotel> findAll() {
         return hotelRepository.findAll();
+    }
+
+    @GetMapping("get")
+    public Hotel getByLocation(@RequestParam(required = false) Location location) {
+    return hotelRepository
+        .findByLocation(location)
+        .orElseThrow(() -> new LocationNotFoundException(location.name()));
     }
 
     @PostMapping
