@@ -1,11 +1,11 @@
-import Test from '@/components/Test'
+import Dialog from './components/Dialog';
+import ManageHotel from './components/ManageHotel';
 
 const App = () => {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <Test />
-    </>
+    <Dialog>
+      <ManageHotel />
+    </Dialog>
   );
 };
 
