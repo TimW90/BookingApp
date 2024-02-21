@@ -1,12 +1,18 @@
 import './App.css'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import Hero from './components/Hero'
+import Accordeon from './components/Accordeon'
+
 
 function App() {
 
   return (
     <>
-     <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+      <Navbar />
+      <Hero />
+      <Accordeon/>
+      <Footer />
     </>
   )
 }
