@@ -46,12 +46,12 @@ public class Room {
     }
 
     public enum Amenity {
-        SINGLEBED,
-        DOUBLEBED,
+        SINGLE_BED,
+        DOUBLE_BED,
         BREAKFAST,
         LUNCH,
         GYM,
-        SWIMMINGPOOL,
+        SWIMMING_POOL,
         AIRCO,
         WIFI
     }
