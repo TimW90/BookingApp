@@ -1,4 +1,4 @@
-package nl.itvitae.BookingApp.rooms;
+package nl.itvitae.BookingApp.room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

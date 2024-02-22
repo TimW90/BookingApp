@@ -1,11 +1,10 @@
-package nl.itvitae.BookingApp.rooms;
+package nl.itvitae.BookingApp.room;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
@@ -23,7 +22,7 @@ public class Room {
     private Type type;
 
     @Column(nullable = false)
-    private BigDecimal price;
+    private int price;
 
     @Enumerated(EnumType.STRING)
     private Set<Amenity> amenities;
@@ -31,7 +30,7 @@ public class Room {
     @Column(nullable = false)
     private boolean luxury;
 
-    public Room(Type type, BigDecimal price, Set<Amenity> amenities, boolean luxury) {
+    public Room(Type type, int price, Set<Amenity> amenities, boolean luxury) {
         this.type = type;
         this.price = price;
         this.amenities = amenities;
