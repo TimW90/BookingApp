@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Blob;
+import java.sql.Clob;
+
 @Entity
 @Getter
 @Setter
@@ -19,6 +22,12 @@ public class Hotel {
 
     @Enumerated(EnumType.STRING)
     private Location location;
+
+    @Column(length = 1000)
+    private Clob description;
+
+    @Lob
+    private byte[] photo;
 
     public Hotel(String name, int rating, Location location) {
         this.name = name;

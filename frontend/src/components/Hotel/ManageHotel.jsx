@@ -25,7 +25,6 @@ const ManageHotel = () => {
 
   const onSubmit = async (hotelData) => {
     try {
-      console.log(hotelData);
       const response = await postHotel(hotelData);
       console.log(response);
     } catch (error) {
@@ -65,9 +64,9 @@ const ManageHotel = () => {
             <option disabled value="">
               Location...
             </option>
-            <option>AMSTERDAM</option>
-            <option>ROTTERDAM</option>
-            <option>PRAGUE</option>
+            <option>Amsterdam</option>
+            <option>Rotterdam</option>
+            <option>Prague</option>
           </select>
           {errors.location?.message && (
             <ErrorMessage message={errors.location.message} />
@@ -92,6 +91,13 @@ const ManageHotel = () => {
             <ErrorMessage message={errors.rating.message} />
           )}
         </div>
+        <div className="form-control py-2">
+          <input
+            type="file"
+            className="file-input file-input-bordered w-full max-w-xs"
+          />
+        </div>
+
         <div className="form-control mt-6">
           <button type="submit" className="btn btn-primary m-1">
             Confirm

@@ -18,7 +18,7 @@ public class HotelController {
     }
 
     @GetMapping("get")
-    public Hotel getByLocation(@RequestParam(required = false) Location location) {
+    public Hotel getByQuery(@RequestParam(required = false) Location location) {
     return hotelRepository
         .findByLocation(location)
         .orElseThrow(() -> new LocationNotFoundException(location.name()));
