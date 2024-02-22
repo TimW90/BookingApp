@@ -1,15 +1,15 @@
-import './App.css'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import Hero from './components/Hero'
-import Accordeon from './components/Accordeon'
-import { Outlet } from 'react-router-dom'
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import { Outlet } from 'react-router-dom';
 
 const App = () => {
   return (
     <>
       <Navbar />
-      <Outlet />
+        <Outlet />
       <Footer />
+    </>
+  );
+};
 
 export default App;
