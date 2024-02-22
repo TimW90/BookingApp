@@ -13,7 +13,9 @@ function App() {
       <Hero />
       <Accordeon/>
       <Footer />
+
     </>
+    
   )
 }
 

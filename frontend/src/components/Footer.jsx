@@ -1,5 +1,7 @@
 const Footer = () => (
 
+  
+
     <footer className="footer p-10 bg-neutral text-neutral-content">
   <nav>
     <h6 className="footer-title">Services</h6> 
