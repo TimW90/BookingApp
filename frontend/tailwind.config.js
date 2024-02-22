@@ -2,6 +2,9 @@
 import daisyui from 'daisyui';
 
 export default {
+  daisyui: {
+    themes: ["luxury"],
+  },
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
