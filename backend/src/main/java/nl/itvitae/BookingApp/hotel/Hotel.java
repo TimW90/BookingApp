@@ -1,4 +1,4 @@
-package nl.itvitae.BookingApp.hotels;
+package nl.itvitae.BookingApp.hotel;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

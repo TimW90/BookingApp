@@ -1,4 +1,4 @@
-package nl.itvitae.BookingApp.hotels;
+package nl.itvitae.BookingApp.hotel;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
