@@ -1,11 +1,9 @@
-        List.of(new Hotel("Hotel", 3, Location.AMSTERDAM), new Hotel("Motel", 1, Location.ROTTERDAM)));
-    hotelRepository.saveAll(
 package nl.itvitae.BookingApp.seeder;
-
 
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
+import nl.itvitae.BookingApp.hotel.Location;
 import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +25,13 @@ public class Seeder implements CommandLineRunner {
         seedRooms();
     }
 
+    public void seedHotels() {
+        hotelRepository.saveAll(
+                List.of(
+                        new Hotel("Motel", 1, Location.ROTTERDAM),
+                        new Hotel("Hilton", 5, Location.AMSTERDAM)
+                ));
+    }
 
     public void seedRooms() {
         roomRepository.saveAll(List.of(
@@ -38,5 +43,3 @@ public class Seeder implements CommandLineRunner {
         ));
     }
 }
-    public void seedHotels() {
-    }

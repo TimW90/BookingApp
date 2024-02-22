@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string } from 'yup';
-
+import ErrorMessage from '../common/ErrorMessage';
 
 const hotelSchema = object().shape({
   name: string().required('Name is required'),

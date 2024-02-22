@@ -7,8 +7,8 @@ const Dialog = ({ children, buttonText }) => {
         {buttonText}
       </button>
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <dialog id="my_modal_2" className="modal">
-          <div className="modal-box">{children}</div>
+        <dialog id="my_modal_2" className="modal justify-center">
+          <div className="modal-box px-8">{children}</div>
           <form method="dialog" className="modal-backdrop">
             <button>close</button>
           </form>
