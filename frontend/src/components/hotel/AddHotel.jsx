@@ -45,6 +45,7 @@ const AddHotel = () => {
     formData.append('name', hotelData.name);
     formData.append('rating', hotelData.rating);
     formData.append('location', hotelData.location);
+    formData.append('description', hotelData.description);
 
     if (hotelData.image && hotelData.image[0]) {
       formData.append('image', hotelData.image[0]);

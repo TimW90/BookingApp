@@ -38,6 +38,7 @@ public class HotelController {
             @RequestParam("rating") int rating,
             @RequestParam("location") Location location,
             @RequestParam("image") MultipartFile image,
+            @RequestParam("description") String description,
             UriComponentsBuilder ucb
             ) throws IOException {
 
@@ -47,6 +48,7 @@ public class HotelController {
             newHotel.setName(name);
             newHotel.setRating(rating);
             newHotel.setLocation(location);
+            newHotel.setDescription(description);
 
             if (!image.isEmpty()) {
                 byte[] imageBytes = image.getBytes();

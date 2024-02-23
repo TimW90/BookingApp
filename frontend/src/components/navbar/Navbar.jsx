@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom';
-import Dialog from '../common/Dialog';
-import ManageHotel from '../hotel/AddHotel';
 
 const Navbar = () => (
   <div className="navbar bg-neutral">
