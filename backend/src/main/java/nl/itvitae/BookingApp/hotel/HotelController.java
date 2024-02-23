@@ -3,6 +3,12 @@ package nl.itvitae.BookingApp.hotel;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.LocationNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 
 @RestController
 @CrossOrigin("http://localhost:5173")
@@ -25,7 +31,23 @@ public class HotelController {
     }
 
     @PostMapping
-    public Hotel newHotel(@RequestBody Hotel hotel) {
-        return hotelRepository.save(hotel);
+    public Hotel newHotel(
+            @RequestParam("name") String name,
+            @RequestParam("rating") int rating,
+            @RequestParam("location") Location location,
+            @RequestParam("image") MultipartFile image
+            ) throws IOException, SQLException {
+
+            Hotel newHotel = new Hotel();
+            newHotel.setName(name);
+            newHotel.setRating(rating);
+            newHotel.setLocation(location);
+
+            if (!image.isEmpty()) {
+                byte[] imageBytes = image.getBytes();
+                newHotel.setImage(imageBytes);
+            }
+
+        return hotelRepository.save(newHotel);
     }
 }

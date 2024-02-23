@@ -1,16 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 import daisyui from 'daisyui';
+import typography from '@tailwindcss/typography';
 
 export default {
   daisyui: {
-    themes: ["luxury"],
+    themes: ['luxury'],
   },
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {},
   },
-  plugins: [daisyui],
-}
+  plugins: [typography, daisyui],
+};

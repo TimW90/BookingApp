@@ -24,10 +24,10 @@ public class Hotel {
     private Location location;
 
     @Column(length = 1000)
-    private Clob description;
+    private String description;
 
     @Lob
-    private byte[] photo;
+    private byte[] image;
 
     public Hotel(String name, int rating, Location location) {
         this.name = name;

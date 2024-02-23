@@ -1,30 +1,53 @@
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { number, object, string } from 'yup';
+import { number, object, string, mixed } from 'yup';
 import ErrorMessage from '../common/ErrorMessage';
+import { postHotel } from '@/api/hotelApi';
 
 const hotelSchema = object().shape({
   name: string().required('Name is required'),
   rating: number()
     .required()
-    .min(1, 'Rating should be one ore more')
+    .positive('Rating should be one ore more')
     .max(5, 'Rating should be five or less'),
   location: string().required('Location is required'),
+  image: mixed(),
 });
 
-const ManageHotel = () => {
+const AddHotel = () => {
   const {
     register,
     handleSubmit,
     setError,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(hotelSchema),
   });
 
+  const [imagePreview, setImagePreview] = useState('');
+  const watchedFile = watch('image');
+
+  useEffect(() => {
+    if (watchedFile && watchedFile.length > 0) {
+      const file = watchedFile[0];
+      setImagePreview(URL.createObjectURL(file));
+    }
+  }, [watchedFile]);
+
   const onSubmit = async (hotelData) => {
+    const formData = new FormData();
+    formData.append('name', hotelData.name);
+    formData.append('rating', hotelData.rating);
+    formData.append('location', hotelData.location);
+
+    if (hotelData.image && hotelData.image[0]) {
+      formData.append('image', hotelData.image[0]);
+    }
+
     try {
-      const response = await postHotel(hotelData);
+      const response = await postHotel(formData);
       console.log(response);
     } catch (error) {
       console.error(error);
@@ -36,7 +59,11 @@ const ManageHotel = () => {
   };
 
   return (
-    <div className="card shrink-0 w-full max-w-sm bg-base-100">
+    <div className="card shrink-0 w-full max-w-sm bg-base-100 prose lg:prose-md">
+      <h1 className="m-0">Add Hotel</h1>
+      {imagePreview ? (
+        <img src={imagePreview} alt="hotel preview image" />
+      ) : null}
       <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <label className="label">
@@ -50,7 +77,7 @@ const ManageHotel = () => {
             autoComplete="name"
           />
         </div>
-        {errors.name?.message && <ErrorMessage message={errors.name.message} />}
+        {errors.name && <ErrorMessage message={errors.name.message} />}
         <div className="form-control">
           <label className="label">
             <span className="label-text">Location</span>
@@ -67,7 +94,7 @@ const ManageHotel = () => {
             <option>Rotterdam</option>
             <option>Prague</option>
           </select>
-          {errors.location?.message && (
+          {errors.location && (
             <ErrorMessage message={errors.location.message} />
           )}
         </div>
@@ -86,28 +113,25 @@ const ManageHotel = () => {
               />
             ))}
           </div>
-          {errors.rating?.message && (
-            <ErrorMessage message={errors.rating.message} />
-          )}
+          {errors.rating && <ErrorMessage message={errors.rating.message} />}
         </div>
         <div className="form-control py-2">
           <input
             type="file"
             className="file-input file-input-bordered w-full max-w-xs"
+            {...register('image')}
           />
         </div>
-
+        {errors.file && <ErrorMessage message={errors.file.message} />}
         <div className="form-control mt-6">
           <button type="submit" className="btn btn-primary m-1">
             Confirm
           </button>
-          {errors.root?.message && (
-            <ErrorMessage message={errors.root.message} />
-          )}
+          {errors.root && <ErrorMessage message={errors.root.message} />}
         </div>
       </form>
     </div>
   );
 };
 
-export default ManageHotel;
+export default AddHotel;
