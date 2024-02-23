@@ -9,10 +9,13 @@ const hotelSchema = object().shape({
   name: string().required('Name is required'),
   rating: number()
     .required()
-    .positive('Rating should be one ore more')
+    .positive('Rating should be one or more')
     .max(5, 'Rating should be five or less'),
   location: string().required('Location is required'),
   image: mixed(),
+  description: string()
+    .required()
+    .min(15, 'Description should be a minimum of 15 characters'),
 });
 
 const AddHotel = () => {
@@ -46,6 +49,8 @@ const AddHotel = () => {
     if (hotelData.image && hotelData.image[0]) {
       formData.append('image', hotelData.image[0]);
     }
+
+    console.log(formData);
 
     try {
       await postHotel(formData);
@@ -117,18 +122,29 @@ const AddHotel = () => {
           {errors.rating && <ErrorMessage message={errors.rating.message} />}
         </div>
         <div className="form-control py-2">
+          <label className="label">
+            <span className="label-text">Image</span>
+          </label>
           <input
             type="file"
             className="file-input file-input-bordered w-full max-w-xs"
             {...register('image')}
           />
+          {errors.image && <ErrorMessage message={errors.image.message} />}
         </div>
-        {errors.file && <ErrorMessage message={errors.file.message} />}
+
         <div className="form-control py-2">
+          <label className="label">
+            <span className="label-text">Description</span>
+          </label>
           <textarea
             className="textarea textarea-bordered"
             placeholder="Description"
+            {...register('description')}
           ></textarea>
+          {errors.description && (
+            <ErrorMessage message={errors.description.message} />
+          )}
         </div>
         <div className="form-control mt-6">
           <button type="submit" className="btn btn-primary m-1">
