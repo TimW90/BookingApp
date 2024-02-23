@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 const Dialog = ({ children, buttonText }) => {
   return (
     <>
-      <button onClick={() => document.getElementById('my_modal_2').showModal()}>
+      <button
+        className="btn"
+        onClick={() => document.getElementById('my_modal_2').showModal()}
+      >
         {buttonText}
       </button>
       <div className="flex flex-col justify-center items-center min-h-screen">

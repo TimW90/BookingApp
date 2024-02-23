@@ -1,13 +1,15 @@
 package nl.itvitae.BookingApp.hotel;
 
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.exception.HotelAlreadyExistsException;
 import nl.itvitae.BookingApp.exception.LocationNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
-import java.sql.Blob;
+import java.net.URI;
 import java.sql.SQLException;
 
 @RestController
@@ -31,12 +33,15 @@ public class HotelController {
     }
 
     @PostMapping
-    public Hotel newHotel(
+    public ResponseEntity<?> newHotel(
             @RequestParam("name") String name,
             @RequestParam("rating") int rating,
             @RequestParam("location") Location location,
-            @RequestParam("image") MultipartFile image
-            ) throws IOException, SQLException {
+            @RequestParam("image") MultipartFile image,
+            UriComponentsBuilder ucb
+            ) throws IOException {
+
+            if (hotelRepository.findByName(name).isPresent()) throw new HotelAlreadyExistsException(name);
 
             Hotel newHotel = new Hotel();
             newHotel.setName(name);
@@ -48,6 +53,12 @@ public class HotelController {
                 newHotel.setImage(imageBytes);
             }
 
-        return hotelRepository.save(newHotel);
+        hotelRepository.save(newHotel);
+        URI locationOfNewCart = ucb
+                .path("api/v1/hotels/{id}")
+                .buildAndExpand(newHotel.getId())
+                .toUri();
+
+        return ResponseEntity.created(locationOfNewCart).body(newHotel);
     }
 }

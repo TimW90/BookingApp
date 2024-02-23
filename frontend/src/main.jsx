@@ -1,34 +1,52 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import FooterText from './pages/FooterText.jsx'
-import App from './App.jsx'
-import './index.css'
-import Home from './pages/Home.jsx'
+import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import FooterText from './pages/FooterText';
+import AdminPage from './pages/AdminPage';
+import App from './App.jsx';
+import './index.css';
+import Home from './pages/Home.jsx';
 
 const router = createBrowserRouter([
   {
-
     element: <App />,
     children: [
       {
-        path: "/",
-        element: <Home />
-      },      
-      {
-        path: "/about",
-        element: <FooterText title='About us:' text='This Hotel booking app is made by Bart, Tim and Michael as the end project for the Java Developers course.'/>
+        path: '/',
+        element: <Home />,
       },
       {
-        path: "/contact",
-        element: <FooterText title='Contact' text= 'Currently there is no way of contacting us.' />
+        path: '/about',
+        element: (
+          <FooterText
+            title="About us:"
+            text="This Hotel booking app is made by Bart, Tim and Michael as the end project for the Java Developers course."
+          />
+        ),
       },
       {
-        path: "/jobs",
-        element: <FooterText title='Jobs:' text= 'At the moment we do not have any open positions.' />
+        path: '/contact',
+        element: (
+          <FooterText
+            title="Contact"
+            text="Currently there is no way of contacting us."
+          />
+        ),
       },
       {
-        path: "/terms",
-        element: <FooterText title='Terms and Conditions:' text='
+        path: '/jobs',
+        element: (
+          <FooterText
+            title="Jobs:"
+            text="At the moment we do not have any open positions."
+          />
+        ),
+      },
+      {
+        path: '/terms',
+        element: (
+          <FooterText
+            title="Terms and Conditions:"
+            text="
         
         Conditions of use
         By using this website, you certify that you have read and reviewed this Agreement and that you agree to comply with its terms. If you do not want to be bound by the terms of this Agreement, you are advised to stop using the website accordingly. [company name] only grants use and access of this website, its products, and its services to those who have accepted its terms.
@@ -52,18 +70,24 @@ const router = createBrowserRouter([
         Limitation on liability
         [company name] is not liable for any damages that may occur to you as a result of your misuse of our website.
         [company name] reserves the right to edit, modify, and change this Agreement at any time. We shall let our users know of these changes through electronic mail. This Agreement is an understanding between [company name] and the user, and this supersedes and replaces all prior agreements regarding the use of this website.
-        '/>
+        "
+          />
+        ),
       },
       {
-        path: "/design",
-        element: <FooterText title='Design' text= 'Design by Bart, Tim and Michael' />
+        path: '/design',
+        element: (
+          <FooterText title="Design" text="Design by Bart, Tim and Michael" />
+        ),
       },
-    ]
-    
-    
-  }
+      {
+        path: '/admin',
+        element: <AdminPage />,
+      },
+    ],
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <RouterProvider router={router} />
-)
+);

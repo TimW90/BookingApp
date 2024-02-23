@@ -21,6 +21,7 @@ const AddHotel = () => {
     handleSubmit,
     setError,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(hotelSchema),
@@ -47,8 +48,8 @@ const AddHotel = () => {
     }
 
     try {
-      const response = await postHotel(formData);
-      console.log(response);
+      await postHotel(formData);
+      reset();
     } catch (error) {
       console.error(error);
       let errorMessage =
@@ -123,6 +124,12 @@ const AddHotel = () => {
           />
         </div>
         {errors.file && <ErrorMessage message={errors.file.message} />}
+        <div className="form-control py-2">
+          <textarea
+            className="textarea textarea-bordered"
+            placeholder="Description"
+          ></textarea>
+        </div>
         <div className="form-control mt-6">
           <button type="submit" className="btn btn-primary m-1">
             Confirm

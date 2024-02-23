@@ -69,9 +69,7 @@ const Navbar = () => (
         <li><a>Settings</a></li>
         <li><a>Logout</a></li> */}
           <li>
-            <Dialog buttonText="Admin">
-              <ManageHotel />
-            </Dialog>
+            <Link to="/admin">Admin</Link>
           </li>
         </ul>
       </div>
