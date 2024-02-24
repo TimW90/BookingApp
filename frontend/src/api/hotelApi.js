@@ -9,6 +9,5 @@ export const postHotel = async (formData) => {
 
 export const getHotels = async () => {
   const response = await api.get(uri);
-  console.log(response.data);
   return response.data;
 };

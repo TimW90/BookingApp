@@ -1,10 +1,10 @@
 import Hero from '../components/common/Hero';
-import Accordeon from '@/components/common/Accordeon';
+import HotelList from '@/components/hotel/HotelList';
 
 const Home = () => (
   <>
     <Hero />
-    <Accordeon />
+    <HotelList />
   </>
 );
 

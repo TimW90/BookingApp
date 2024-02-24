@@ -27,11 +27,12 @@ public class Hotel {
     private String description;
 
     @Lob
-    private byte[] image;
+    private Blob image;
 
-    public Hotel(String name, int rating, Location location) {
+    public Hotel(String name, int rating, Location location, String description) {
         this.name = name;
         this.rating = rating;
         this.location = location;
+        this.description = description;
     }
 }

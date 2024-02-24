@@ -148,7 +148,7 @@ const AddHotel = () => {
           )}
         </div>
         <div className="form-control mt-6">
-          <button type="submit" className="btn btn-primary m-1">
+          <button type="submit" className="btn m-1">
             Confirm
           </button>
           {errors.root && <ErrorMessage message={errors.root.message} />}
