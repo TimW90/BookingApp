@@ -2,9 +2,8 @@ import PropTypes from 'prop-types';
 
 const Dialog = ({ children, buttonText }) => {
   const toggleDialog = () => {
-    modal = document.getElementById('my_modal_2');
-
-    modal.close() ? modal.showModal() : modal.close();
+    const modal = document.getElementById('my_modal_2');
+    modal.open ? modal.close() : modal.showModal();
   };
 
   return (

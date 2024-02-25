@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string, mixed } from 'yup';
 import ErrorMessage from '../common/ErrorMessage';
-import { postHotel } from '@/api/hotelApi';
+import { postHotel, getLocations } from '@/api/hotelApi';
 
 const hotelSchema = object().shape({
   name: string().required('Name is a required field'),
@@ -25,31 +25,15 @@ const ManageHotel = ({ hotel }) => {
     setError,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(hotelSchema),
   });
 
   const [imagePreview, setImagePreview] = useState('');
+  const [locations, setLocations] = useState([]);
   const watchedFile = watch('image');
-
-  useEffect(() => {
-    if (document.getElementById('my_modal_2').showModal()) {
-      if (hotel) {
-        console.log('Resetting form with hotel data:', hotel);
-        reset({
-          name: hotel.name,
-          rating: hotel.rating.toString(),
-          location: hotel.location,
-          description: hotel.description,
-        });
-
-        if (hotel.base64Image) {
-          setImagePreview(hotel.base64Image);
-        }
-      }
-    }
-  }, [reset, hotel]);
 
   useEffect(() => {
     if (watchedFile && watchedFile.length > 0) {
@@ -57,6 +41,29 @@ const ManageHotel = ({ hotel }) => {
       setImagePreview(URL.createObjectURL(file));
     }
   }, [watchedFile]);
+
+  useEffect(() => {
+    const loadLocations = async () => {
+      const fetchedLocations = await getLocations();
+      setLocations(fetchedLocations);
+    };
+
+    loadLocations();
+  }, [locations]);
+
+  useEffect(() => {
+    if (hotel) {
+      setValue('name', hotel.name);
+      setValue('rating', hotel.rating);
+      setValue('location', hotel.location);
+      setValue('description', hotel.description);
+
+      // Files can't be set for security reasons so this shows the exisiting image as a preview
+      if (hotel.base64Image) {
+        setImagePreview(`data:image/png;base64, ${hotel.base64Image}`);
+      }
+    }
+  }, [hotel, setValue]);
 
   const onSubmit = async (hotelData) => {
     const formData = new FormData();
@@ -99,6 +106,7 @@ const ManageHotel = ({ hotel }) => {
             <span className="label-text">Name</span>
           </label>
           <input
+            value={hotel && hotel.name}
             className="input input-bordered"
             type="text"
             placeholder="Name..."
@@ -119,9 +127,9 @@ const ManageHotel = ({ hotel }) => {
             <option disabled value="">
               Location...
             </option>
-            <option>Amsterdam</option>
-            <option>Rotterdam</option>
-            <option>Prague</option>
+            {locations.map((location) => (
+              <option key={location}>{location}</option>
+            ))}
           </select>
           {errors.location && (
             <ErrorMessage message={errors.location.message} />

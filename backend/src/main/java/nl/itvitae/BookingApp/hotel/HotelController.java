@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import javax.sql.rowset.serial.SerialBlob;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,11 @@ public class HotelController {
       throw new ResourceNotFoundException("Image for hotel with id " + hotelId);
 
     return Base64.encodeBase64String(imageBlob.getBytes(1, (int) imageBlob.length()));
+  }
+
+  @GetMapping("/locations")
+  public List<String> getAllLocations() {
+    return Arrays.stream(Location.values()).map(Enum::name).toList();
   }
 
   @PostMapping

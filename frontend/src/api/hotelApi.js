@@ -12,3 +12,8 @@ export const getHotels = async () => {
   const response = await api.get(uri);
   return response.data;
 };
+
+export const getLocations = async () => {
+  const response = await api.get(`${uri}/locations`);
+  return response.data;
+};
