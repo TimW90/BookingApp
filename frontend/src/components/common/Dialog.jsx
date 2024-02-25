@@ -11,8 +11,8 @@ const Dialog = ({ children, buttonText }) => {
       <button className="btn" onClick={toggleDialog}>
         {buttonText}
       </button>
-      <div className="flex flex-col justify-center items-center min-h-screen">
-        <dialog id="my_modal_2" className="modal justify-center">
+      <dialog id="my_modal_2" className="modal justify-center">
+        <div className="flex flex-col justify-center items-center min-h-screen">
           <div className="modal-box px-8 scrollbar-hide">
             {children}
             <button
@@ -22,8 +22,8 @@ const Dialog = ({ children, buttonText }) => {
               X
             </button>
           </div>
-        </dialog>
-      </div>
+        </div>
+      </dialog>
     </>
   );
 };
