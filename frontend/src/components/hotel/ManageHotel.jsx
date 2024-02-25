@@ -6,19 +6,19 @@ import ErrorMessage from '../common/ErrorMessage';
 import { postHotel } from '@/api/hotelApi';
 
 const hotelSchema = object().shape({
-  name: string().required('Name is required'),
+  name: string().required('Name is a required field'),
   rating: number()
-    .required()
+    .required('Rating is a required field')
     .positive('Rating should be one or more')
     .max(5, 'Rating should be five or less'),
-  location: string().required('Location is required'),
+  location: string().required('Location is a required field'),
   image: mixed(),
   description: string()
-    .required()
+    .required('Description is a required field')
     .min(15, 'Description should be a minimum of 15 characters'),
 });
 
-const AddHotel = () => {
+const ManageHotel = ({ hotel }) => {
   const {
     register,
     handleSubmit,
@@ -32,6 +32,24 @@ const AddHotel = () => {
 
   const [imagePreview, setImagePreview] = useState('');
   const watchedFile = watch('image');
+
+  useEffect(() => {
+    if (document.getElementById('my_modal_2').showModal()) {
+      if (hotel) {
+        console.log('Resetting form with hotel data:', hotel);
+        reset({
+          name: hotel.name,
+          rating: hotel.rating.toString(),
+          location: hotel.location,
+          description: hotel.description,
+        });
+
+        if (hotel.base64Image) {
+          setImagePreview(hotel.base64Image);
+        }
+      }
+    }
+  }, [reset, hotel]);
 
   useEffect(() => {
     if (watchedFile && watchedFile.length > 0) {
@@ -61,13 +79,17 @@ const AddHotel = () => {
       let errorMessage =
         'An unexpected error occurred. Please try again later.';
 
+      if (error.response.status === 409) {
+        errorMessage = `Hotel with name ${formData.get('name')} already exists`;
+      }
+
       setError('root', { message: errorMessage });
     }
   };
 
   return (
     <div className="card shrink-0 w-full max-w-sm bg-base-100 prose lg:prose-md">
-      <h1 className="m-0">Add Hotel</h1>
+      <h1 className="m-0">{hotel ? 'Update Hotel' : 'Add Hotel'}</h1>
       {imagePreview ? (
         <img src={imagePreview} alt="hotel preview image" />
       ) : null}
@@ -158,4 +180,4 @@ const AddHotel = () => {
   );
 };
 
-export default AddHotel;
+export default ManageHotel;

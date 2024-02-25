@@ -1,5 +1,5 @@
 import Dialog from '../components/common/Dialog';
-import AddHotel from '../components/hotel/AddHotel';
+import ManageHotel from '../components/hotel/ManageHotel';
 import HotelList from '@/components/hotel/HotelList';
 
 const AdminPage = () => {
@@ -9,11 +9,11 @@ const AdminPage = () => {
 
       <div className="mb-4">
         <Dialog buttonText="Add Hotel">
-          <AddHotel />
+          <ManageHotel />
         </Dialog>
       </div>
 
-      <HotelList />
+      <HotelList isAdmin />
     </>
   );
 };

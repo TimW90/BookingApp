@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { getHotels } from '@/api/hotelApi';
+import { FaPencil } from 'react-icons/fa6';
 import StarRating from './StarRating';
+import Dialog from '../common/Dialog';
+import ManageHotel from './ManageHotel';
 
 import PreviewImage from '../common/PreviewImage';
 import DetailImage from '../common/DetailImage';
 
-const HotelList = () => {
+const HotelList = ({ isAdmin }) => {
   const [hotels, setHotels] = useState([]);
 
   useEffect(() => {
@@ -24,21 +27,24 @@ const HotelList = () => {
           key={hotel.id}
           className="collapse join-item bg-base-200 px-12 my-0.5"
         >
-          {hotel.id === 1 ? (
-            <input
-              type="radio"
-              name="my-accordion-1"
-              aria-label="hotel-item"
-              defaultChecked
-            />
-          ) : (
-            <input type="radio" name="my-accordion-1" aria-label="hotel-item" />
-          )}
+          <input
+            type="checkbox"
+            name="my-accordion-1"
+            aria-label="hotel-item"
+            defaultChecked={isAdmin || hotel.id === 1}
+          />
 
           <div className="flex items-center justify-between collapse-title prose min-w-full p-0">
             <div className="flex items-center gap-4">
               <PreviewImage image={hotel.base64Image} />
               <h2 className="m-0">{hotel.name}</h2>
+              {isAdmin && (
+                <div className="z-10">
+                  <Dialog buttonText={<FaPencil />}>
+                    <ManageHotel hotel={hotel} />
+                  </Dialog>
+                </div>
+              )}
             </div>
             <StarRating amountOfStars={hotel.rating} />
           </div>
