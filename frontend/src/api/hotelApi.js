@@ -3,6 +3,7 @@ import api from './api';
 const uri = 'hotels';
 
 export const postHotel = async (formData) => {
+  console.log(formData);
   const response = await api.post(uri, formData);
   return response.data;
 };

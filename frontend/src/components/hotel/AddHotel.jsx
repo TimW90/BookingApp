@@ -51,8 +51,6 @@ const AddHotel = () => {
       formData.append('image', hotelData.image[0]);
     }
 
-    console.log(formData);
-
     try {
       await postHotel(formData);
       reset();

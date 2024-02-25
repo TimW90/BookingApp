@@ -1,28 +1,29 @@
 import { useEffect, useState } from 'react';
 import { getHotels } from '@/api/hotelApi';
 import StarRating from './StarRating';
-import { getHotelImageById } from '@/api/imageApi';
+
+import PreviewImage from '../common/PreviewImage';
+import DetailImage from '../common/DetailImage';
 
 const HotelList = () => {
   const [hotels, setHotels] = useState([]);
-  const [testHotelImage, setTestHotelImage] = useState(null);
 
   useEffect(() => {
     const loadHotels = async () => {
       const fetchedHotels = await getHotels();
       setHotels(fetchedHotels);
-      const fetchedImage = await getHotelImageById(16);
-      console.log(fetchedImage);
-      setTestHotelImage(fetchedImage);
     };
 
     loadHotels();
   }, []);
 
   return (
-    <>
+    <div className="join join-vertical w-full px-12">
       {hotels.map((hotel) => (
-        <div key="hotel.id" className="collapse bg-base-200 px-12">
+        <div
+          key={hotel.id}
+          className="collapse join-item bg-base-200 px-12 my-0.5"
+        >
           {hotel.id === 1 ? (
             <input
               type="radio"
@@ -34,22 +35,25 @@ const HotelList = () => {
             <input type="radio" name="my-accordion-1" aria-label="hotel-item" />
           )}
 
-          <div className="flex items-center justify-between collapse-title prose min-w-full">
-            <h2 className="m-0">{hotel.name}</h2>
+          <div className="flex items-center justify-between collapse-title prose min-w-full p-0">
+            <div className="flex items-center gap-4">
+              <PreviewImage image={hotel.base64Image} />
+              <h2 className="m-0">{hotel.name}</h2>
+            </div>
             <StarRating amountOfStars={hotel.rating} />
           </div>
 
-          <div className="collapse-content flex">
+          <div className="collapse-content flex justify-between">
             <div className="w-2/5 prose card-bordered">
               <h3 className="m-0">Description</h3>
               <hr className="mb-2"></hr>
               <p>{hotel.description}</p>
             </div>
-            <img alt="hotel image" src={testHotelImage}></img>
+            <DetailImage image={hotel.base64Image} />
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 

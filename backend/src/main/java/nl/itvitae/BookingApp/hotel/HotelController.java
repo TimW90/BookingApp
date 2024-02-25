@@ -4,8 +4,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceAlreadyExistsException;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.Base64;
 import java.util.List;
 
 @Transactional
@@ -46,7 +45,7 @@ public class HotelController {
         Blob imageBlob = theHotel.getImage();
         if(imageBlob == null) throw new ResourceNotFoundException("Image for hotel with id " + hotelId);
 
-        return Base64.getEncoder().encodeToString(imageBlob.getBytes(1, (int) imageBlob.length()));
+        return Base64.encodeBase64String(imageBlob.getBytes(1, (int) imageBlob.length()));
     }
 
     @PostMapping
@@ -54,20 +53,16 @@ public class HotelController {
             @RequestParam("name") String name,
             @RequestParam("rating") int rating,
             @RequestParam("location") Location location,
-            @RequestParam("image") MultipartFile image,
+            @RequestParam(value = "image", required = false) MultipartFile image,
             @RequestParam("description") String description,
             UriComponentsBuilder ucb
             ) throws IOException, SQLException {
 
             if (hotelRepository.findByName(name).isPresent()) throw new ResourceAlreadyExistsException(name);
 
-            Hotel newHotel = new Hotel();
-            newHotel.setName(name);
-            newHotel.setRating(rating);
-            newHotel.setLocation(location);
-            newHotel.setDescription(description);
+            Hotel newHotel = new Hotel(name, rating, location, description);
 
-            if (!image.isEmpty()) {
+            if (image != null) {
                 byte[] imageBytes = image.getBytes();
                 newHotel.setImage(new SerialBlob(imageBytes));
             }

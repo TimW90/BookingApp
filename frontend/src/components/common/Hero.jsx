@@ -1,5 +1,5 @@
 const Hero = () => (
-  <div className="hero min-h-50vh bg-base-200">
+  <div className="hero min-h-50vh bg-base-200 rounded-box my-12">
     <div className="hero-content flex-col lg:flex-row">
       <img
         src="./src/images/Hotel.jpeg"

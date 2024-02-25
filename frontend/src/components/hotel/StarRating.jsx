@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types';
+
 const StarRating = ({ amountOfStars }) => {
   return (
     <div className="flex rating">
-      {Array.from({ length: amountOfStars }, (_, index) => (
+      {[...new Array(amountOfStars)].map((_, index) => (
         <div key={index} className="mask mask-star-2 bg-orange-400">
           <input
             type="radio"
@@ -12,6 +14,10 @@ const StarRating = ({ amountOfStars }) => {
       ))}
     </div>
   );
+};
+
+StarRating.propTypes = {
+  amountOfStars: PropTypes.number,
 };
 
 export default StarRating;
