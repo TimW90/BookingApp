@@ -54,6 +54,8 @@ const AddHotel = () => {
     try {
       await postHotel(formData);
       reset();
+      setImagePreview('');
+      document.getElementById('my_modal_2').close();
     } catch (error) {
       console.error(error);
       let errorMessage =
