@@ -5,16 +5,21 @@ spring:
     password: ${DB_PASSWORD}
 
   jpa:
+    show-sql: true
     properties:
       hibernate:
         globally_quoted_identifiers: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
-    show-sql: true
     hibernate:
       ddl-auto: create-drop
+      format_sql: true
   main:
     banner-mode: off
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+      file-size-threshold: 2KB
 
 #  jwt:
 #    secret: ${JWT_SECRET}

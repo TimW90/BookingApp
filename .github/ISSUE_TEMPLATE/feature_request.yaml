@@ -18,33 +18,6 @@ body:
       placeholder: "Describe the feature or task here..."
     validations:
       required: true
-
-  - type: textarea
-    id: importance-impact
-    attributes:
-      label: Importance and Impact
-      description: Describe why this feature or task is important and how it impacts the project or users.
-      placeholder: "Explain the importance and impact here..."
-    validations:
-      required: true
-
-  - type: textarea
-    id: expected-outcome
-    attributes:
-      label: Expected Outcome
-      description: Detail what the expected outcome of implementing this feature or completing this task would be.
-      placeholder: "Describe the expected outcome here..."
-    validations:
-      required: true
-
-  - type: textarea
-    id: implementation-details
-    attributes:
-      label: Implementation Details
-      description: Provide any specific details about how this feature should be implemented or this task should be performed.
-      placeholder: "Include implementation details here..."
-    validations:
-      required: true
       
   - type: textarea
     id: additional-context

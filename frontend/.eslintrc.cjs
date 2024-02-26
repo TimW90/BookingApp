@@ -1,21 +1,40 @@
 module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
+  env: {
+    browser: true,
+    es2021: true,
+  },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
+    'plugin:react/jsx-runtime',
+    'prettier',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
-  settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh'],
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: ['.eslintrc.{js,cjs}'],
+      parserOptions: {
+        sourceType: 'script',
+      },
+    },
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['react', 'react-hooks'],
   rules: {
-    'react/jsx-no-target-blank': 'off',
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
+    'react-in-jsx-scope': "off",
+    'no-undef': "off",
+    'react/function-component-definition': [
+      'error',
+      {
+        namedComponents: 'arrow-function',
+        unnamedComponents: 'arrow-function',
+      },
     ],
   },
-}
+};
