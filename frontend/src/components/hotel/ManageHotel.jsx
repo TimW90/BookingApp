@@ -25,10 +25,17 @@ const ManageHotel = ({ hotel }) => {
     setError,
     watch,
     reset,
-    setValue,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
   } = useForm({
     resolver: yupResolver(hotelSchema),
+    defaultValues: hotel
+      ? {
+          name: hotel.name,
+          rating: hotel.rating,
+          location: hotel.location,
+          description: hotel.description,
+        }
+      : {},
   });
 
   const [imagePreview, setImagePreview] = useState('');
@@ -52,21 +59,23 @@ const ManageHotel = ({ hotel }) => {
   }, [locations]);
 
   useEffect(() => {
+    reset();
+  }, [reset, isSubmitSuccessful]);
+
+  useEffect(() => {
     if (hotel) {
-      setValue('name', hotel.name);
-      setValue('rating', hotel.rating);
-      setValue('location', hotel.location);
-      setValue('description', hotel.description);
+      reset(hotel);
 
       // Files can't be set for security reasons so this shows the exisiting image as a preview
       if (hotel.base64Image) {
         setImagePreview(`data:image/png;base64, ${hotel.base64Image}`);
       }
     }
-  }, [hotel, setValue]);
+  }, [hotel, reset]);
 
   const onSubmit = async (hotelData) => {
     const formData = new FormData();
+    Object.values(hotel)[(key, value)];
     formData.append('name', hotelData.name);
     formData.append('rating', hotelData.rating);
     formData.append('location', hotelData.location);
@@ -77,8 +86,12 @@ const ManageHotel = ({ hotel }) => {
     }
 
     try {
-      await postHotel(formData);
-      reset();
+      if (hotel) {
+        await updateHotel(hotel.id, formData);
+      } else {
+        await postHotel(formData);
+      }
+
       setImagePreview('');
       document.getElementById('my_modal_2').close();
     } catch (error) {

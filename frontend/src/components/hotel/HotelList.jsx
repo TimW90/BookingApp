@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getHotels } from '@/api/hotelApi';
 import { FaPencil } from 'react-icons/fa6';
 import StarRating from './StarRating';
-import Dialog from '../common/Dialog';
+import PopUp from '../common/PopUp';
 import ManageHotel from './ManageHotel';
 
 import PreviewImage from '../common/PreviewImage';
@@ -28,7 +28,7 @@ const HotelList = ({ isAdmin }) => {
           className="collapse join-item bg-base-200 px-12 my-0.5"
         >
           <input
-            type="checkbox"
+            type="radio"
             name="my-accordion-1"
             aria-label="hotel-item"
             defaultChecked={isAdmin || hotel.id === 1}
@@ -40,9 +40,9 @@ const HotelList = ({ isAdmin }) => {
               <h2 className="m-0">{hotel.name}</h2>
               {isAdmin && (
                 <div className="z-10">
-                  <Dialog buttonText={<FaPencil />}>
+                  <PopUp buttonText={<FaPencil />}>
                     <ManageHotel hotel={hotel} />
-                  </Dialog>
+                  </PopUp>
                 </div>
               )}
             </div>

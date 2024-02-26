@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const Dialog = ({ children, buttonText }) => {
+const PopUp = ({ children, buttonText }) => {
   const toggleDialog = () => {
     const modal = document.getElementById('my_modal_2');
     modal.open ? modal.close() : modal.showModal();
@@ -28,9 +28,9 @@ const Dialog = ({ children, buttonText }) => {
   );
 };
 
-Dialog.propTypes = {
+PopUp.propTypes = {
   children: PropTypes.node,
   buttonText: PropTypes.string,
 };
 
-export default Dialog;
+export default PopUp;
