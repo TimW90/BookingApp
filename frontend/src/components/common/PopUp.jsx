@@ -13,7 +13,7 @@ const PopUp = ({ children, buttonText }) => {
       </button>
       <dialog id="my_modal_2" className="modal justify-center">
         <div className="flex flex-col justify-center items-center min-h-screen">
-          <div className="modal-box px-8 scrollbar-hide">
+          <div className="modal-box px-8 hide=scrollbar">
             {children}
             <button
               className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"

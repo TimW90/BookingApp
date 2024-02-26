@@ -28,14 +28,6 @@ const ManageHotel = ({ hotel }) => {
     formState: { errors, isSubmitSuccessful },
   } = useForm({
     resolver: yupResolver(hotelSchema),
-    defaultValues: hotel
-      ? {
-          name: hotel.name,
-          rating: hotel.rating,
-          location: hotel.location,
-          description: hotel.description,
-        }
-      : {},
   });
 
   const [imagePreview, setImagePreview] = useState('');
@@ -119,7 +111,6 @@ const ManageHotel = ({ hotel }) => {
             <span className="label-text">Name</span>
           </label>
           <input
-            value={hotel && hotel.name}
             className="input input-bordered"
             type="text"
             placeholder="Name..."
