@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getHotels } from '@/api/hotelApi';
 import { FaPencil } from 'react-icons/fa6';
 import StarRating from './StarRating';
-import PopUp from '../common/PopUp';
+import { usePopup } from '../popup/PopUpContext';
 import ManageHotel from './ManageHotel';
 
 import PreviewImage from '../common/PreviewImage';
@@ -10,6 +10,7 @@ import DetailImage from '../common/DetailImage';
 
 const HotelList = ({ isAdmin }) => {
   const [hotels, setHotels] = useState([]);
+  const { openPopup } = usePopup();
 
   useEffect(() => {
     const loadHotels = async () => {
@@ -40,9 +41,9 @@ const HotelList = ({ isAdmin }) => {
               <h2 className="m-0">{hotel.name}</h2>
               {isAdmin && (
                 <div className="z-10">
-                  <PopUp buttonText={<FaPencil />}>
-                    <ManageHotel hotel={hotel} />
-                  </PopUp>
+                  <button onClick={() => openPopup(<ManageHotel hotel={hotel} />)}>
+                    <FaPencil />
+                  </button>
                 </div>
               )}
             </div>

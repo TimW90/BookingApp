@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
+import { usePopup } from './PopUpContext';
 
-const PopUp = ({ isOpen, onClose, children }) => {
+const Popup = ({ onClose, children }) => {
+  const { isOpen } = usePopup();
+
   if (!isOpen) {
     return;
   }
 
   return (
-    <div className="fixed inset-0 z-50 overflow-auto bg-smoke-light flex">
+    <div className="modal justify-center">
       <div className="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg">
         {children}
         <button
@@ -21,10 +24,10 @@ const PopUp = ({ isOpen, onClose, children }) => {
   );
 };
 
-PopUp.propTypes = {
+Popup.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired,
 };
 
-export default PopUp;
+export default Popup;
