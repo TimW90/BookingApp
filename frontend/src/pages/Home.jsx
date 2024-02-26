@@ -1,4 +1,4 @@
-import Hero from '../components/common/Hero';
+import Hero from '@/components/Hero';
 import HotelList from '@/components/hotel/HotelList';
 
 const Home = () => (

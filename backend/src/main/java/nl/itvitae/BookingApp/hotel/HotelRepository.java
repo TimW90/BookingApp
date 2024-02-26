@@ -7,12 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
-<<<<<<< Updated upstream
+
   Optional<Hotel> findByLocation(Location location);
-=======
-
-
->>>>>>> Stashed changes
 
   Optional<Hotel> findByName(String name);
 }
