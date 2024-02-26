@@ -1,33 +1,22 @@
-import PropTypes from 'prop-types';
-import { usePopup } from './PopUpContext';
+import { forwardRef } from 'react';
 
-const Popup = ({ onClose, children }) => {
-  const { isOpen } = usePopup();
-
-  if (!isOpen) {
-    return;
-  }
-
+// eslint-disable-next-line react/display-name
+const Popup = forwardRef(({ children, toggleDialog }, ref) => {
   return (
-    <div className="modal justify-center">
-      <div className="relative p-8 bg-white w-full max-w-md m-auto flex-col flex rounded-lg">
+    <dialog
+      className="modal justify-center"
+      ref={ref}
+      onClick={(e) => {
+        if (e.currentTarget === e.target) {
+          toggleDialog();
+        }
+      }}
+    >
+      <div className="modal-box px-8 scrollbar-hide">
         {children}
-        <button
-          type="button"
-          className="absolute top-0 right-0 p-4"
-          onClick={onClose}
-        >
-          Close
-        </button>
+        <button onClick={toggleDialog}>Close</button>
       </div>
-    </div>
+    </dialog>
   );
-};
-
-Popup.propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-};
-
+});
 export default Popup;

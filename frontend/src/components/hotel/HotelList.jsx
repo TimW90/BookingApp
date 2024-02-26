@@ -1,16 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getHotels } from '@/api/hotelApi';
 import { FaPencil } from 'react-icons/fa6';
 import StarRating from './StarRating';
-import { usePopup } from '../popup/PopUpContext';
 import ManageHotel from './ManageHotel';
+import Dialog from '../popup/Popup';
 
 import PreviewImage from '../common/PreviewImage';
 import DetailImage from '../common/DetailImage';
 
 const HotelList = ({ isAdmin }) => {
   const [hotels, setHotels] = useState([]);
-  const { openPopup } = usePopup();
+  const [dialogContent, setDialogContent] = useState(null);
+  const dialogRef = useRef(null);
+
+  const toggleDialog = () => {
+    if (!dialogRef.current) return;
+    dialogRef.current.hasAttribute('open')
+      ? dialogRef.current.close()
+      : dialogRef.current.showModal();
+  };
 
   useEffect(() => {
     const loadHotels = async () => {
@@ -39,11 +47,20 @@ const HotelList = ({ isAdmin }) => {
             <div className="flex items-center gap-4">
               <PreviewImage image={hotel.base64Image} />
               <h2 className="m-0">{hotel.name}</h2>
+
               {isAdmin && (
                 <div className="z-10">
-                  <button onClick={() => openPopup(<ManageHotel hotel={hotel} />)}>
+                  <button
+                    onClick={() => {
+                      setDialogContent(<ManageHotel hotel={hotel} />);
+                      toggleDialog();
+                    }}
+                  >
                     <FaPencil />
                   </button>
+                  <Dialog toggleDialog={toggleDialog} ref={dialogRef}>
+                    {dialogContent}
+                  </Dialog>
                 </div>
               )}
             </div>
