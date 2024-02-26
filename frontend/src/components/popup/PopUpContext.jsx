@@ -1,23 +1,28 @@
-import { createContext, useContext, useState } from 'react';
-import Popup from './Popup';
+import { createContext, useContext, useState, useRef } from 'react';
 
 const PopupContext = createContext();
 
 export const PopupProvider = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [content, setContent] = useState(null);
+  const [popupContent, setPopupContent] = useState(null);
+  const popupRef = useRef(null);
 
-  const openPopup = (content) => {
-    setContent(content);
-    setIsOpen(true);
+  const togglePopup = () => {
+    if (!popupRef.current) return;
+    popupRef.current.hasAttribute('open')
+      ? popupRef.current.close()
+      : popupRef.current.showModal();
   };
 
-  const closePopup = () => setIsOpen(false);
+  const contextValue = {
+    popupContent,
+    setPopupContent,
+    togglePopup,
+    popupRef,
+  };
 
   return (
-    <PopupContext.Provider value={{ isOpen, openPopup, closePopup }}>
+    <PopupContext.Provider value={{ contextValue }}>
       {children}
-      {isOpen && <Popup onClose={closePopup}>{content}</Popup>}
     </PopupContext.Provider>
   );
 };

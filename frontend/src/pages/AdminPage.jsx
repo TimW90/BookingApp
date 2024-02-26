@@ -18,6 +18,7 @@ const AdminPage = () => {
     <>
       <h1 className="text-3xl font-bold mb-5">Admin Dashboard</h1>
       <button
+        className="btn mb-6"
         onClick={() => {
           setDialogContent(<ManageHotel />);
           toggleDialog();
