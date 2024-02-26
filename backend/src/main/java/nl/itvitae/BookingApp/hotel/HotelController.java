@@ -78,6 +78,16 @@ public class HotelController {
     hotelRepository.save(newHotel);
     URI locationOfNewCart = ucb.path("api/v1/hotels/{id}").buildAndExpand(newHotel.getId()).toUri();
 
+
     return ResponseEntity.created(locationOfNewCart).body(newHotel);
   }
+
+    @GetMapping("/randomhotel")
+    public HotelDTO getByRandomId() {
+        long count = hotelRepository.count();
+        int randomID = (int) (Math.random() * count) +1;
+        System.out.println("The id is:" + (randomID));
+        return new HotelDTO(hotelRepository.findById((long)randomID).get());
+    }
+
 }
