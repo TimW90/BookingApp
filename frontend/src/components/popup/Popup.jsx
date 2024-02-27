@@ -14,7 +14,12 @@ const Popup = forwardRef(({ children, togglePopup }, ref) => {
     >
       <div className="modal-box px-8 scrollbar-hide">
         {children}
-        <button onClick={togglePopup}>Close</button>
+        <button
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          onClick={togglePopup}
+        >
+          X
+        </button>
       </div>
     </dialog>
   );

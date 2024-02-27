@@ -1,18 +1,10 @@
 import ManageHotel from '../components/hotel/ManageHotel';
 import HotelList from '@/components/hotel/HotelList';
-import { useState, useRef } from 'react';
-import Dialog from '@/components/popup/Popup';
+import Popup from '@/components/popup/Popup';
+import { usePopup } from '@/components/popup/PopUpContext';
 
 const AdminPage = () => {
-  const [dialogContent, setDialogContent] = useState(null);
-  const dialogRef = useRef(null);
-
-  const toggleDialog = () => {
-    if (!dialogRef.current) return;
-    dialogRef.current.hasAttribute('open')
-      ? dialogRef.current.close()
-      : dialogRef.current.showModal();
-  };
+  const { togglePopup, popupRef, popupContent, setPopupContent } = usePopup();
 
   return (
     <>
@@ -20,15 +12,15 @@ const AdminPage = () => {
       <button
         className="btn mb-6"
         onClick={() => {
-          setDialogContent(<ManageHotel />);
-          toggleDialog();
+          setPopupContent(<ManageHotel />);
+          togglePopup();
         }}
       >
         Add hotel
       </button>
-      <Dialog toggleDialog={toggleDialog} ref={dialogRef}>
-        {dialogContent}
-      </Dialog>
+      <Popup togglePopup={togglePopup} ref={popupRef}>
+        {popupContent}
+      </Popup>
       <HotelList isAdmin />
     </>
   );

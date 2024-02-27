@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 const Navbar = () => (
   <div className="navbar bg-neutral">
     <div className="flex-1">
-      <a className="btn btn-ghost text-xl">
-        <Link to="/">Hotel Booking App</Link>
-      </a>
+      <Link className="btn btn-ghost text-xl" to="/">
+        Hotel Booking App
+      </Link>
     </div>
     <div className="flex-none">
       <div className="dropdown dropdown-end">
