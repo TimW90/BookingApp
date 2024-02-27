@@ -3,6 +3,7 @@ import { FaPencil, FaRegTrashCan } from 'react-icons/fa6';
 import Popup from '../popup/Popup';
 import { usePopup } from '../popup/PopUpContext';
 import { deleteHotel } from '@/api/hotelApi';
+import PropTypes from 'prop-types';
 
 // The buttons corresponding with the provided hotel
 const AdminButtons = ({ hotel }) => {
@@ -50,6 +51,10 @@ const AdminButtons = ({ hotel }) => {
       </Popup>
     </div>
   );
+};
+
+AdminButtons.propTypes = {
+  hotel: PropTypes.object,
 };
 
 export default AdminButtons;

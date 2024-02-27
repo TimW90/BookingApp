@@ -4,6 +4,7 @@ import StarRating from './StarRating';
 import PreviewImage from '../common/PreviewImage';
 import DetailImage from '../common/DetailImage';
 import AdminButtons from './AdminButtons';
+import PropTypes from 'prop-types';
 
 const HotelList = ({ isAdmin }) => {
   const [hotels, setHotels] = useState([]);
@@ -53,6 +54,10 @@ const HotelList = ({ isAdmin }) => {
       ))}
     </div>
   );
+};
+
+HotelList.propTypes = {
+  isAdmin: PropTypes.bool,
 };
 
 export default HotelList;
