@@ -83,4 +83,13 @@ public class HotelController {
 
     return ResponseEntity.notFound().build();
   }
+
+    @GetMapping("/randomhotel")
+    public HotelDTO getByRandomId() {
+        long count = hotelRepository.count();
+        int randomID = (int) (Math.random() * count) +1;
+        System.out.println("The id is:" + (randomID));
+        return new HotelDTO(hotelRepository.findById((long)randomID).get());
+    }
+
 }
