@@ -24,4 +24,5 @@ const Popup = forwardRef(({ children, togglePopup }, ref) => {
     </dialog>
   );
 });
+
 export default Popup;
