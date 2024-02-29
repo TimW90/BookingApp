@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { getHotels } from '@/api/hotelApi';
-import { FaPencil } from 'react-icons/fa6';
 import StarRating from './StarRating';
-import Dialog from '../common/Dialog';
-import ManageHotel from './ManageHotel';
-
 import PreviewImage from '../common/PreviewImage';
 import DetailImage from '../common/DetailImage';
+import AdminButtons from './AdminButtons';
+import PropTypes from 'prop-types';
 
 const HotelList = ({ isAdmin }) => {
   const [hotels, setHotels] = useState([]);
@@ -28,7 +26,7 @@ const HotelList = ({ isAdmin }) => {
           className="collapse join-item bg-base-200 px-12 my-0.5"
         >
           <input
-            type="checkbox"
+            type={isAdmin ? 'checkbox' : 'radio'}
             name="my-accordion-1"
             aria-label="hotel-item"
             defaultChecked={isAdmin || hotel.id === 1}
@@ -38,13 +36,8 @@ const HotelList = ({ isAdmin }) => {
             <div className="flex items-center gap-4">
               <PreviewImage image={hotel.base64Image} />
               <h2 className="m-0">{hotel.name}</h2>
-              {isAdmin && (
-                <div className="z-10">
-                  <Dialog buttonText={<FaPencil />}>
-                    <ManageHotel hotel={hotel} />
-                  </Dialog>
-                </div>
-              )}
+
+              {isAdmin && <AdminButtons hotel={hotel} />}
             </div>
             <StarRating amountOfStars={hotel.rating} />
           </div>
@@ -61,6 +54,10 @@ const HotelList = ({ isAdmin }) => {
       ))}
     </div>
   );
+};
+
+HotelList.propTypes = {
+  isAdmin: PropTypes.bool,
 };
 
 export default HotelList;
