@@ -1,20 +1,14 @@
 package nl.itvitae.BookingApp.hotel;
 
 import jakarta.transaction.Transactional;
-import java.io.IOException;
 import java.net.URI;
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import javax.sql.rowset.serial.SerialBlob;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceAlreadyExistsException;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Transactional
@@ -38,48 +32,56 @@ public class HotelController {
         .orElseThrow(() -> new ResourceNotFoundException(location.name()));
   }
 
-  @GetMapping("/image/{hotelId}")
-  public String getHotelImageById(@PathVariable long hotelId) throws SQLException {
-    Hotel theHotel =
-        hotelRepository
-            .findById(hotelId)
-            .orElseThrow(() -> new ResourceNotFoundException("Hotel with id " + hotelId));
-    Blob imageBlob = theHotel.getImage();
-    if (imageBlob == null)
-      throw new ResourceNotFoundException("Image for hotel with id " + hotelId);
-
-    return Base64.encodeBase64String(imageBlob.getBytes(1, (int) imageBlob.length()));
-  }
-
-  @GetMapping("/locations")
+  @GetMapping("locations")
   public List<String> getAllLocations() {
     return Arrays.stream(Location.values()).map(Enum::name).toList();
   }
 
   @PostMapping
-  public ResponseEntity<?> newHotel(
-      @RequestParam("name") String name,
-      @RequestParam("rating") int rating,
-      @RequestParam("location") Location location,
-      @RequestParam(value = "image", required = false) MultipartFile image,
-      @RequestParam("description") String description,
-      UriComponentsBuilder ucb)
-      throws IOException, SQLException {
-
-    if (hotelRepository.findByName(name).isPresent())
-      throw new ResourceAlreadyExistsException(name);
-    Hotel newHotel = new Hotel(name, rating, location, description);
-
-    if (image != null) {
-      byte[] imageBytes = image.getBytes();
-      newHotel.setImage(new SerialBlob(imageBytes));
+  public ResponseEntity<?> newHotel(@RequestBody HotelDTO newHotelDTO, UriComponentsBuilder ucb) {
+    if (hotelRepository.findByName(newHotelDTO.name()).isPresent()) {
+      throw new ResourceAlreadyExistsException(newHotelDTO.name());
     }
 
-    hotelRepository.save(newHotel);
-    URI locationOfNewCart = ucb.path("api/v1/hotels/{id}").buildAndExpand(newHotel.getId()).toUri();
+    Hotel newHotel =
+        hotelRepository.save(
+            new Hotel(
+                newHotelDTO.name(),
+                newHotelDTO.rating(),
+                newHotelDTO.location(),
+                newHotelDTO.description(),
+                newHotelDTO.base64Image()));
 
+    URI locationOfNewHotel =
+        ucb.path("api/v1/hotels/{id}").buildAndExpand(newHotel.getId()).toUri();
 
-    return ResponseEntity.created(locationOfNewCart).body(newHotel);
+    return ResponseEntity.created(locationOfNewHotel).body(newHotelDTO);
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<?> updateHotel(
+      @PathVariable long id, @RequestBody HotelDTO updatedHotelDTO) {
+
+    Hotel hotelToUpdate =
+        hotelRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(String.format("Hotel with id %s", id)));
+
+    hotelToUpdate.updateHotelProperties(updatedHotelDTO);
+    hotelRepository.save(hotelToUpdate);
+
+    return ResponseEntity.ok().body(new HotelDTO(hotelToUpdate));
+  }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<?> deleteHotel(@PathVariable long id) {
+    if (hotelRepository.existsById(id)) {
+      hotelRepository.deleteById(id);
+      return ResponseEntity.noContent().build();
+    }
+
+    return ResponseEntity.notFound().build();
   }
 
     @GetMapping("/randomhotel")
