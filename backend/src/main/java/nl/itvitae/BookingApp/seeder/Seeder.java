@@ -67,39 +67,22 @@ public class Seeder implements CommandLineRunner {
             new Room(
                 Room.Type.SINGLE,
                 12000,
-                Set.of(Room.Amenity.GYM, Room.Amenity.WIFI, Room.Amenity.SINGLE_BED),
                 false),
             new Room(
                 Room.Type.SINGLE,
                 13500,
-                Set.of(
-                    Room.Amenity.GYM,
-                    Room.Amenity.WIFI,
-                    Room.Amenity.SINGLE_BED,
-                    Room.Amenity.BREAKFAST),
                 false),
             new Room(
                 Room.Type.DOUBLE,
                 22000,
-                Set.of(Room.Amenity.GYM, Room.Amenity.WIFI, Room.Amenity.DOUBLE_BED),
                 false),
             new Room(
                 Room.Type.TRIPPLE,
                 30000,
-                Set.of(
-                    Room.Amenity.GYM,
-                    Room.Amenity.WIFI,
-                    Room.Amenity.DOUBLE_BED,
-                    Room.Amenity.SINGLE_BED),
                 false),
             new Room(
                 Room.Type.QUADRUPPLE,
                 40000,
-                Set.of(
-                    Room.Amenity.GYM,
-                    Room.Amenity.WIFI,
-                    Room.Amenity.DOUBLE_BED,
-                    Room.Amenity.SINGLE_BED),
                 false)));
   }
 }

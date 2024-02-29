@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.sql.Blob;
 
 @Entity
 @Getter
@@ -25,16 +25,14 @@ public class Room {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Enumerated(EnumType.STRING)
-    private Set<Amenity> amenities;
-
     @Column(nullable = false)
     private boolean luxury;
 
-    public Room(Type type, double price, Set<Amenity> amenities, boolean luxury) {
+    @Lob private Blob image;
+
+    public Room(Type type, double price, boolean luxury) {
         this.type = type;
         this.price = BigDecimal.valueOf(price);
-        this.amenities = amenities;
         this.luxury = luxury;
     }
 
@@ -43,16 +41,5 @@ public class Room {
         DOUBLE,
         TRIPPLE,
         QUADRUPPLE
-    }
-
-    public enum Amenity {
-        SINGLE_BED,
-        DOUBLE_BED,
-        BREAKFAST,
-        LUNCH,
-        GYM,
-        SWIMMING_POOL,
-        AIRCO,
-        WIFI
     }
 }

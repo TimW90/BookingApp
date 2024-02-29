@@ -31,7 +31,6 @@ public class RoomController {
         Room updatedRoom = roomRepository.findById(id).get();
         updatedRoom.setType(room.getType());
         updatedRoom.setPrice(room.getPrice());
-        updatedRoom.setAmenities(room.getAmenities());
         updatedRoom.setLuxury(room.isLuxury());
         return roomRepository.save(updatedRoom);
     }
