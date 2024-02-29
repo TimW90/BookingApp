@@ -1,0 +1,207 @@
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { number, object, string, mixed } from 'yup';
+import ErrorMessage from '../common/ErrorMessage';
+import { postHotel, updateHotel } from '@/api/hotelApi';
+import { usePopup } from '../popup/PopUpContext';
+import PropTypes from 'prop-types';
+import LoadingSpinner from '../common/LoadingSpinner';
+import useLocations from '@/hooks/useLocations';
+
+const hotelSchema = object().shape({
+  name: string().required('Name is a required field'),
+  rating: number()
+    .required('Rating is a required field')
+    .positive('Rating should be one or more')
+    .max(5, 'Rating should be five or less'),
+  location: string().required('Location is a required field'),
+  image: mixed(),
+  description: string()
+    .required('Description is a required field')
+    .min(15, 'Description should be a minimum of 15 characters'),
+});
+
+const ManageHotel = ({ hotel }) => {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    watch,
+    reset,
+    formState: { errors, isSubmitSuccessful, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(hotelSchema),
+  });
+
+  const [imagePreview, setImagePreview] = useState('');
+  const locations = useLocations();
+  const watchedFile = watch('image');
+  const { togglePopup } = usePopup();
+
+  useEffect(() => {
+    if (watchedFile && watchedFile.length > 0) {
+      const file = watchedFile[0];
+      setImagePreview(URL.createObjectURL(file));
+    }
+  }, [watchedFile]);
+
+  useEffect(() => {
+    reset();
+  }, [reset, isSubmitSuccessful]);
+
+  useEffect(() => {
+    if (hotel) {
+      hotel.rating = hotel.rating.toString();
+      reset(hotel);
+
+      // Files can't be set for security reasons so this shows the current image as a preview
+      if (hotel.base64Image) {
+        setImagePreview(`data:image/png;base64, ${hotel.base64Image}`);
+      }
+    }
+  }, [hotel, reset]);
+
+  const convertToBase64 = async (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = reject;
+    });
+  };
+
+  const onSubmit = async (hotelData) => {
+    try {
+      if (hotelData.image && hotelData.image[0]) {
+        const base64String = await convertToBase64(hotelData.image[0]);
+
+        // To retrieve only the Base64 encoded string, first remove "data:*/*;base64,"
+        hotelData.base64Image = base64String.split(',')[1];
+      }
+
+      if (hotel) {
+        await updateHotel(hotel.id, hotelData);
+      } else {
+        await postHotel(hotelData);
+      }
+
+      setImagePreview('');
+      togglePopup();
+    } catch (error) {
+      console.error(error);
+      let errorMessage =
+        'An unexpected error occurred. Please try again later.';
+
+      if (error.response.status === 409) {
+        errorMessage = `Hotel with name ${hotel.name} already exists`;
+      }
+
+      setError('root', { message: errorMessage });
+    }
+  };
+
+  return (
+    <div className="card shrink-0 w-full max-w-sm bg-base-100 prose lg:prose-md">
+      <h1 className="m-0">{hotel ? 'Update Hotel' : 'Add Hotel'}</h1>
+
+      {imagePreview && <img src={imagePreview} alt="hotel preview image" />}
+
+      <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Name</span>
+          </label>
+          <input
+            className="input input-bordered"
+            type="text"
+            placeholder="Name..."
+            {...register('name')}
+            autoComplete="name"
+          />
+        </div>
+        {errors.name && <ErrorMessage message={errors.name.message} />}
+
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Location</span>
+          </label>
+          <select
+            className="select select-bordered"
+            {...register('location')}
+            defaultValue=""
+          >
+            <option disabled value="">
+              Location...
+            </option>
+            {locations.map((location) => (
+              <option key={location}>{location}</option>
+            ))}
+          </select>
+          {errors.location && (
+            <ErrorMessage message={errors.location.message} />
+          )}
+        </div>
+
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Rating</span>
+          </label>
+          <div className="rating">
+            {[1, 2, 3, 4, 5].map((value) => (
+              <input
+                key={value}
+                {...register('rating')}
+                type="radio"
+                value={value}
+                className="mask mask-star-2 bg-orange-400"
+              />
+            ))}
+          </div>
+          {errors.rating && <ErrorMessage message={errors.rating.message} />}
+        </div>
+
+        <div className="form-control py-2">
+          <label className="label">
+            <span className="label-text">Image</span>
+          </label>
+          <input
+            type="file"
+            className="file-input file-input-bordered w-full max-w-xs"
+            {...register('image')}
+          />
+          {errors.image && <ErrorMessage message={errors.image.message} />}
+        </div>
+
+        <div className="form-control py-2">
+          <label className="label">
+            <span className="label-text">Description</span>
+          </label>
+          <textarea
+            className="textarea textarea-bordered"
+            placeholder="Description"
+            {...register('description')}
+          ></textarea>
+          {errors.description && (
+            <ErrorMessage message={errors.description.message} />
+          )}
+        </div>
+
+        <div className="form-control mt-6">
+          <button type="submit" className="btn m-1">
+            {isSubmitting ? <LoadingSpinner /> : 'Confirm'}
+          </button>
+          {errors.root && <ErrorMessage message={errors.root.message} />}
+        </div>
+      </form>
+    </div>
+  );
+};
+
+ManageHotel.propTypes = {
+  hotel: PropTypes.object,
+};
+
+export default ManageHotel;

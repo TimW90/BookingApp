@@ -1,22 +1,18 @@
-import './App.css'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import Hero from './components/Hero'
-import Accordeon from './components/Accordeon'
-import { Outlet } from 'react-router-dom'
+import Navbar from './components/navbar/Navbar';
+import Footer from './components/Footer';
+import { Outlet } from 'react-router-dom';
+import { PopupProvider } from './components/popup/PopUpContext';
 
-
-function App() {
-
+const App = () => {
   return (
-    <>
-      <Navbar />
-      <Outlet />
-      <Footer />
+    <PopupProvider>
+      <div className="container mx-auto">
+        <Navbar />
+        <Outlet />
+        <Footer />
+      </div>
+    </PopupProvider>
+  );
+};
 
-    </>
-    
-  )
-}
-
-export default App
+export default App;
