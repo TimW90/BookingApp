@@ -7,6 +7,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.sql.rowset.serial.SerialBlob;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceAlreadyExistsException;
@@ -32,10 +33,9 @@ public class HotelController {
   }
 
   @GetMapping("get")
-  public Hotel getByQuery(@RequestParam(required = false) Location location) {
+  public List<HotelDTO> getByQuery(@RequestParam(required = false) Location location) {
     return hotelRepository
-        .findByLocation(location)
-        .orElseThrow(() -> new ResourceNotFoundException(location.name()));
+        .findByLocation(location).stream().map(HotelDTO::new).toList();
   }
 
   @GetMapping("/image/{hotelId}")
@@ -89,5 +89,8 @@ public class HotelController {
         System.out.println("The id is:" + (randomID));
         return new HotelDTO(hotelRepository.findById((long)randomID).get());
     }
+
+
+
 
 }

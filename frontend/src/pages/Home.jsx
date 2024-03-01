@@ -1,6 +1,6 @@
 import Hero from '@/components/Hero';
 import HotelList from '@/components/hotel/HotelList';
-import SearchBar from '@/components/Searchbar';
+import SearchBar from '@/components/searchbar/Searchbar';
 
 const Home = () => (
   <>
