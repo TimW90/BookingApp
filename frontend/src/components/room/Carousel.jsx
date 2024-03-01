@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const Carousel = ({ images }) => {
   return (
     <>
-      <div className="carousel">
+      <div className="carousel mr-5">
         {(() => {
           if (images.length === 1) {
             return (
@@ -18,10 +18,21 @@ const Carousel = ({ images }) => {
                 >
                   <img src={image} alt="Image of the room" />
                   <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-                    <a href={'#image' + (index - 1)} className="btn btn-circle">
+                    <a
+                      href={'#image' + (index == 0 ? (index = 0) : index - 1)}
+                      className="btn btn-circle"
+                    >
                       ❮
                     </a>
-                    <a href={'#image' + (index + 1)} className="btn btn-circle">
+                    <a
+                      href={
+                        '#image' +
+                        (index == images.length - 1
+                          ? images.length - 1
+                          : index + 1)
+                      }
+                      className="btn btn-circle"
+                    >
                       ❯
                     </a>
                   </div>

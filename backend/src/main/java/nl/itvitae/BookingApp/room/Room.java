@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.itvitae.BookingApp.image.Image;
 
 import java.math.BigDecimal;
-import java.sql.Blob;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -28,14 +31,17 @@ public class Room {
     @Column(nullable = false)
     private boolean luxury;
 
-    @Lob private Blob image;
+    private String description;
 
-    public Room(Type type, double price, boolean luxury) {
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Image> imageBase64Strings = new HashSet<>();
+
+    public Room(Type type, double price, boolean luxury, String description) {
         this.type = type;
         this.price = BigDecimal.valueOf(price);
         this.luxury = luxury;
+        this.description = description;
     }
-
     public enum Type {
         SINGLE,
         DOUBLE,

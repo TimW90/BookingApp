@@ -1,7 +1,10 @@
 package nl.itvitae.BookingApp.room;
 
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.hotel.HotelDTO;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:5173")
@@ -12,8 +15,13 @@ public class RoomController {
     private final RoomRepository roomRepository;
 
     @GetMapping
-    public Iterable<Room> findAll() {
-        return roomRepository.findAll();
+    public List<RoomDTO> findAll() {
+        return roomRepository.findAll().stream().map(RoomDTO::new).toList();
+    }
+
+    @GetMapping("/{id}")
+    public Room getRoom(@PathVariable("id") Long id) {
+        return roomRepository.findById(id).get();
     }
 
     @PostMapping

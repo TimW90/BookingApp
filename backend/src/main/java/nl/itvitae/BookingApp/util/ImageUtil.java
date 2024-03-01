@@ -15,4 +15,11 @@ public class ImageUtil {
       return null;
     }
   }
+
+  public static String[] getImageFromPathAsBase64StringArray(String[] imagePaths) {
+    for (int i = 0; i < imagePaths.length; i++) {
+      imagePaths[i] = getImageFromPathAsBase64String(imagePaths[i]);
+    }
+    return imagePaths;
+  }
 }
