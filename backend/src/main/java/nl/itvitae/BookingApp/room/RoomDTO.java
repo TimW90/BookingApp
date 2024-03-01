@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static nl.itvitae.BookingApp.util.EnumUtil.enumName;
 
-public record RoomDTO(Long id, String type, BigDecimal price, boolean luxury, String description, List<ImageDTO> base64Image) {
+public record RoomDTO(Long id, String type, BigDecimal price, boolean luxury, String description, List<ImageDTO> base64Images) {
 
     public RoomDTO(Room room) {
         this(

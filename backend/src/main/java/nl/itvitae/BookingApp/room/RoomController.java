@@ -1,6 +1,7 @@
 package nl.itvitae.BookingApp.room;
 
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.HotelDTO;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +21,8 @@ public class RoomController {
     }
 
     @GetMapping("/{id}")
-    public Room getRoom(@PathVariable("id") Long id) {
-        return roomRepository.findById(id).get();
+    public RoomDTO getRoom(@PathVariable("id") Long id) {
+        return new RoomDTO(roomRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Room not found")));
     }
 
     @PostMapping

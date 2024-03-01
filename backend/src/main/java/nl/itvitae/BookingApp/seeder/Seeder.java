@@ -75,7 +75,7 @@ public class Seeder implements CommandLineRunner {
         saveRoom(Room.Type.DOUBLE, 220, false, "A nice and cozy room for two persons", List.of("src/main/resources/images/room_2_1.png", "src/main/resources/images/room_2_2.png"));
 
         // Room 3
-        saveRoom(Room.Type.QUADRUPPLE, 400, true, "A big luxurious room for up to four persons", List.of("src/main/resources/images/room_3_1.png", "src/main/resources/images/room_3_2.png", "src/main/resources/images/room_3_2.png"));
+        saveRoom(Room.Type.QUADRUPPLE, 400, true, "A big luxurious room for up to four persons", List.of("src/main/resources/images/room_3_1.png", "src/main/resources/images/room_3_2.png", "src/main/resources/images/room_3_3.png"));
     }
 
     private void saveRoom(Room.Type type, double price, boolean luxury, String description, List<String> imagePaths) {
