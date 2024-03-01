@@ -68,6 +68,7 @@ const ManageHotel = ({ hotel }) => {
       reader.readAsDataURL(file);
       reader.onload = () => {
         resolve(reader.result);
+        console.log(reader.result);
       };
       reader.onerror = reject;
     });
@@ -77,9 +78,7 @@ const ManageHotel = ({ hotel }) => {
     try {
       if (hotelData.image && hotelData.image[0]) {
         const base64String = await convertToBase64(hotelData.image[0]);
-
-        // To retrieve only the Base64 encoded string, first remove "data:*/*;base64,"
-        hotelData.base64Image = base64String.split(',')[1];
+        hotelData.base64Image = base64String;
       }
 
       if (hotel) {

@@ -1,22 +1,13 @@
-import { useEffect, useState } from 'react';
-import { getHotels } from '@/api/hotelApi';
+import useHotels from '@/hooks/useHotels';
 import StarRating from './StarRating';
 import PreviewImage from '../common/PreviewImage';
 import DetailImage from '../common/DetailImage';
 import AdminButtons from './AdminButtons';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const HotelList = ({ isAdmin }) => {
-  const [hotels, setHotels] = useState([]);
-
-  useEffect(() => {
-    const loadHotels = async () => {
-      const fetchedHotels = await getHotels();
-      setHotels(fetchedHotels);
-    };
-
-    loadHotels();
-  }, []);
+  const hotels = useHotels();
 
   return (
     <div className="join join-vertical w-full px-12">
@@ -29,7 +20,7 @@ const HotelList = ({ isAdmin }) => {
             type={isAdmin ? 'checkbox' : 'radio'}
             name="my-accordion-1"
             aria-label="hotel-item"
-            defaultChecked={isAdmin || hotel.id === 1}
+            defaultChecked={hotel.id === 1}
           />
 
           <div className="flex items-center justify-between collapse-title prose min-w-full p-0">
@@ -48,7 +39,14 @@ const HotelList = ({ isAdmin }) => {
               <hr className="mb-2"></hr>
               <p>{hotel.description}</p>
             </div>
-            <DetailImage image={hotel.base64Image} />
+            <div>
+              <DetailImage image={hotel.base64Image} />
+              <div className="m-3 flex justify-center">
+                <Link className="btn btn-secondary" to={`/hotel/${hotel.id}`}>
+                  Go to hotel
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       ))}

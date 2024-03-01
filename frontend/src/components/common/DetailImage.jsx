@@ -6,7 +6,7 @@ const DetailImage = ({ image }) => {
     <img
       className="max-h-96 w-auto object-cover md:object-scale-down rounded-lg"
       alt="hotel image"
-      src={image ? `data:image/png;base64, ${image}` : defaultImage}
+      src={image ? image : defaultImage}
     ></img>
   );
 };

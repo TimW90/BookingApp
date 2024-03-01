@@ -10,7 +10,7 @@ public class ImageUtil {
   public static String getImageFromPathAsBase64String(String imagePath) {
     try {
       byte[] fileContent = Files.readAllBytes(Path.of(imagePath));
-      return Base64.encodeBase64String(fileContent);
+      return "data:image/png;base64," + Base64.encodeBase64String(fileContent);
     } catch (IOException e) {
       return null;
     }

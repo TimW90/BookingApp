@@ -24,11 +24,7 @@ const Hero = () => {
     <div className="hero min-h-50vh bg-base-200">
       <div className="hero-content flex-col lg:flex-row">
         <img
-          src={
-            data.base64Image
-              ? `data:image/png;base64, ${data.base64Image}`
-              : defaultImage
-          }
+          src={data.base64Image ? data.base64Image : defaultImage}
           className="max-w-sm rounded-lg shadow-2xl"
           alt="hero image"
         />

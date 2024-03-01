@@ -25,11 +25,17 @@ public class HotelController {
     return hotelRepository.findAll().stream().map(HotelDTO::new).toList();
   }
 
+  @GetMapping("{id}")
+  public HotelDTO getById(@PathVariable long id) {
+    Hotel fetchedHotel = hotelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Hotel with id %d not found", id)));
+
+    return new HotelDTO(fetchedHotel);
+  }
+
   @GetMapping("get")
-  public Hotel getByQuery(@RequestParam(required = false) Location location) {
+  public List<HotelDTO> getByQuery(@RequestParam(required = false) Location location) {
     return hotelRepository
-        .findByLocation(location)
-        .orElseThrow(() -> new ResourceNotFoundException(location.name()));
+        .findByLocation(location).stream().map(HotelDTO::new).toList();
   }
 
   @GetMapping("locations")
@@ -84,12 +90,12 @@ public class HotelController {
     return ResponseEntity.notFound().build();
   }
 
-    @GetMapping("/randomhotel")
-    public HotelDTO getByRandomId() {
-        long count = hotelRepository.count();
-        int randomID = (int) (Math.random() * count) +1;
-        System.out.println("The id is:" + (randomID));
-        return new HotelDTO(hotelRepository.findById((long)randomID).get());
-    }
+  @GetMapping("/randomhotel")
+  public HotelDTO getByRandomId() {
+      long count = hotelRepository.count();
+      int randomID = (int) (Math.random() * count) +1;
+      System.out.println("The id is:" + (randomID));
+      return new HotelDTO(hotelRepository.findById((long)randomID).get());
+  }
 
 }

@@ -6,7 +6,7 @@ const PreviewImage = ({ image }) => {
     <img
       className="h-10 w-10 object-cover rounded-full"
       alt="hotel preview"
-      src={image ? `data:image/png;base64, ${image}` : defaultImage}
+      src={image ? image : defaultImage}
     />
   );
 };
