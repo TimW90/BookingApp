@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string, mixed } from 'yup';
 import ErrorMessage from '../common/ErrorMessage';
-import { postHotel, updateHotel } from '@/api/hotelApi';
 import { usePopup } from '../popup/PopUpContext';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../common/LoadingSpinner';
 import useLocations from '@/hooks/useLocations';
+import { useHotel } from './HotelContext';
 
 const hotelSchema = object().shape({
   name: string().required('Name is a required field'),
@@ -38,6 +38,7 @@ const ManageHotel = ({ hotel }) => {
   const locations = useLocations();
   const watchedFile = watch('image');
   const { togglePopup } = usePopup();
+  const { handleAddHotel, handleUpdateHotel } = useHotel();
 
   useEffect(() => {
     if (watchedFile && watchedFile.length > 0) {
@@ -57,7 +58,7 @@ const ManageHotel = ({ hotel }) => {
 
       // Files can't be set for security reasons so this shows the current image as a preview
       if (hotel.base64Image) {
-        setImagePreview(`data:image/png;base64, ${hotel.base64Image}`);
+        setImagePreview(hotel.base64Image);
       }
     }
   }, [hotel, reset]);
@@ -68,7 +69,6 @@ const ManageHotel = ({ hotel }) => {
       reader.readAsDataURL(file);
       reader.onload = () => {
         resolve(reader.result);
-        console.log(reader.result);
       };
       reader.onerror = reject;
     });
@@ -82,9 +82,9 @@ const ManageHotel = ({ hotel }) => {
       }
 
       if (hotel) {
-        await updateHotel(hotel.id, hotelData);
+        await handleUpdateHotel(hotel.id, hotelData);
       } else {
-        await postHotel(hotelData);
+        await handleAddHotel(hotelData);
       }
 
       setImagePreview('');
@@ -156,6 +156,7 @@ const ManageHotel = ({ hotel }) => {
                 type="radio"
                 value={value}
                 className="mask mask-star-2 bg-orange-400"
+                checked
               />
             ))}
           </div>

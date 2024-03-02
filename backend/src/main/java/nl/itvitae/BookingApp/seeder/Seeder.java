@@ -54,10 +54,16 @@ public class Seeder implements CommandLineRunner {
                 "Affordable, convenient, and close to key sites, Rotterdam Stay provides a hassle-free experience for visitors. With modern amenities and comfortable rooms, it's a great base for exploring Rotterdam.",
                 getImageFromPathAsBase64String("src/main/resources/images/rotterdam_stay.png")),
             new Hotel(
-                "Amsterdam Boutique",
+                "Pestana Amsterdam Riverside",
                 4,
                 Location.AMSTERDAM,
-                "Amsterdam Boutique Hotel offers a unique and charming stay, combining traditional architecture with modern luxury. Situated in the vibrant heart of the city, guests are just steps away from Amsterdam's famous attractions.",
+                "A classical landmark turned haven of minimalist chic, this beautiful hotel in Amsterdam city center is housed in a pair of 19th – century Neo-Renaissance-style buildings and two modern annexes on the banks of the Amstel River. The Pestana Amsterdam Riverside Hotel is rising above the hippest part of town, “De Pijp”, in a quiet location just outside the hustle and bustle of the Amsterdam inner canal belt. With elegant guestrooms and a stunning lobby with beautiful ceilings and arches, this hotel in Amsterdam is the perfect base for your visit to one of Europe´s most picturesque and exciting cities.\n"
+                    + " \n"
+                    + "The Cocoon Wellness Spa at Pestana Amsterdam Riverside Hotel includes an indoor swimming pool. Together with the restaurant ARCHIVE by Pestana and secure valet parking, this hotel is your perfect place of choice in Amsterdam.\n"
+                    + " \n"
+                    + "With a total of 10 meeting rooms including the stunning Town Hall Ballroom, with its original architecture facing the Amstel river, this is the perfect place for your business events, exclusive banquets, weddings and cocktail parties for up to 160 guests.\n"
+                    + " \n"
+                    + "Enjoy a sophisticated yet intimate experience in this contemporary 5-star hotel in Amsterdam on the banks of the Amstel River in Amsterdam.",
                 getImageFromPathAsBase64String(
                     "src/main/resources/images/amsterdam_boutique.png"))));
   }

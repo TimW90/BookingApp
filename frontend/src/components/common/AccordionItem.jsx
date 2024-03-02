@@ -1,7 +1,7 @@
 import HotelCard from '../hotel/HotelCard';
 
-const AccordionItem = ({ item, isAdmin }) => (
-  <HotelCard hotel={item} isAdmin={isAdmin} />
+const AccordionItem = ({ item, isAdmin, length }) => (
+  <HotelCard hotel={item} isAdmin={isAdmin} length={length} />
 );
 
 export default AccordionItem;

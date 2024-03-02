@@ -5,14 +5,14 @@ import DetailImage from '../common/DetailImage';
 import AdminButtons from './AdminButtons';
 import { Link } from 'react-router-dom';
 
-const HotelCard = ({ hotel, isAdmin }) => {
+const HotelCard = ({ hotel, isAdmin, length }) => {
   return (
     <div key={hotel.id} className="collapse join-item bg-base-200 px-12 my-0.5">
       <input
         type={isAdmin ? 'checkbox' : 'radio'}
         name="my-accordion-1"
         aria-label="hotel-item"
-        defaultChecked={hotel.id === 1}
+        defaultChecked={hotel.id === length || isAdmin}
       />
 
       <div className="flex items-center justify-between collapse-title prose min-w-full p-0">
@@ -26,12 +26,12 @@ const HotelCard = ({ hotel, isAdmin }) => {
       </div>
 
       <div className="collapse-content flex justify-between">
-        <div className="w-2/5 prose card-bordered">
+        <article className="w-2/5 prose card-bordered">
           <h3 className="m-0">Description</h3>
           <hr className="mb-2"></hr>
           <p>{hotel.description}</p>
-        </div>
-        <div>
+        </article>
+        <div className="flex flex-col justify-center">
           <DetailImage image={hotel.base64Image} />
           <div className="m-3 flex justify-center">
             <Link className="btn btn-secondary" to={`/hotel/${hotel.id}`}>
@@ -47,6 +47,7 @@ const HotelCard = ({ hotel, isAdmin }) => {
 HotelCard.propTypes = {
   hotel: PropTypes.object.isRequired,
   isAdmin: PropTypes.bool,
+  length: PropTypes.number,
 };
 
 export default HotelCard;

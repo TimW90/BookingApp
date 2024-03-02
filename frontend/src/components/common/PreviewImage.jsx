@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const PreviewImage = ({ image }) => {
   return (
     <img
-      className="h-10 w-10 object-cover rounded-full"
+      className="h-10 w-10 object-cover rounded-full "
       alt="hotel preview"
       src={image ? image : defaultImage}
     />

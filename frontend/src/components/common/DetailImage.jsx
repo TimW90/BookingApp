@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const DetailImage = ({ image }) => (
   <img
-    className="max-h-96 w-auto object-cover md:object-scale-down rounded-lg"
+    className="max-w-md rounded-lg shadow-2xl"
     alt="hotel image"
     src={image ? image : defaultImage}
   ></img>

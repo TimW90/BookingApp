@@ -21,7 +21,7 @@ public class Hotel {
   @Enumerated(EnumType.STRING)
   private Location location;
 
-  @Column(length = 1000)
+  @Column(length = 1500)
   private String description;
 
   @Lob private String base64Image;
