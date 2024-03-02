@@ -1,12 +1,12 @@
 import Hero from '@/components/Hero';
-import HotelList from '@/components/hotel/HotelList';
+import HotelListNew from '@/components/hotel/HotelListNew';
 import SearchBar from '@/components/Searchbar';
 
 const Home = () => (
   <>
     <Hero />
     <SearchBar />
-    <HotelList />
+    <HotelListNew />
   </>
 );
 

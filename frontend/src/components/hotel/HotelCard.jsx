@@ -7,15 +7,24 @@ import { Link } from 'react-router-dom';
 
 const HotelCard = ({ hotel, isAdmin }) => {
   return (
-    <>
+    <div key={hotel.id} className="collapse join-item bg-base-200 px-12 my-0.5">
+      <input
+        type={isAdmin ? 'checkbox' : 'radio'}
+        name="my-accordion-1"
+        aria-label="hotel-item"
+        defaultChecked={hotel.id === 1}
+      />
+
       <div className="flex items-center justify-between collapse-title prose min-w-full p-0">
         <div className="flex items-center gap-4">
           <PreviewImage image={hotel.base64Image} />
           <h2 className="m-0">{hotel.name}</h2>
+
           {isAdmin && <AdminButtons hotel={hotel} />}
         </div>
         <StarRating amountOfStars={hotel.rating} />
       </div>
+
       <div className="collapse-content flex justify-between">
         <div className="w-2/5 prose card-bordered">
           <h3 className="m-0">Description</h3>
@@ -31,7 +40,7 @@ const HotelCard = ({ hotel, isAdmin }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
