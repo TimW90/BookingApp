@@ -12,21 +12,22 @@ const AdminButtons = ({ hotel }) => {
     togglePopup();
   };
 
+  const deleteConfirmationContent = (
+    <div className="flex flex-col justify-center">
+      <p>Are you sure you want to delete this?</p>
+      <button
+        onClick={() => {
+          handleDeleteHotel(hotel.id);
+          togglePopup();
+        }}
+        className="btn btn-outline btn-error"
+      >
+        Confirm
+      </button>
+    </div>
+  );
+
   const handleDeleteClick = () => {
-    const deleteConfirmationContent = (
-      <div className="flex flex-col justify-center">
-        <p>Are you sure you want to delete this?</p>
-        <button
-          onClick={() => {
-            handleDeleteHotel(hotel.id);
-            togglePopup();
-          }}
-          className="btn btn-outline btn-error"
-        >
-          Confirm
-        </button>
-      </div>
-    );
     setPopupContent(deleteConfirmationContent);
     togglePopup();
   };

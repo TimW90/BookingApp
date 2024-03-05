@@ -95,7 +95,7 @@ const ManageHotel = ({ hotel }) => {
         'An unexpected error occurred. Please try again later.';
 
       if (error.response.status === 409) {
-        errorMessage = `Hotel with name ${hotel.name} already exists`;
+        errorMessage = `Hotel with name ${hotelData.name} already exists`;
       }
 
       setError('root', { message: errorMessage });
@@ -152,11 +152,11 @@ const ManageHotel = ({ hotel }) => {
             {[1, 2, 3, 4, 5].map((value) => (
               <input
                 key={value}
-                {...register('rating')}
                 type="radio"
                 value={value}
                 className="mask mask-star-2 bg-orange-400"
-                checked
+                name="star-rating"
+                {...register('rating')}
               />
             ))}
           </div>

@@ -1,9 +1,12 @@
 package nl.itvitae.BookingApp.hotel;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.itvitae.BookingApp.room.Room;
 
 @Entity
 @Getter
@@ -25,6 +28,9 @@ public class Hotel {
   private String description;
 
   @Lob private String base64Image;
+
+  @OneToMany(cascade = CascadeType.ALL)
+  private List<Room> rooms = new ArrayList<>();
 
   public Hotel(String name, int rating, Location location, String description, String base64Image) {
     this.name = name;

@@ -3,7 +3,6 @@ package nl.itvitae.BookingApp.seeder;
 import static nl.itvitae.BookingApp.util.ImageUtil.*;
 
 import java.util.List;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
@@ -22,12 +21,12 @@ public class Seeder implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    seedHotels();
-    seedRooms();
+    List<Hotel> seededHotels = seedHotels();
+    seedRooms(seededHotels);
   }
 
-  public void seedHotels() {
-    hotelRepository.saveAll(
+  public List<Hotel> seedHotels() {
+    return hotelRepository.saveAll(
         List.of(
             new Hotel(
                 "Motel One",
@@ -57,56 +56,25 @@ public class Seeder implements CommandLineRunner {
                 "Pestana Amsterdam Riverside",
                 4,
                 Location.AMSTERDAM,
-                "A classical landmark turned haven of minimalist chic, this beautiful hotel in Amsterdam city center is housed in a pair of 19th – century Neo-Renaissance-style buildings and two modern annexes on the banks of the Amstel River. The Pestana Amsterdam Riverside Hotel is rising above the hippest part of town, “De Pijp”, in a quiet location just outside the hustle and bustle of the Amsterdam inner canal belt. With elegant guestrooms and a stunning lobby with beautiful ceilings and arches, this hotel in Amsterdam is the perfect base for your visit to one of Europe´s most picturesque and exciting cities.\n"
-                    + " \n"
-                    + "The Cocoon Wellness Spa at Pestana Amsterdam Riverside Hotel includes an indoor swimming pool. Together with the restaurant ARCHIVE by Pestana and secure valet parking, this hotel is your perfect place of choice in Amsterdam.\n"
-                    + " \n"
-                    + "With a total of 10 meeting rooms including the stunning Town Hall Ballroom, with its original architecture facing the Amstel river, this is the perfect place for your business events, exclusive banquets, weddings and cocktail parties for up to 160 guests.\n"
-                    + " \n"
-                    + "Enjoy a sophisticated yet intimate experience in this contemporary 5-star hotel in Amsterdam on the banks of the Amstel River in Amsterdam.",
+                "A classical landmark turned haven of minimalist chic, this beautiful hotel in Amsterdam city center is housed in a pair of 19th – century Neo-Renaissance-style buildings and two modern annexes on the banks of the Amstel River. The Pestana Amsterdam Riverside Hotel is rising above the hippest part of town, “De Pijp”, in a quiet location just outside the hustle and bustle of the Amsterdam inner canal belt. With elegant guestrooms and a stunning lobby with beautiful ceilings and arches, this hotel in Amsterdam is the perfect base for your visit to one of Europe´s most picturesque and exciting cities.",
                 getImageFromPathAsBase64String(
                     "src/main/resources/images/amsterdam_boutique.png"))));
   }
 
-  public void seedRooms() {
-    roomRepository.saveAll(
-        List.of(
-            new Room(
-                Room.Type.SINGLE,
-                12000,
-                Set.of(Room.Amenity.GYM, Room.Amenity.WIFI, Room.Amenity.SINGLE_BED),
-                false),
-            new Room(
-                Room.Type.SINGLE,
-                13500,
-                Set.of(
-                    Room.Amenity.GYM,
-                    Room.Amenity.WIFI,
-                    Room.Amenity.SINGLE_BED,
-                    Room.Amenity.BREAKFAST),
-                false),
-            new Room(
-                Room.Type.DOUBLE,
-                22000,
-                Set.of(Room.Amenity.GYM, Room.Amenity.WIFI, Room.Amenity.DOUBLE_BED),
-                false),
-            new Room(
-                Room.Type.TRIPPLE,
-                30000,
-                Set.of(
-                    Room.Amenity.GYM,
-                    Room.Amenity.WIFI,
-                    Room.Amenity.DOUBLE_BED,
-                    Room.Amenity.SINGLE_BED),
-                false),
-            new Room(
-                Room.Type.QUADRUPPLE,
-                40000,
-                Set.of(
-                    Room.Amenity.GYM,
-                    Room.Amenity.WIFI,
-                    Room.Amenity.DOUBLE_BED,
-                    Room.Amenity.SINGLE_BED),
-                false)));
+  public void seedRooms(List<Hotel> seededHotels) {
+    seededHotels.forEach(
+        (hotel) -> {
+          hotel
+              .getRooms()
+              .addAll(
+                  List.of(
+                      new Room(Room.Type.SINGLE, 12000, false),
+                      new Room(Room.Type.SINGLE, 13500, false),
+                      new Room(Room.Type.DOUBLE, 22000, false),
+                      new Room(Room.Type.TRIPPLE, 30000, false),
+                      new Room(Room.Type.QUADRUPPLE, 40000, false)));
+        });
+
+    hotelRepository.saveAll(seededHotels);
   }
 }
