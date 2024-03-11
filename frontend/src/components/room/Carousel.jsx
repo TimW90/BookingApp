@@ -1,3 +1,5 @@
+// conditional render the arrows if index = images.length - 1 then don't render > and if index = 0 then don't render <
+
 import PropTypes from 'prop-types';
 
 const Carousel = ({ images }) => {
@@ -6,6 +8,7 @@ const Carousel = ({ images }) => {
     <>
       <div className="carousel mr-5">
         {(() => {
+          // what if images === 0?
           if (images.length === 1) {
             console.log(images[0]);
             return (
