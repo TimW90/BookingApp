@@ -1,18 +1,19 @@
 import Accordion from '../common/Accordion';
-import HotelCard from './HotelCard';
-import { useHotel } from './HotelContext';
+import { useHotels } from './HotelContext';
+import AccordionCard from '../common/AccordionCard';
 
 const HotelAccordion = ({ isAdmin }) => {
-  const { hotels } = useHotel();
+  const { hotels } = useHotels();
 
   return (
     <Accordion>
       {hotels.map((hotel) => (
-        <HotelCard
+        <AccordionCard
           key={hotel.id}
-          hotel={hotel}
+          item={hotel}
           isAdmin={isAdmin}
-          length={length}
+          length={hotels.length}
+          cardType="hotel"
         />
       ))}
     </Accordion>

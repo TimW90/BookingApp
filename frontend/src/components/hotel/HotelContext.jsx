@@ -47,7 +47,7 @@ export const HotelProvider = ({ children }) => {
   );
 };
 
-export const useHotel = () => useContext(HotelContext);
+export const useHotels = () => useContext(HotelContext);
 
 HotelProvider.propTypes = {
   children: PropTypes.any,

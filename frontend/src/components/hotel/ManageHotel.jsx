@@ -7,7 +7,7 @@ import { usePopup } from '../popup/PopUpContext';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../common/LoadingSpinner';
 import useLocations from '@/hooks/useLocations';
-import { useHotel } from './HotelContext';
+import { useHotels } from './HotelContext';
 
 const hotelSchema = object().shape({
   name: string().required('Name is a required field'),
@@ -38,7 +38,7 @@ const ManageHotel = ({ hotel }) => {
   const locations = useLocations();
   const watchedFile = watch('image');
   const { togglePopup } = usePopup();
-  const { handleAddHotel, handleUpdateHotel } = useHotel();
+  const { handleAddHotel, handleUpdateHotel } = useHotels();
 
   useEffect(() => {
     if (watchedFile && watchedFile.length > 0) {

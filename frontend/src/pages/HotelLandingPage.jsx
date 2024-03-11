@@ -1,13 +1,15 @@
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getHotelById } from '@/api/hotelApi';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+
 import HotelAccordion from '@/components/hotel/HotelAccordion';
+import SearchBar from '@/components/Searchbar';
 
 const HotelLandingPage = () => {
   const [hotel, setHotel] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -54,7 +56,8 @@ const HotelLandingPage = () => {
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>
-      {/* <HotelAccordion /> roomaccordion */}
+      <SearchBar />
+      <HotelAccordion />
     </>
   );
 };
