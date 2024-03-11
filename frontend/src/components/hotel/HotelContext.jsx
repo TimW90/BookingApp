@@ -35,6 +35,7 @@ export const HotelProvider = ({ children }) => {
 
   const contextValue = {
     hotels,
+    setHotels,
     handleAddHotel,
     handleUpdateHotel,
     handleDeleteHotel,

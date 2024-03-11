@@ -7,8 +7,9 @@ export const postHotel = async (hotelData) => {
   return response.data;
 };
 
-export const getHotels = async () => {
-  const response = await api.get(uri);
+export const getHotels = async (params) => {
+  console.log(params);
+  const response = await api.get(uri, { params });
   return response.data.content;
 };
 

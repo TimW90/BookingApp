@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getHotelById } from '@/api/hotelApi';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-
 import HotelAccordion from '@/components/hotel/HotelAccordion';
-import SearchBar from '@/components/Searchbar';
 
 const HotelLandingPage = () => {
   const [hotel, setHotel] = useState(null);
@@ -14,7 +12,6 @@ const HotelLandingPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-
     const loadHotel = async () => {
       const fetchedHotel = await getHotelById(id);
       setHotel(fetchedHotel);
@@ -56,7 +53,7 @@ const HotelLandingPage = () => {
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>
-      <SearchBar />
+
       <HotelAccordion />
     </>
   );

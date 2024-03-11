@@ -11,7 +11,6 @@ const Hero = () => {
         const response = await axios.get(
           'http://localhost:8080/api/v1/hotels/randomhotel'
         );
-        console.log(response.data);
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);

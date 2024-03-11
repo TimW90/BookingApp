@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceAlreadyExistsException;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -43,10 +44,19 @@ public class HotelController {
     return new HotelDTO(fetchedHotel);
   }
 
-  @GetMapping("get")
-  public List<HotelDTO> getByQuery(@RequestParam(required = false) Location location) {
-    return hotelRepository.findByLocation(location).stream().map(HotelDTO::new).toList();
-  }
+//  @GetMapping("get")
+//  public Page<HotelDTO> getByQuery(@RequestParam(required = false) Location location,
+//                                   @RequestParam(required = false) String name,
+//                                   @RequestParam(defaultValue = "0") int pageNumber,
+//                                   @RequestParam(defaultValue = "10") int pageSize) {
+//
+//    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+//    Specification<Hotel> spec = Specification.where(HotelSpecifications.hasName(name))
+//            .and(HotelSpecifications.isInLocation(location));
+//
+//    Page<Hotel> hotels = hotelRepository.findAll(spec, pageable);
+//    return hotels.map(HotelDTO::new);
+//  }
 
   @GetMapping("locations")
   public List<String> getAllLocations() {
