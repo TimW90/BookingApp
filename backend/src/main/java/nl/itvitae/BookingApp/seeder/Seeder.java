@@ -69,17 +69,17 @@ public class Seeder implements CommandLineRunner {
 
     public void seedRooms() {
         // Room 1
-        saveRoom(Room.Type.SINGLE, 120, false, "A nice and cozy room for one person", List.of("src/main/resources/images/room_1_1.png"));
+        saveRoom("Single Comfort Room", "Single", 120, "A nice and cozy room for one person", List.of("src/main/resources/images/room_1_1.png"));
 
         // Room 2
-        saveRoom(Room.Type.DOUBLE, 220, false, "A nice and cozy room for two persons", List.of("src/main/resources/images/room_2_1.png", "src/main/resources/images/room_2_2.png"));
+        saveRoom("Double Comfort Room", "Double", 220, "A nice and cozy room for two persons", List.of("src/main/resources/images/room_2_1.png", "src/main/resources/images/room_2_2.png"));
 
         // Room 3
-        saveRoom(Room.Type.QUADRUPPLE, 400, true, "A big luxurious room for up to four persons", List.of("src/main/resources/images/room_3_1.png", "src/main/resources/images/room_3_2.png", "src/main/resources/images/room_3_3.png"));
+        saveRoom("Quadruple Deluxe Room", "Quadruple", 400, "A big luxurious room for up to four persons", List.of("src/main/resources/images/room_3_1.png", "src/main/resources/images/room_3_2.png", "src/main/resources/images/room_3_3.png"));
     }
 
-    private void saveRoom(Room.Type type, double price, boolean luxury, String description, List<String> imagePaths) {
-        Room room = new Room(type, price, luxury, description);
+    private void saveRoom(String name, String type, double price, String description, List<String> imagePaths) {
+        Room room = new Room(name, type, price, description);
 
         for (String imagePath : imagePaths) {
             Image image = new Image(getImageFromPathAsBase64String(imagePath));

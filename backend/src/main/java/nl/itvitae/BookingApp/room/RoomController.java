@@ -38,9 +38,10 @@ public class RoomController {
     @PatchMapping("/{id}")
     public Room updateRoom(@PathVariable("id") Long id, @RequestBody Room room) {
         Room updatedRoom = roomRepository.findById(id).get();
+        updatedRoom.setName(room.getName());
         updatedRoom.setType(room.getType());
         updatedRoom.setPrice(room.getPrice());
-        updatedRoom.setLuxury(room.isLuxury());
+        updatedRoom.setDescription(room.getDescription());
         return roomRepository.save(updatedRoom);
     }
 }

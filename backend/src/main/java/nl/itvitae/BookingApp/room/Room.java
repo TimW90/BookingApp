@@ -21,31 +21,24 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Type type;
+    private String name;
+
+    @Column(nullable = false)
+    private String type;
 
     @Column(nullable = false)
     private BigDecimal price;
-
-    @Column(nullable = false)
-    private boolean luxury;
 
     private String description;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Image> imageBase64Strings = new HashSet<>();
 
-    public Room(Type type, double price, boolean luxury, String description) {
+    public Room(String name, String type, double price, String description) {
+        this.name = name;
         this.type = type;
         this.price = BigDecimal.valueOf(price);
-        this.luxury = luxury;
         this.description = description;
-    }
-    public enum Type {
-        SINGLE,
-        DOUBLE,
-        TRIPPLE,
-        QUADRUPPLE
     }
 }
