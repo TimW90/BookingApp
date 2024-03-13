@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import Accordion from '../common/Accordion';
 import AccordionCard from '../common/AccordionCard';
 import usePagination from '@/hooks/usePagination';
@@ -8,22 +8,8 @@ const HotelAccordion = ({ isAdmin }) => {
   const [params, setParams] = useState({});
   const [pageNumber, setPageNumber] = useState(1);
   const { register, handleSubmit } = useForm();
-  const { hotels, hasMore, loading, error } = usePagination(params, pageNumber);
 
-  const observer = useRef();
-  const lastHotelElementRef = useCallback(
-    (node) => {
-      if (loading) return;
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          setPageNumber((prevPageNumber) => prevPageNumber + 1);
-        }
-      });
-      if (node) observer.current.observe(node);
-    },
-    [loading, hasMore]
-  );
+  const { hotels, hasMore, loading, error } = usePagination(params, pageNumber);
 
   const onSubmit = (searchForm) => {
     setParams(searchForm);
