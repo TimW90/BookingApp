@@ -1,14 +1,22 @@
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/Footer';
 import { Outlet } from 'react-router-dom';
+import { PopupProvider } from './components/popup/PopUpContext';
+import { HotelProvider } from './components/hotel/HotelContext';
+import usePagination from './hooks/usePagination';
+import { useState } from 'react';
 
 const App = () => {
   return (
-    <div className="container mx-auto">
-      <Navbar />
-      <Outlet />
-      <Footer />
-    </div>
+    <PopupProvider>
+      <HotelProvider>
+        <div className="container mx-auto">
+          <Navbar />
+          <Outlet />
+          <Footer />
+        </div>
+      </HotelProvider>
+    </PopupProvider>
   );
 };
 

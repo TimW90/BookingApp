@@ -3,7 +3,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string, mixed } from 'yup';
 import ErrorMessage from '../common/ErrorMessage';
-import { postHotel, getLocations } from '@/api/hotelApi';
+import { usePopup } from '../popup/PopUpContext';
+import PropTypes from 'prop-types';
+import LoadingSpinner from '../common/LoadingSpinner';
+import useLocations from '@/hooks/useLocations';
+import { useHotels } from './HotelContext';
 
 const hotelSchema = object().shape({
   name: string().required('Name is a required field'),
@@ -25,15 +29,16 @@ const ManageHotel = ({ hotel }) => {
     setError,
     watch,
     reset,
-    setValue,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful, isSubmitting },
   } = useForm({
     resolver: yupResolver(hotelSchema),
   });
 
   const [imagePreview, setImagePreview] = useState('');
-  const [locations, setLocations] = useState([]);
+  const locations = useLocations();
   const watchedFile = watch('image');
+  const { togglePopup } = usePopup();
+  const { handleAddHotel, handleUpdateHotel } = useHotels();
 
   useEffect(() => {
     if (watchedFile && watchedFile.length > 0) {
@@ -43,51 +48,54 @@ const ManageHotel = ({ hotel }) => {
   }, [watchedFile]);
 
   useEffect(() => {
-    const loadLocations = async () => {
-      const fetchedLocations = await getLocations();
-      setLocations(fetchedLocations);
-    };
-
-    loadLocations();
-  }, [locations]);
+    reset();
+  }, [reset, isSubmitSuccessful]);
 
   useEffect(() => {
     if (hotel) {
-      setValue('name', hotel.name);
-      setValue('rating', hotel.rating);
-      setValue('location', hotel.location);
-      setValue('description', hotel.description);
+      hotel.rating = hotel.rating.toString();
+      reset(hotel);
 
-      // Files can't be set for security reasons so this shows the exisiting image as a preview
+      // Files can't be set for security reasons so this shows the current image as a preview
       if (hotel.base64Image) {
-        setImagePreview(`data:image/png;base64, ${hotel.base64Image}`);
+        setImagePreview(hotel.base64Image);
       }
     }
-  }, [hotel, setValue]);
+  }, [hotel, reset]);
+
+  const convertToBase64 = async (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = reject;
+    });
+  };
 
   const onSubmit = async (hotelData) => {
-    const formData = new FormData();
-    formData.append('name', hotelData.name);
-    formData.append('rating', hotelData.rating);
-    formData.append('location', hotelData.location);
-    formData.append('description', hotelData.description);
-
-    if (hotelData.image && hotelData.image[0]) {
-      formData.append('image', hotelData.image[0]);
-    }
-
     try {
-      await postHotel(formData);
-      reset();
+      if (hotelData.image && hotelData.image[0]) {
+        const base64String = await convertToBase64(hotelData.image[0]);
+        hotelData.base64Image = base64String;
+      }
+
+      if (hotel) {
+        await handleUpdateHotel(hotel.id, hotelData);
+      } else {
+        await handleAddHotel(hotelData);
+      }
+
       setImagePreview('');
-      document.getElementById('my_modal_2').close();
+      togglePopup();
     } catch (error) {
       console.error(error);
       let errorMessage =
         'An unexpected error occurred. Please try again later.';
 
       if (error.response.status === 409) {
-        errorMessage = `Hotel with name ${formData.get('name')} already exists`;
+        errorMessage = `Hotel with name ${hotelData.name} already exists`;
       }
 
       setError('root', { message: errorMessage });
@@ -97,16 +105,15 @@ const ManageHotel = ({ hotel }) => {
   return (
     <div className="card shrink-0 w-full max-w-sm bg-base-100 prose lg:prose-md">
       <h1 className="m-0">{hotel ? 'Update Hotel' : 'Add Hotel'}</h1>
-      {imagePreview ? (
-        <img src={imagePreview} alt="hotel preview image" />
-      ) : null}
+
+      {imagePreview && <img src={imagePreview} alt="hotel preview image" />}
+
       <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <label className="label">
             <span className="label-text">Name</span>
           </label>
           <input
-            value={hotel && hotel.name}
             className="input input-bordered"
             type="text"
             placeholder="Name..."
@@ -115,6 +122,7 @@ const ManageHotel = ({ hotel }) => {
           />
         </div>
         {errors.name && <ErrorMessage message={errors.name.message} />}
+
         <div className="form-control">
           <label className="label">
             <span className="label-text">Location</span>
@@ -135,6 +143,7 @@ const ManageHotel = ({ hotel }) => {
             <ErrorMessage message={errors.location.message} />
           )}
         </div>
+
         <div className="form-control">
           <label className="label">
             <span className="label-text">Rating</span>
@@ -143,15 +152,17 @@ const ManageHotel = ({ hotel }) => {
             {[1, 2, 3, 4, 5].map((value) => (
               <input
                 key={value}
-                {...register('rating')}
                 type="radio"
                 value={value}
                 className="mask mask-star-2 bg-orange-400"
+                name="star-rating"
+                {...register('rating')}
               />
             ))}
           </div>
           {errors.rating && <ErrorMessage message={errors.rating.message} />}
         </div>
+
         <div className="form-control py-2">
           <label className="label">
             <span className="label-text">Image</span>
@@ -177,15 +188,20 @@ const ManageHotel = ({ hotel }) => {
             <ErrorMessage message={errors.description.message} />
           )}
         </div>
+
         <div className="form-control mt-6">
           <button type="submit" className="btn m-1">
-            Confirm
+            {isSubmitting ? <LoadingSpinner /> : 'Confirm'}
           </button>
           {errors.root && <ErrorMessage message={errors.root.message} />}
         </div>
       </form>
     </div>
   );
+};
+
+ManageHotel.propTypes = {
+  hotel: PropTypes.object,
 };
 
 export default ManageHotel;

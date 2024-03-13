@@ -1,12 +1,12 @@
 package nl.itvitae.BookingApp.hotel;
 
 import jakarta.persistence.*;
-import java.sql.Blob;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.tomcat.util.codec.binary.Base64;
+import nl.itvitae.BookingApp.room.Room;
 
 @Entity
 @Getter
@@ -19,37 +19,32 @@ public class Hotel {
   private Long id;
 
   private String name;
-  private int rating;
+  private int starRating;
 
   @Enumerated(EnumType.STRING)
   private Location location;
 
-  @Column(length = 1000)
+  @Column(length = 1500)
   private String description;
 
-  @Lob private Blob image;
+  @Lob private String base64Image;
 
-  public Hotel(String name, int rating, Location location, String description) {
+  @OneToMany(cascade = CascadeType.ALL)
+  private List<Room> rooms = new ArrayList<>();
+
+  public Hotel(String name, int rating, Location location, String description, String base64Image) {
     this.name = name;
-    this.rating = rating;
+    this.starRating = rating;
     this.location = location;
     this.description = description;
+    this.base64Image = base64Image;
   }
 
-  public Hotel(String name, int rating, Location location, String description, Blob image) {
-    this.name = name;
-    this.rating = rating;
-    this.location = location;
-    this.description = description;
-    this.image = image;
-  }
-
-  public String getImageAsBase64String() {
-    try {
-      if (image != null) return Base64.encodeBase64String(image.getBytes(1, (int) image.length()));
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-    }
-    return null;
+  public void updateHotelProperties(HotelDTO hotelDTO) {
+    this.name = hotelDTO.name();
+    this.starRating = hotelDTO.starRating();
+    this.location = hotelDTO.location();
+    this.description = hotelDTO.description();
+    this.base64Image = hotelDTO.base64Image();
   }
 }

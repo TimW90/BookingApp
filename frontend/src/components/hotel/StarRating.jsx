@@ -17,7 +17,7 @@ const StarRating = ({ amountOfStars }) => {
 };
 
 StarRating.propTypes = {
-  amountOfStars: PropTypes.number,
+  amountOfStars: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default StarRating;
