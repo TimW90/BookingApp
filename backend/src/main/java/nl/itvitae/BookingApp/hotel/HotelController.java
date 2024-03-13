@@ -1,5 +1,7 @@
 package nl.itvitae.BookingApp.hotel;
 
+import static nl.itvitae.BookingApp.hotel.HotelSpecification.*;
+
 import jakarta.transaction.Transactional;
 import java.net.URI;
 import java.util.Arrays;
@@ -8,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceAlreadyExistsException;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -46,15 +47,18 @@ public class HotelController {
   }
 
   @GetMapping("get")
-  public Page<HotelDTO> getByQuery(@RequestParam(required = false) Location location,
-                                   @RequestParam(required = false) String name,
-                                   @RequestParam(defaultValue = "0") int pageNumber,
-                                   @RequestParam(defaultValue = "10") int pageSize) {
+  public Page<HotelDTO> getByQuery(
+      @RequestParam(required = false) Location location,
+      @RequestParam(required = false) String name,
+      @RequestParam(defaultValue = "1") int starRating,
+      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
-    Pageable pageable = PageRequest.of(pageNumber, pageSize);
-    Specification<Hotel> spec = Specification.where();
+    Specification<Hotel> specification =
+        Specification.where(isInLocation(location))
+            .and(nameLike(name))
+            .and(starRatingIsHigherThanOrEqualTo(starRating));
 
-    Page<Hotel> hotels = hotelRepository.findAll(spec, pageable);
+    Page<Hotel> hotels = hotelRepository.findAll(specification, pageable);
     return hotels.map(HotelDTO::new);
   }
 
@@ -73,7 +77,7 @@ public class HotelController {
         hotelRepository.save(
             new Hotel(
                 newHotelDTO.name(),
-                newHotelDTO.rating(),
+                newHotelDTO.starRating(),
                 newHotelDTO.location(),
                 newHotelDTO.description(),
                 newHotelDTO.base64Image()));

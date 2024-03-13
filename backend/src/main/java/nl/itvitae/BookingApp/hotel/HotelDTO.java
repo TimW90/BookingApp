@@ -6,7 +6,7 @@ import nl.itvitae.BookingApp.room.Room;
 public record HotelDTO(
     Long id,
     String name,
-    int rating,
+    int starRating,
     Location location,
     String description,
     String base64Image,
@@ -15,7 +15,7 @@ public record HotelDTO(
     this(
         hotel.getId(),
         hotel.getName(),
-        hotel.getRating(),
+        hotel.getStarRating(),
         hotel.getLocation(),
         hotel.getDescription(),
         hotel.getBase64Image(),

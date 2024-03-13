@@ -6,20 +6,24 @@ import { getHotels } from '@/api/hotelApi';
 const usePagination = (params, pageNumber) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [hasMore, setHasmore] = useState(false);
-  const { setHotels } = useHotels();
+  const [hasMore, setHasMore] = useState(false);
+  const { hotels, setHotels } = useHotels();
 
   useEffect(() => {
     setLoading(true);
     setError(false);
 
     const queryHotels = async () => {
-      const queriedHotels = await getHotels(params);
-      setHotels(queriedHotels);
+      const queriedHotelPages = await getHotels(params);
+      setHotels(queriedHotelPages.content);
+      setHasMore(queriedHotelPages.last);
+      setLoading(false);
     };
 
     queryHotels();
   }, [setHotels, params, pageNumber]);
+
+  return { hotels, hasMore, loading, error };
 };
 
 export default usePagination;

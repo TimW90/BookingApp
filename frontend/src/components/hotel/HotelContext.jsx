@@ -8,12 +8,12 @@ export const HotelProvider = ({ children }) => {
   const [hotels, setHotels] = useState([]);
 
   useEffect(() => {
-    const loadHotels = async () => {
-      const fetchedHotels = await getHotels();
-      setHotels(fetchedHotels);
+    const loadHotelPages = async () => {
+      const fetchedHotelsPages = await getHotels();
+      setHotels(fetchedHotelsPages.content); // content because getHotels returns a page and content is where the actual hotels are
     };
 
-    loadHotels();
+    loadHotelPages();
   }, []);
 
   const handleAddHotel = async (hotelData) => {

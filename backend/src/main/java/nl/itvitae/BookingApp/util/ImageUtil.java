@@ -12,6 +12,7 @@ public class ImageUtil {
       byte[] fileContent = Files.readAllBytes(Path.of(imagePath));
       return "data:image/png;base64," + Base64.encodeBase64String(fileContent);
     } catch (IOException e) {
+      System.out.println(e.getMessage());
       return null;
     }
   }
