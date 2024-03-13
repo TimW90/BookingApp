@@ -1,5 +1,7 @@
 package nl.itvitae.BookingApp.hotel;
 
+import static nl.itvitae.BookingApp.hotel.HotelSpecification.*;
+
 import jakarta.transaction.Transactional;
 import java.net.URI;
 import java.util.Arrays;
@@ -7,6 +9,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceAlreadyExistsException;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,15 +28,38 @@ public class HotelController {
   private final HotelRepository hotelRepository;
 
   @GetMapping
-  public List<HotelDTO> findAll() {
-    return hotelRepository.findAll().stream().map(HotelDTO::new).toList();
+  public Page<HotelDTO> findAll(
+      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+    return hotelRepository.findAll(pageable).map(HotelDTO::new);
+  }
+
+  @GetMapping("{id}")
+  public HotelDTO getById(@PathVariable long id) {
+    Hotel fetchedHotel =
+        hotelRepository
+            .findById(id)
+            .orElseThrow(
+                () ->
+                    new ResourceNotFoundException(String.format("Hotel with id %d not found", id)));
+
+    return new HotelDTO(fetchedHotel);
   }
 
   @GetMapping("get")
-  public Hotel getByQuery(@RequestParam(required = false) Location location) {
-    return hotelRepository
-        .findByLocation(location)
-        .orElseThrow(() -> new ResourceNotFoundException(location.name()));
+  public Page<HotelDTO> getByQuery(
+      @RequestParam(required = false) Location location,
+      @RequestParam(required = false) String name,
+      @RequestParam(defaultValue = "1") int starRating,
+      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+
+    Specification<Hotel> specification =
+        Specification.where(isInLocation(location))
+            .and(nameLike(name))
+            .and(starRatingIsHigherThanOrEqualTo(starRating));
+
+    Page<Hotel> hotels = hotelRepository.findAll(specification, pageable);
+    return hotels.map(HotelDTO::new);
   }
 
   @GetMapping("locations")
@@ -47,7 +77,7 @@ public class HotelController {
         hotelRepository.save(
             new Hotel(
                 newHotelDTO.name(),
-                newHotelDTO.rating(),
+                newHotelDTO.starRating(),
                 newHotelDTO.location(),
                 newHotelDTO.description(),
                 newHotelDTO.base64Image()));
@@ -55,7 +85,7 @@ public class HotelController {
     URI locationOfNewHotel =
         ucb.path("api/v1/hotels/{id}").buildAndExpand(newHotel.getId()).toUri();
 
-    return ResponseEntity.created(locationOfNewHotel).body(newHotelDTO);
+    return ResponseEntity.created(locationOfNewHotel).body(new HotelDTO(newHotel));
   }
 
   @PutMapping("{id}")
@@ -84,12 +114,11 @@ public class HotelController {
     return ResponseEntity.notFound().build();
   }
 
-    @GetMapping("/randomhotel")
-    public HotelDTO getByRandomId() {
-        long count = hotelRepository.count();
-        int randomID = (int) (Math.random() * count) +1;
-        System.out.println("The id is:" + (randomID));
-        return new HotelDTO(hotelRepository.findById((long)randomID).get());
-    }
-
+  @GetMapping("/randomhotel")
+  public HotelDTO getByRandomId() {
+    long count = hotelRepository.count();
+    int randomID = (int) (Math.random() * count) + 1;
+    System.out.println("The id is:" + (randomID));
+    return new HotelDTO(hotelRepository.findById((long) randomID).get());
+  }
 }

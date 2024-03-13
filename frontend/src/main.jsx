@@ -5,6 +5,7 @@ import AdminPage from './pages/AdminPage';
 import App from './App.jsx';
 import './index.css';
 import Home from './pages/Home.jsx';
+import HotelLandingPage from './pages/HotelLandingPage';
 
 const router = createBrowserRouter([
   {
@@ -83,6 +84,10 @@ const router = createBrowserRouter([
       {
         path: '/admin',
         element: <AdminPage />,
+      },
+      {
+        path: '/hotel/:id',
+        element: <HotelLandingPage />,
       },
     ],
   },
