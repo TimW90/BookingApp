@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string, mixed } from 'yup';
 import ErrorMessage from '../common/ErrorMessage';
-import { postHotel, updateHotel } from '@/api/hotelApi';
 import { usePopup } from '../popup/PopUpContext';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../common/LoadingSpinner';
 import useLocations from '@/hooks/useLocations';
+import { useHotels } from './HotelContext';
 
 const hotelSchema = object().shape({
   name: string().required('Name is a required field'),
@@ -38,6 +38,7 @@ const ManageHotel = ({ hotel }) => {
   const locations = useLocations();
   const watchedFile = watch('image');
   const { togglePopup } = usePopup();
+  const { handleAddHotel, handleUpdateHotel } = useHotels();
 
   useEffect(() => {
     if (watchedFile && watchedFile.length > 0) {
@@ -57,7 +58,7 @@ const ManageHotel = ({ hotel }) => {
 
       // Files can't be set for security reasons so this shows the current image as a preview
       if (hotel.base64Image) {
-        setImagePreview(`data:image/png;base64, ${hotel.base64Image}`);
+        setImagePreview(hotel.base64Image);
       }
     }
   }, [hotel, reset]);
@@ -77,15 +78,13 @@ const ManageHotel = ({ hotel }) => {
     try {
       if (hotelData.image && hotelData.image[0]) {
         const base64String = await convertToBase64(hotelData.image[0]);
-
-        // To retrieve only the Base64 encoded string, first remove "data:*/*;base64,"
-        hotelData.base64Image = base64String.split(',')[1];
+        hotelData.base64Image = base64String;
       }
 
       if (hotel) {
-        await updateHotel(hotel.id, hotelData);
+        await handleUpdateHotel(hotel.id, hotelData);
       } else {
-        await postHotel(hotelData);
+        await handleAddHotel(hotelData);
       }
 
       setImagePreview('');
@@ -96,7 +95,7 @@ const ManageHotel = ({ hotel }) => {
         'An unexpected error occurred. Please try again later.';
 
       if (error.response.status === 409) {
-        errorMessage = `Hotel with name ${hotel.name} already exists`;
+        errorMessage = `Hotel with name ${hotelData.name} already exists`;
       }
 
       setError('root', { message: errorMessage });
@@ -153,10 +152,11 @@ const ManageHotel = ({ hotel }) => {
             {[1, 2, 3, 4, 5].map((value) => (
               <input
                 key={value}
-                {...register('rating')}
                 type="radio"
                 value={value}
                 className="mask mask-star-2 bg-orange-400"
+                name="star-rating"
+                {...register('rating')}
               />
             ))}
           </div>

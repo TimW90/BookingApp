@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomController {
 
-    private final RoomRepository roomRepository;
+  private final RoomRepository roomRepository;
 
     @GetMapping
     public List<RoomDTO> findAll() {
@@ -25,15 +25,15 @@ public class RoomController {
         return new RoomDTO(roomRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Room not found")));
     }
 
-    @PostMapping
-    public Room newRoom(@RequestBody Room room) {
-        return roomRepository.save(room);
-    }
+  @PostMapping
+  public Room newRoom(@RequestBody Room room) {
+    return roomRepository.save(room);
+  }
 
-    @DeleteMapping("/{id}")
-    public void deleteRoom(@PathVariable("id") Long id) {
-        roomRepository.deleteById(id);
-    }
+  @DeleteMapping("/{id}")
+  public void deleteRoom(@PathVariable("id") Long id) {
+    roomRepository.deleteById(id);
+  }
 
     @PatchMapping("/{id}")
     public Room updateRoom(@PathVariable("id") Long id, @RequestBody Room room) {

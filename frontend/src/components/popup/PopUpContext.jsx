@@ -13,10 +13,15 @@ export const PopupProvider = ({ children }) => {
       : popupRef.current.showModal();
   };
 
+  const contextValue = {
+    popupContent,
+    popupRef,
+    togglePopup,
+    setPopupContent,
+  };
+
   return (
-    <PopupContext.Provider
-      value={{ popupContent, popupRef, togglePopup, setPopupContent }}
-    >
+    <PopupContext.Provider value={contextValue}>
       {children}
     </PopupContext.Provider>
   );
