@@ -1,60 +1,47 @@
-import ManageHotel from './ManageHotel';
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6';
-import Popup from '../popup/Popup';
 import { usePopup } from '../popup/PopUpContext';
-import { deleteHotel } from '@/api/hotelApi';
-import PropTypes from 'prop-types';
+import ManageHotel from './ManageHotel';
+import { useHotels } from './HotelContext';
 
-// The buttons corresponding with the provided hotel
-const AdminButtons = ({ hotel }) => {
-  const { togglePopup, popupRef, popupContent, setPopupContent } = usePopup();
+const AdminButtons = ({ item }) => {
+  const { setPopupContent, togglePopup } = usePopup();
+  const { handleDeleteHotel } = useHotels();
+
+  const handleEditClick = () => {
+    setPopupContent(<ManageHotel hotel={item} />);
+    togglePopup();
+  };
+
+  const deleteConfirmationContent = (
+    <div className="flex flex-col justify-center">
+      <p>Are you sure you want to delete this?</p>
+      <button
+        onClick={() => {
+          handleDeleteHotel(item.id);
+          togglePopup();
+        }}
+        className="btn btn-outline btn-error"
+      >
+        Confirm
+      </button>
+    </div>
+  );
+
+  const handleDeleteClick = () => {
+    setPopupContent(deleteConfirmationContent);
+    togglePopup();
+  };
 
   return (
     <div className="z-10 flex gap-2">
-      {/* This is the edit button the edit form is the same as the add form but with an existing hotel provided */}
-      <button
-        className="z-10"
-        onClick={() => {
-          setPopupContent(<ManageHotel hotel={hotel} />);
-          togglePopup();
-        }}
-      >
+      <button className="z-10" onClick={handleEditClick}>
         <FaPencil />
       </button>
-
-      {/* Delete button probably separate these into components when reused somewhere else */}
-      <button
-        className="z-10"
-        onClick={() => {
-          setPopupContent(
-            <div className="flex flex-col justify-center">
-              <p>Are you sure you want to delete this?</p>
-              <button
-                onClick={() => {
-                  deleteHotel(hotel.id);
-                  togglePopup();
-                }}
-                className="btn btn-outline btn-error"
-              >
-                Confirm
-              </button>
-            </div>
-          );
-          togglePopup();
-        }}
-      >
+      <button className="z-10" onClick={handleDeleteClick}>
         <FaRegTrashCan />
       </button>
-
-      <Popup togglePopup={togglePopup} ref={popupRef}>
-        {popupContent}
-      </Popup>
     </div>
   );
-};
-
-AdminButtons.propTypes = {
-  hotel: PropTypes.object,
 };
 
 export default AdminButtons;
