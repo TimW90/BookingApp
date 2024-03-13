@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,19 +45,18 @@ public class HotelController {
     return new HotelDTO(fetchedHotel);
   }
 
-//  @GetMapping("get")
-//  public Page<HotelDTO> getByQuery(@RequestParam(required = false) Location location,
-//                                   @RequestParam(required = false) String name,
-//                                   @RequestParam(defaultValue = "0") int pageNumber,
-//                                   @RequestParam(defaultValue = "10") int pageSize) {
-//
-//    Pageable pageable = PageRequest.of(pageNumber, pageSize);
-//    Specification<Hotel> spec = Specification.where(HotelSpecifications.hasName(name))
-//            .and(HotelSpecifications.isInLocation(location));
-//
-//    Page<Hotel> hotels = hotelRepository.findAll(spec, pageable);
-//    return hotels.map(HotelDTO::new);
-//  }
+  @GetMapping("get")
+  public Page<HotelDTO> getByQuery(@RequestParam(required = false) Location location,
+                                   @RequestParam(required = false) String name,
+                                   @RequestParam(defaultValue = "0") int pageNumber,
+                                   @RequestParam(defaultValue = "10") int pageSize) {
+
+    Pageable pageable = PageRequest.of(pageNumber, pageSize);
+    Specification<Hotel> spec = Specification.where();
+
+    Page<Hotel> hotels = hotelRepository.findAll(spec, pageable);
+    return hotels.map(HotelDTO::new);
+  }
 
   @GetMapping("locations")
   public List<String> getAllLocations() {
