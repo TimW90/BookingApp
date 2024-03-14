@@ -7,7 +7,7 @@ const Carousel = ({ images }) => {
     <>
       <div className="carousel mr-5">
         {(() => {
-          // what if images === 0?
+          // what if images === 0? A placeholder?
           if (images.length === 1) {
             return (
               <img

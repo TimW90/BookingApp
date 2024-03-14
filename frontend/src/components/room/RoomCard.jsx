@@ -17,9 +17,9 @@ const RoomCard = ({ room }) => {
             <div className="flex h-1/2">{room.description}</div>
             <div className="inline-flex justify-end items-center">
               <div className="flex mr-5">Price: €{room.price}</div>
-              <div className="card-actions justify-end flex flex-col">
+              {/* <div className="card-actions justify-end flex flex-col">
                 <button className="btn btn-primary">Book now</button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

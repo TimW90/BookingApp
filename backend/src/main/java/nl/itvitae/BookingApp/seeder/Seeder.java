@@ -117,22 +117,6 @@ public class Seeder implements CommandLineRunner {
                     "src/main/resources/images/rotterdam_dockside.png"))));
   }
 
-  //    public void seedRooms() {
-  //        // Room 1
-  //        saveRoom("Single Comfort Room", Room.Type.SINGLE_ROOM, 120, "A nice and cozy room for
-  // one person", List.of("src/main/resources/images/room_1_1.png"));
-  //
-  //        // Room 2
-  //        saveRoom("Double Comfort Room", Room.Type.DOUBLE_ROOM, 220, "A nice and cozy room for
-  // two persons", List.of("src/main/resources/images/room_2_1.png",
-  // "src/main/resources/images/room_2_2.png"));
-  //
-  //        // Room 3
-  //        saveRoom("Quadruple Deluxe Room", Room.Type.QUADRUPLE_ROOM, 400, "A big luxurious room
-  // for up to four persons", List.of("src/main/resources/images/room_3_1.png",
-  // "src/main/resources/images/room_3_2.png", "src/main/resources/images/room_3_3.png"));
-  //    }
-
   private Room saveRoom(
       String name, Room.Type type, double price, String description, List<String> imagePaths) {
     Room room = new Room(name, type, price, description);
@@ -159,6 +143,14 @@ public class Seeder implements CommandLineRunner {
                             120,
                             "A nice and cozy room for one person",
                             List.of("src/main/resources/images/room_1_1.png")),
+                        saveRoom(
+                            "Double Comfort Room",
+                            Room.Type.DOUBLE_ROOM,
+                            220,
+                            "A nice and cozy room for two persons",
+                            List.of(
+                                "src/main/resources/images/room_2_1.png",
+                                "src/main/resources/images/room_2_2.png")),
                         saveRoom(
                             "Quadruple Deluxe Room",
                             Room.Type.QUADRUPLE_ROOM,
