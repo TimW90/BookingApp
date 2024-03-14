@@ -1,11 +1,9 @@
 import ManageHotel from '../components/hotel/ManageHotel';
 import HotelList from '@/components/hotel/HotelAccordion';
-import Popup from '@/components/popup/Popup';
-import { usePopup } from '@/components/popup/PopupContext';
+import { usePopup } from '@/components/popup/PopUpContext';
 
 const AdminPage = () => {
-  const { togglePopup, popupRef, popupContent, setPopupContent } = usePopup();
-
+  const { togglePopup, setPopupContent } = usePopup();
   return (
     <>
       <h1 className="text-3xl font-bold mb-5">Admin Dashboard</h1>
@@ -18,9 +16,6 @@ const AdminPage = () => {
       >
         Add hotel
       </button>
-      <Popup togglePopup={togglePopup} ref={popupRef}>
-        {popupContent}
-      </Popup>
       <HotelList isAdmin />
     </>
   );

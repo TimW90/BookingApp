@@ -2,8 +2,7 @@ import { Link } from 'react-router-dom';
 import Login from '../auth/Login';
 import Registration from '../auth/Registration';
 import Logout from '../auth/Logout';
-import { usePopup } from '../popup/PopupContext';
-
+import { usePopup } from '../popup/PopUpContext';
 // The dropdown menu as used in the navbar, when the profile picture in the navbar is clicked this is what shows up.
 const DropDownMenu = () => {
   const { togglePopup, setPopupContent } = usePopup();

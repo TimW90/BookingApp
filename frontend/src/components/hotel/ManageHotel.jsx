@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string, mixed } from 'yup';
 import ErrorMessage from '../alerts/ErrorMessage';
-import { usePopup } from '../popup/PopupContext';
+import { usePopup } from '../popup/PopUpContext';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../common/LoadingSpinner';
 import useLocations from '@/hooks/useLocations';

@@ -1,4 +1,4 @@
-import { usePopup } from '../popup/PopupContext';
+import { usePopup } from '../popup/PopUpContext';
 import { useHotels } from './HotelContext';
 import PropTypes from 'prop-types';
 

@@ -1,7 +1,6 @@
 import { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
-// eslint-disable-next-line react/display-name
 const Popup = forwardRef(({ children, togglePopup }, ref) => {
   return (
     <dialog
@@ -25,6 +24,8 @@ const Popup = forwardRef(({ children, togglePopup }, ref) => {
     </dialog>
   );
 });
+
+Popup.displayName = 'Popup';
 
 Popup.propTypes = {
   children: PropTypes.node,
