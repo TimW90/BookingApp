@@ -3,6 +3,7 @@ import Accordion from '../common/Accordion';
 import AccordionCard from '../common/AccordionCard';
 import usePagination from '@/hooks/usePagination';
 import { useForm } from 'react-hook-form';
+import PropTypes from 'prop-types';
 
 const HotelAccordion = ({ isAdmin }) => {
   const [params, setParams] = useState({});
@@ -36,6 +37,10 @@ const HotelAccordion = ({ isAdmin }) => {
       </Accordion>
     </>
   );
+};
+
+HotelAccordion.propTypes = {
+  isAdmin: PropTypes.bool,
 };
 
 export default HotelAccordion;
