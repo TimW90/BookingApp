@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom';
 import DropDownMenu from './DropdownMenu';
 import { useAuth } from '../auth/AuthProvider';
 import SuccessAlert from '../alerts/SuccessAlert';
+import { useAlerts } from '../alerts/AlertContext';
 
 const Navbar = () => {
-  const { isAdmin, successMessage } = useAuth();
+  const { flashMessage } = useAlerts();
 
   return (
     <div className="navbar bg-neutral">
-      {successMessage && <SuccessAlert message={successMessage} />}
       <div className="flex-1">
         <Link className="btn btn-ghost text-xl" to="/">
           Hotel Booking App
@@ -50,6 +50,7 @@ const Navbar = () => {
         </div>
         <DropDownMenu />
       </div>
+      {flashMessage && <SuccessAlert message={flashMessage} />}
     </div>
   );
 };

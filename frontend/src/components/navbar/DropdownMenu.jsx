@@ -51,7 +51,7 @@ const DropDownMenu = () => {
           <button
             type="button"
             onClick={() => {
-              setPopupContent(<Registration />);
+              setPopupContent(<Registration togglePopup={togglePopup} />);
               togglePopup();
             }}
           >

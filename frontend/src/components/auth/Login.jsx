@@ -19,6 +19,8 @@ const loginSchema = object().shape({
 });
 
 const Login = ({ onSuccess, redirectOnSuccess }) => {
+  const { handleLogin } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -28,9 +30,6 @@ const Login = ({ onSuccess, redirectOnSuccess }) => {
     resolver: yupResolver(loginSchema),
   });
 
-  const [successLogin, setSuccessLogin] = useState(false);
-  const { handleLogin } = useAuth();
-
   const navigate = useNavigate();
 
   const onSubmit = async (userData) => {
@@ -39,7 +38,6 @@ const Login = ({ onSuccess, redirectOnSuccess }) => {
       handleLogin(response.data);
       if (onSuccess) onSuccess();
       if (redirectOnSuccess) navigate(redirectOnSuccess);
-      setSuccessLogin(true);
     } catch (error) {
       let errorMessage =
         'An unexpected error occurred. Please try again later.';
@@ -50,10 +48,6 @@ const Login = ({ onSuccess, redirectOnSuccess }) => {
 
       setError('root', { message: errorMessage });
     }
-
-    setTimeout(() => {
-      setSuccessLogin(false);
-    }, 2000);
   };
 
   return (

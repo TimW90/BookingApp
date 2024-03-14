@@ -26,12 +26,19 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(false);
   }, []);
 
+  useEffect(
+    (message) => {
+      setSuccessMessage(message);
+      setTimeout(() => setSuccessMessage(''), 3000);
+    },
+    [successMessage]
+  );
+
   const handleLogin = useCallback((token) => {
     localStorage.setItem('token', token);
     processToken(token);
-    setJwtHeader(token);
     setSuccessMessage('Logged in successfully!');
-    setTimeout(() => setSuccessMessage(''), 3000);
+    setJwtHeader(token);
   }, []);
 
   const handleLogout = useCallback(() => {

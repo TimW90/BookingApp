@@ -4,6 +4,7 @@ import { object, string, ref } from 'yup';
 import { postUser } from '@/api/userApi';
 import ErrorMessage from '../alerts/ErrorMessage';
 import PropTypes from 'prop-types';
+import { useAuth } from './AuthProvider';
 
 const userSchema = object().shape({
   fullName: string().required('Full name is required'),
@@ -14,7 +15,7 @@ const userSchema = object().shape({
     .required('Confirm password is required'),
 });
 
-const Registration = () => {
+const Registration = ({ togglePopup }) => {
   const {
     register,
     handleSubmit,
@@ -28,6 +29,7 @@ const Registration = () => {
     console.log(userData);
     try {
       postUser(userData);
+      togglePopup();
     } catch (error) {
       let errorMessage =
         'An unexpected error occurred. Please try again later.';
