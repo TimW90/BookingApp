@@ -1,13 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../api/userApi';
+import { loginUser } from '@/api/userApi';
 import ErrorMessage from '../alerts/ErrorMessage';
 import { useAuth } from './AuthProvider';
 import SuccessAlert from '../alerts/SuccessAlert';
 import PropTypes from 'prop-types';
+import { useAlerts } from '../alerts/AlertContext';
 
 const loginSchema = object().shape({
   username: string()
@@ -18,8 +17,9 @@ const loginSchema = object().shape({
     .required('Password is required'),
 });
 
-const Login = ({ onSuccess, redirectOnSuccess }) => {
+const Login = () => {
   const { handleLogin } = useAuth();
+  const { flashMessage, setFlashMessage } = useAlerts();
 
   const {
     register,
@@ -30,14 +30,12 @@ const Login = ({ onSuccess, redirectOnSuccess }) => {
     resolver: yupResolver(loginSchema),
   });
 
-  const navigate = useNavigate();
-
-  const onSubmit = async (userData) => {
+  const onSubmit = async (loginData) => {
     try {
-      const response = await loginUser(userData);
+      console.log(loginData);
+      const response = await loginUser(loginData);
       handleLogin(response.data);
-      if (onSuccess) onSuccess();
-      if (redirectOnSuccess) navigate(redirectOnSuccess);
+      setFlashMessage('Logged in successfully!');
     } catch (error) {
       let errorMessage =
         'An unexpected error occurred. Please try again later.';
@@ -52,7 +50,7 @@ const Login = ({ onSuccess, redirectOnSuccess }) => {
 
   return (
     <div className="card shrink-0 w-full max-w-sm bg-base-100 prose lg:prose-md">
-      {successLogin && <SuccessAlert message="Logged in successfully!" />}
+      {flashMessage && <SuccessAlert message="Logged in successfully!" />}
       <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <label className="label">
