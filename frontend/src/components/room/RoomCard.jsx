@@ -2,20 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Carousel from './Carousel';
 
-const RoomCard = () => {
-  const [room, setRoom] = useState('');
-
-  useEffect(() => {
-    const loadRoom = async () => {
-      const fetchedRoom = await axios.get(
-        'http://localhost:8080/api/v1/rooms/3'
-      );
-      setRoom(fetchedRoom.data);
-      console.log(fetchedRoom.data);
-    };
-
-    loadRoom();
-  }, []);
+const RoomCard = ({ room }) => {
+  if (!room) return;
 
   return (
     <>

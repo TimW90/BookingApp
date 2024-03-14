@@ -24,21 +24,30 @@ public class Room {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String type;
+    private Type type;
 
     @Column(nullable = false)
     private BigDecimal price;
 
     private String description;
 
+    @Lob
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Image> imageBase64Strings = new HashSet<>();
 
-    public Room(String name, String type, double price, String description) {
+    public Room(String name, Type type, double price, String description) {
         this.name = name;
         this.type = type;
         this.price = BigDecimal.valueOf(price);
         this.description = description;
+    }
+
+    public enum Type {
+        SINGLE_ROOM,
+        DOUBLE_ROOM,
+        TRIPLE_ROOM,
+        QUADRUPLE_ROOM
     }
 }

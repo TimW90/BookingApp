@@ -1,9 +1,8 @@
 package nl.itvitae.BookingApp.image;
 
-public record ImageDTO(String base64Image) {
+public record ImageDTO(Long id, String base64Image) {
 
-    public ImageDTO(Image image) {
-        this(image.getBase64Image());
-    }
-
+  public ImageDTO(Image image) {
+    this(image.getId(), image.getBase64Image());
+  }
 }

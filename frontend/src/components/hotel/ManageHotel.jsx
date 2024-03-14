@@ -53,7 +53,7 @@ const ManageHotel = ({ hotel }) => {
 
   useEffect(() => {
     if (hotel) {
-      hotel.rating = hotel.rating.toString();
+      hotel.rating = hotel.starRating.toString();
       reset(hotel);
 
       // Files can't be set for security reasons so this shows the current image as a preview
