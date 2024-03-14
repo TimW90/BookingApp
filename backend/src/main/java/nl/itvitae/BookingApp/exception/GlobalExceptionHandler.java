@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
   // Thread on appropriate status code
   // https://stackoverflow.com/questions/3825990/http-response-code-for-post-when-resource-already-exists/70371989#70371989
   @ExceptionHandler(ResourceAlreadyExistsException.class)
-  public ResponseEntity<ProblemDetail> handleUserAlreadyExistsException(
+  public ResponseEntity<ProblemDetail> handleResourceAlreadyExistsException(
       ResourceAlreadyExistsException e) {
     var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
 

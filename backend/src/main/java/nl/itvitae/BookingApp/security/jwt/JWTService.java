@@ -1,7 +1,5 @@
-package dev.itvitae.grocerystore.security.jwt;
+package nl.itvitae.BookingApp.security.jwt;
 
-import dev.itvitae.grocerystore.user.User;
-import dev.itvitae.grocerystore.user.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -12,6 +10,8 @@ import java.util.Map;
 import java.util.function.Function;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.user.User;
+import nl.itvitae.BookingApp.user.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,7 +1,7 @@
-package dev.itvitae.grocerystore.security;
+package nl.itvitae.BookingApp.security;
 
-import dev.itvitae.grocerystore.security.jwt.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.security.jwt.JWTAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +10,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,11 +21,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+  private static final String[] ADMIN_URLS = {};
+  private static final String[] USER_URLS = {};
+
   private final MyUserDetailsService userDetailsService;
   private final JWTAuthenticationFilter authenticationFilter;
-
-  private static final String[] ADMIN_URLS = {};
-  private static final String[] USER_URLS = {"api/v1/orders/**", "api/v1/orders"};
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

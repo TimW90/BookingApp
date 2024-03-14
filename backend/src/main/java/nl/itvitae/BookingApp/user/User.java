@@ -1,9 +1,6 @@
-package dev.itvitae.grocerystore.user;
+package nl.itvitae.BookingApp.user;
 
-import dev.itvitae.grocerystore.order.Order;
 import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,9 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor()
 @Entity()
 public class User {
-
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-  Set<Order> orders = new HashSet<>();
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,12 +1,12 @@
-package dev.itvitae.grocerystore.security.jwt;
+package nl.itvitae.BookingApp.security.jwt;
 
-import dev.itvitae.grocerystore.security.MyUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.security.MyUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

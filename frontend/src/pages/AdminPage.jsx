@@ -1,7 +1,7 @@
 import ManageHotel from '../components/hotel/ManageHotel';
 import HotelList from '@/components/hotel/HotelAccordion';
 import Popup from '@/components/popup/Popup';
-import { usePopup } from '@/components/popup/PopUpContext';
+import { usePopup } from '@/components/popup/PopupContext';
 
 const AdminPage = () => {
   const { togglePopup, popupRef, popupContent, setPopupContent } = usePopup();

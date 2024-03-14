@@ -2,6 +2,7 @@ import { useState, useContext, useMemo, useEffect, useCallback } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { setJwtHeader } from '../../api/api';
 import PropTypes from 'prop-types';
+import { createContext } from 'react';
 
 const AuthContext = createContext();
 

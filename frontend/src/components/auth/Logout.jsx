@@ -5,11 +5,11 @@ const Logout = () => {
 
   return (
     <button
-      className="dropdown-item"
+      className="btn m-1 dropdown-item"
       type="button"
       onClick={() => handleLogout()}
     >
-      Logout
+      Confirm Logout
     </button>
   );
 };

@@ -1,4 +1,4 @@
-package dev.itvitae.grocerystore.user;
+package nl.itvitae.BookingApp.user;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

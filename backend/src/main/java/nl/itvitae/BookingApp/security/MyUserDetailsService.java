@@ -1,7 +1,7 @@
-package dev.itvitae.grocerystore.security;
+package nl.itvitae.BookingApp.security;
 
-import dev.itvitae.grocerystore.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,4 +1,4 @@
-package dev.itvitae.grocerystore.security.jwt;
+package nl.itvitae.BookingApp.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

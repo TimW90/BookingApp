@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import PreviewImage from './PreviewImage';
+import PreviewImage from '../images/PreviewImage';
 import StarRating from '../hotel/StarRating';
 import AdminButtons from '../hotel/AdminButtons';
-import DetailImage from './DetailImage';
+import DetailImage from '../images/DetailImage';
 import { Link } from 'react-router-dom';
 
 const AccordionCard = ({ item, isAdmin, length, cardType }) => (
@@ -19,7 +19,7 @@ const AccordionCard = ({ item, isAdmin, length, cardType }) => (
         <PreviewImage image={item.base64Image} />
         <h2 className="m-0">{item.name}</h2>
 
-        {isAdmin && <AdminButtons item={item} />}
+        {isAdmin && <AdminButtons item={item} type={'hotel'} />}
       </div>
       <StarRating amountOfStars={item.rating} />
     </div>

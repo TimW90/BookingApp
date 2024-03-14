@@ -1,35 +1,30 @@
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6';
-import { usePopup } from '../popup/PopUpContext';
+import { usePopup } from '../popup/PopupContext';
 import ManageHotel from './ManageHotel';
-import { useHotels } from './HotelContext';
 import PropTypes from 'prop-types';
+import ConfirmDeleteHotel from './ConfirmDeleteHotel';
 
-const AdminButtons = ({ item }) => {
+const AdminButtons = ({ item, type }) => {
   const { setPopupContent, togglePopup } = usePopup();
-  const { handleDeleteHotel } = useHotels();
 
   const handleEditClick = () => {
-    setPopupContent(<ManageHotel hotel={item} />);
+    switch (type) {
+      case 'hotel':
+        setPopupContent(<ManageHotel hotel={item} />);
+        break;
+
+      case 'rooms':
+        setPopupContent(
+          'Room placeholder this is where room form for managing rooms will go'
+        );
+        break;
+    }
+
     togglePopup();
   };
 
-  const deleteConfirmationContent = (
-    <div className="flex flex-col justify-center">
-      <p>Are you sure you want to delete this?</p>
-      <button
-        onClick={() => {
-          handleDeleteHotel(item.id);
-          togglePopup();
-        }}
-        className="btn btn-outline btn-error"
-      >
-        Confirm
-      </button>
-    </div>
-  );
-
   const handleDeleteClick = () => {
-    setPopupContent(deleteConfirmationContent);
+    setPopupContent(<ConfirmDeleteHotel hotelId={item.id} />);
     togglePopup();
   };
 
@@ -47,6 +42,7 @@ const AdminButtons = ({ item }) => {
 
 AdminButtons.propTypes = {
   item: PropTypes.object,
+  type: PropTypes.string,
 };
 
 export default AdminButtons;

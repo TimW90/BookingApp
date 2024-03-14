@@ -3,10 +3,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../api/user-api';
-import ErrorMessage from '../common/ErrorMessage';
+import { loginUser } from '../../api/userApi';
+import ErrorMessage from '../alerts/ErrorMessage';
 import { useAuth } from './AuthProvider';
-import SuccesAlert from '../alerts/SuccesAlert';
+import SuccessAlert from '../alerts/SuccessAlert';
 import PropTypes from 'prop-types';
 
 const loginSchema = object().shape({
@@ -24,11 +24,10 @@ const Login = ({ onSuccess, redirectOnSuccess }) => {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm <
-  FormValues >
-  {
+  } = useForm({
     resolver: yupResolver(loginSchema),
-  };
+  });
+
   const [successLogin, setSuccessLogin] = useState(false);
   const { handleLogin } = useAuth();
 
@@ -58,8 +57,8 @@ const Login = ({ onSuccess, redirectOnSuccess }) => {
   };
 
   return (
-    <div className="card shrink-0 w-full max-w-sm bg-base-100">
-      {successLogin && <SuccesAlert message="Logged in successfully!" />}
+    <div className="card shrink-0 w-full max-w-sm bg-base-100 prose lg:prose-md">
+      {successLogin && <SuccessAlert message="Logged in successfully!" />}
       <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <label className="label">
@@ -91,7 +90,7 @@ const Login = ({ onSuccess, redirectOnSuccess }) => {
           <ErrorMessage message={errors.password.message} />
         )}
         <div className="form-control mt-6">
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn m-1">
             Login
           </button>
         </div>

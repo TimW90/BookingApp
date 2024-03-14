@@ -1,8 +1,7 @@
-package dev.itvitae.grocerystore.exception;
+package nl.itvitae.BookingApp.exception;
 
-import java.util.NoSuchElementException;
 
-public class UserNotFoundException extends NoSuchElementException {
+public class UserNotFoundException extends ResourceNotFoundException {
   public UserNotFoundException(String identifierName) {
     super(String.format("User with email %s is not found", identifierName));
   }

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const SuccessMessage = ({ message }) => {
+const SuccessAlert = ({ message }) => {
   return (
     <div role="alert" className="alert alert-success">
       <svg
@@ -21,8 +21,8 @@ const SuccessMessage = ({ message }) => {
   );
 };
 
-SuccessMessage.propTypes = {
+SuccessAlert.propTypes = {
   message: PropTypes.string,
 };
 
-export default SuccessMessage;
+export default SuccessAlert;
