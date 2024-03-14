@@ -32,6 +32,11 @@ const AdminButtons = ({ item }) => {
     togglePopup();
   };
 
+  const handleAddRoomClick = () => {
+    setPopupContent();
+    togglePopup();
+  };
+
   return (
     <div className="z-10 flex gap-2">
       <button className="z-10" onClick={handleEditClick}>
@@ -39,6 +44,12 @@ const AdminButtons = ({ item }) => {
       </button>
       <button className="z-10" onClick={handleDeleteClick}>
         <FaRegTrashCan />
+      </button>
+      <button
+        className="z-10 btn m-1 btn-secondary"
+        onClick={handleAddRoomClick}
+      >
+        Add room
       </button>
     </div>
   );
