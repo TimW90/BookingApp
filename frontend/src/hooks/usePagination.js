@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useHotels } from '@/components/hotel/HotelContext';
 import { getHotels } from '@/api/hotelApi';
 
