@@ -9,8 +9,12 @@ public class ImageUtil {
 
   public static String getImageFromPathAsBase64String(String imagePath) {
     try {
-      byte[] fileContent = Files.readAllBytes(Path.of(imagePath));
-      return "data:image/png;base64," + Base64.encodeBase64String(fileContent);
+      Path path = Path.of(imagePath);
+      byte[] fileContent = Files.readAllBytes(path);
+      String mimeType = Files.probeContentType(path);
+
+      // Results in for example "data:image/png;base64,(image encoded as base64 string)"
+      return "data:" + mimeType + ";base64," + Base64.encodeBase64String(fileContent);
     } catch (IOException e) {
       System.out.println(e.getMessage());
       return null;

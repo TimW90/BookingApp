@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getHotelById } from '@/api/hotelApi';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import HotelAccordion from '@/components/hotel/HotelAccordion';
 import RoomCard from '@/components/room/RoomCard';
 import Accordion from '@/components/common/Accordion';
 

@@ -1,15 +1,16 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import Accordion from '../common/Accordion';
 import AccordionCard from '../common/AccordionCard';
 import usePagination from '@/hooks/usePagination';
 import { useForm } from 'react-hook-form';
+import PropTypes from 'prop-types';
 
 const HotelAccordion = ({ isAdmin }) => {
   const [params, setParams] = useState({});
   const [pageNumber, setPageNumber] = useState(1);
   const { register, handleSubmit } = useForm();
-  const { hotels, hasMore, loading, error } = usePagination(params, pageNumber);
 
+  const { hotels } = usePagination(params, pageNumber);
   const onSubmit = (searchForm) => {
     setParams(searchForm);
     setPageNumber(0);
@@ -35,6 +36,10 @@ const HotelAccordion = ({ isAdmin }) => {
       </Accordion>
     </>
   );
+};
+
+HotelAccordion.propTypes = {
+  isAdmin: PropTypes.bool,
 };
 
 export default HotelAccordion;

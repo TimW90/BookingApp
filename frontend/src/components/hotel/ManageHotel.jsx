@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string, mixed } from 'yup';
-import ErrorMessage from '../common/ErrorMessage';
-import { usePopup } from '../popup/PopUpContext';
+import ErrorMessage from '../alerts/ErrorMessage';
+import { usePopup } from '../popup/PopupContext';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../common/LoadingSpinner';
 import useLocations from '@/hooks/useLocations';
 import { useHotels } from './HotelContext';
+import { convertToBase64 } from '../images/ImageUtil';
 
 const hotelSchema = object().shape({
   name: string().required('Name is a required field'),
@@ -22,6 +23,11 @@ const hotelSchema = object().shape({
     .min(15, 'Description should be a minimum of 15 characters'),
 });
 
+/*
+This component "manages" hotel if an hotel is provided the form gets reset with the values of the provided hotel, 
+then onSubmit handleUpdateHotel function gets called.
+If no hotel is provided the form is empty and the handleAddHotel functions gets called with the provided form values.
+*/
 const ManageHotel = ({ hotel }) => {
   const {
     register,
@@ -62,17 +68,6 @@ const ManageHotel = ({ hotel }) => {
       }
     }
   }, [hotel, reset]);
-
-  const convertToBase64 = async (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.onerror = reject;
-    });
-  };
 
   const onSubmit = async (hotelData) => {
     try {

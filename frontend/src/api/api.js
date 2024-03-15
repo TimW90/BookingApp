@@ -6,4 +6,11 @@ const api = axios.create({
   baseURL: apiBaseUrl,
 });
 
-export default api;
+const setJwtHeader = (jwtToken) => {
+  api.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
+};
+
+const jwt = localStorage.getItem('token');
+if (jwt) setJwtHeader(jwt);
+
+export { api, setJwtHeader };
