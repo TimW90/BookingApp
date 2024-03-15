@@ -76,7 +76,6 @@ const ManageHotel = ({ hotel }) => {
         hotelData.base64Image = base64String;
       }
 
-      hotelData.location = hotelData.location.toUpperCase();
       if (hotel) {
         await handleUpdateHotel(hotel.id, hotelData);
       } else {
