@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
 
   const processToken = (token) => {
     const decodedUser = jwtDecode(token);
+    console.log(decodedUser);
     setUser(decodedUser);
     setIsAdmin(decodedUser.roles.includes('ADMIN'));
   };
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     (token) => {
       localStorage.setItem('token', token);
       processToken(token);
-      setFlashMessage('Logged in successfully!');
+      setFlashMessage(`Logged in successfully`);
       setJwtHeader(token);
     },
     [setFlashMessage]
@@ -41,7 +42,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAdmin(false);
     setFlashMessage('Logged out successfully!');
-    setTimeout(() => setSuccessMessage(''), 3000);
   }, [setFlashMessage]);
 
   const contextValue = useMemo(

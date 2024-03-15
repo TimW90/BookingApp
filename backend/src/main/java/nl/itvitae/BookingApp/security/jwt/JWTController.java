@@ -23,6 +23,7 @@ public class JWTController {
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+
     if (authentication.isAuthenticated()) {
       return jwtService.generateUserJWT(authenticationRequest.getUsername());
     } else {
