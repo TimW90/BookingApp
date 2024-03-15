@@ -64,7 +64,7 @@ public class HotelController {
 
   @GetMapping("locations")
   public List<String> getAllLocations() {
-    return Arrays.stream(Location.values()).map(Enum::toString).toList();
+    return Arrays.stream(Location.values()).map(Enum::name).toList();
   }
 
   @PostMapping
