@@ -15,7 +15,9 @@ const userSchema = object().shape({
     .required('Confirm password is required'),
 });
 
-const Registration = ({ togglePopup }) => {
+const Register = ({ togglePopup }) => {
+  const { handleLogin } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -28,7 +30,8 @@ const Registration = ({ togglePopup }) => {
   const onSubmit = async (userData) => {
     console.log(userData);
     try {
-      postUser(userData);
+      const result = postUser(userData);
+      console.log(result);
       togglePopup();
     } catch (error) {
       let errorMessage =
@@ -47,6 +50,7 @@ const Registration = ({ togglePopup }) => {
   return (
     <div className="card shrink-0 w-full max-w-sm bg-base-100">
       <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
+        {/* Full name field */}
         <div className="form-control">
           <label className="label">
             <span className="label-text">Full Name</span>
@@ -62,6 +66,8 @@ const Registration = ({ togglePopup }) => {
         {errors.fullName?.message && (
           <ErrorMessage message={errors.fullName.message} />
         )}
+
+        {/* Email field */}
         <div className="form-control">
           <label className="label">
             <span className="label-text">Email</span>
@@ -76,6 +82,8 @@ const Registration = ({ togglePopup }) => {
         {errors.username?.message && (
           <ErrorMessage message={errors.username.message} />
         )}
+
+        {/* Password field */}
         <div className="form-control">
           <label className="label">
             <span className="label-text">Password</span>
@@ -91,6 +99,8 @@ const Registration = ({ togglePopup }) => {
         {errors.password?.message && (
           <ErrorMessage message={errors.password.message} />
         )}
+
+        {/* Confirm password field */}
         <div className="form-control">
           <label className="label">
             <span className="label-text">Confirm Password</span>
@@ -106,6 +116,8 @@ const Registration = ({ togglePopup }) => {
         {errors.confirmPassword?.message && (
           <ErrorMessage message={errors.confirmPassword.message} />
         )}
+
+        {/* Submit button */}
         <div className="form-control mt-6">
           <button type="submit" className="btn m-1">
             Register
@@ -119,8 +131,8 @@ const Registration = ({ togglePopup }) => {
   );
 };
 
-Registration.propTypes = {
+Register.propTypes = {
   onSuccess: PropTypes.func,
 };
 
-export default Registration;
+export default Register;

@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { createContext } from 'react';
 import PropTypes from 'prop-types';
+import SuccessToast from './SuccessToast';
 
 const AlertContext = createContext();
 
@@ -14,12 +15,15 @@ export const AlertProvider = ({ children }) => {
   }, [flashMessage]);
 
   const contextValue = {
+    flashMessage,
     setFlashMessage,
   };
 
   return (
     <AlertContext.Provider value={contextValue}>
       {children}
+
+      {flashMessage && <SuccessToast message={flashMessage} />}
     </AlertContext.Provider>
   );
 };

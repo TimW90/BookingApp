@@ -2,7 +2,7 @@ import { api } from './api';
 
 export const postUser = (userData) => {
   console.table(userData);
-  api.post('/users', userData);
+  return api.post('/users', userData);
 };
 
 export const fetchUser = (id) => {

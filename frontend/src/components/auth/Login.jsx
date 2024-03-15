@@ -4,7 +4,6 @@ import { object, string } from 'yup';
 import { loginUser } from '@/api/userApi';
 import ErrorMessage from '../alerts/ErrorMessage';
 import { useAuth } from './AuthProvider';
-import SuccessAlert from '../alerts/SuccessAlert';
 import PropTypes from 'prop-types';
 import { useAlerts } from '../alerts/AlertContext';
 
@@ -17,9 +16,9 @@ const loginSchema = object().shape({
     .required('Password is required'),
 });
 
-const Login = () => {
+const Login = ({ togglePopup }) => {
   const { handleLogin } = useAuth();
-  const { flashMessage, setFlashMessage } = useAlerts();
+  const { setFlashMessage } = useAlerts();
 
   const {
     register,
@@ -30,12 +29,13 @@ const Login = () => {
     resolver: yupResolver(loginSchema),
   });
 
-  const onSubmit = async (loginData) => {
+  const onSubmit = async (loginRequest) => {
     try {
-      console.log(loginData);
-      const response = await loginUser(loginData);
+      console.log(loginRequest);
+      const response = await loginUser(loginRequest);
       handleLogin(response.data);
-      setFlashMessage('Logged in successfully!');
+      console.log(response.data);
+      togglePopup();
     } catch (error) {
       let errorMessage =
         'An unexpected error occurred. Please try again later.';
@@ -44,14 +44,15 @@ const Login = () => {
         errorMessage = 'Invalid email or password.';
       }
 
+      console.error(error);
       setError('root', { message: errorMessage });
     }
   };
 
   return (
     <div className="card shrink-0 w-full max-w-sm bg-base-100 prose lg:prose-md">
-      {flashMessage && <SuccessAlert message="Logged in successfully!" />}
       <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
+        {/* Email field */}
         <div className="form-control">
           <label className="label">
             <span className="label-text">Email</span>
@@ -66,6 +67,8 @@ const Login = () => {
         {errors.username?.message && (
           <ErrorMessage message={errors.username.message} />
         )}
+
+        {/* Password field */}
         <div className="form-control">
           <label className="label">
             <span className="label-text">Password</span>
@@ -81,6 +84,8 @@ const Login = () => {
         {errors.password?.message && (
           <ErrorMessage message={errors.password.message} />
         )}
+
+        {/* Confirm login button */}
         <div className="form-control mt-6">
           <button type="submit" className="btn m-1">
             Login
@@ -93,8 +98,7 @@ const Login = () => {
 };
 
 Login.propTypes = {
-  onSuccess: PropTypes.func,
-  redirectOnSuccess: PropTypes.func,
+  togglePopup: PropTypes.func,
 };
 
 export default Login;

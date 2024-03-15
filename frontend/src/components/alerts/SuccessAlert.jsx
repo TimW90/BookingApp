@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 const SuccessAlert = ({ message }) => {
   return (
-    <div role="alert" className="alert alert-success">
+    <div role="alert" className="alert alert-success opacity-50">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="stroke-current shrink-0 h-6 w-6"

@@ -3,14 +3,15 @@ import { jwtDecode } from 'jwt-decode';
 import { setJwtHeader } from '../../api/api';
 import PropTypes from 'prop-types';
 import { createContext } from 'react';
+import { useAlerts } from '../alerts/AlertContext';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [successMessage, setSuccessMessage] = useState('');
+
+  const { setFlashMessage } = useAlerts();
 
   const processToken = (token) => {
     const decodedUser = jwtDecode(token);
@@ -23,42 +24,34 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       processToken(token);
     }
-    setIsLoading(false);
   }, []);
 
-  useEffect(
-    (message) => {
-      setSuccessMessage(message);
-      setTimeout(() => setSuccessMessage(''), 3000);
+  const handleLogin = useCallback(
+    (token) => {
+      localStorage.setItem('token', token);
+      processToken(token);
+      setFlashMessage('Logged in successfully!');
+      setJwtHeader(token);
     },
-    [successMessage]
+    [setFlashMessage]
   );
-
-  const handleLogin = useCallback((token) => {
-    localStorage.setItem('token', token);
-    processToken(token);
-    setSuccessMessage('Logged in successfully!');
-    setJwtHeader(token);
-  }, []);
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem('token');
     setUser(null);
     setIsAdmin(false);
-    setSuccessMessage('Logged out successfully!');
+    setFlashMessage('Logged out successfully!');
     setTimeout(() => setSuccessMessage(''), 3000);
-  }, []);
+  }, [setFlashMessage]);
 
   const contextValue = useMemo(
     () => ({
       user,
-      successMessage,
       isAdmin,
-      isLoading,
       handleLogin,
       handleLogout,
     }),
-    [user, isAdmin, isLoading, successMessage, handleLogin, handleLogout]
+    [user, isAdmin, handleLogin, handleLogout]
   );
 
   return (

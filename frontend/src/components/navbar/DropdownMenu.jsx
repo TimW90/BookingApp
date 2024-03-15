@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import Login from '../auth/Login';
-import Registration from '../auth/Registration';
+import Registration from '../auth/Register';
 import Logout from '../auth/Logout';
-import { usePopup } from '../popup/PopUpContext';
+import { usePopup } from '../popup/PopupContext';
+import { useAuth } from '../auth/AuthProvider';
+
 // The dropdown menu as used in the navbar, when the profile picture in the navbar is clicked this is what shows up.
 const DropDownMenu = () => {
+  const { isAdmin, user } = useAuth();
   const { togglePopup, setPopupContent } = usePopup();
 
   return (
@@ -21,46 +24,52 @@ const DropDownMenu = () => {
           />
         </div>
       </div>
+
+      {/* Dropdown and it's content */}
       <ul
         tabIndex={0}
         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       >
+        {/* Log in/out item in the navbar dropdown menu rendered conditionally depending on if user is logged in or not */}
         <li>
           <button
             type="button"
             onClick={() => {
-              setPopupContent(<Login />);
+              setPopupContent(
+                user ? (
+                  <Logout togglePopup={togglePopup} />
+                ) : (
+                  <Login togglePopup={togglePopup} />
+                )
+              );
               togglePopup();
             }}
           >
-            Log In
+            Log {user ? 'out' : 'in'}
           </button>
         </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => {
-              setPopupContent(<Logout />);
-              togglePopup();
-            }}
-          >
-            Log out
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => {
-              setPopupContent(<Registration togglePopup={togglePopup} />);
-              togglePopup();
-            }}
-          >
-            Register
-          </button>
-        </li>
-        <li>
-          <Link to="/admin">Admin</Link>
-        </li>
+
+        {/* Register button */}
+        {!user && (
+          <li>
+            <button
+              type="button"
+              onClick={() => {
+                setPopupContent(<Registration togglePopup={togglePopup} />);
+                togglePopup();
+              }}
+            >
+              Register
+            </button>
+          </li>
+        )}
+
+        {/* Admin button */}
+        {user && isAdmin && (
+          <li>
+            <Link to="/admin">Admin Dashboard</Link>
+          </li>
+        )}
       </ul>
     </div>
   );
