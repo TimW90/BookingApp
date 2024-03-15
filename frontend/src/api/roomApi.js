@@ -6,3 +6,8 @@ export const getRooms = async () => {
   const response = await api.get(uri);
   return response.data;
 };
+
+export const getRoomTypes = async () => {
+  const response = await api.get(`${uri}/types`);
+  return response.data;
+};

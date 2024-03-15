@@ -1,6 +1,7 @@
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6';
 import { usePopup } from '../popup/PopUpContext';
 import ManageHotel from './ManageHotel';
+import ManageRoom from './ManageRoom';
 import { useHotels } from './HotelContext';
 
 const AdminButtons = ({ item }) => {
@@ -33,7 +34,7 @@ const AdminButtons = ({ item }) => {
   };
 
   const handleAddRoomClick = () => {
-    setPopupContent();
+    setPopupContent(<ManageRoom room={item} />);
     togglePopup();
   };
 

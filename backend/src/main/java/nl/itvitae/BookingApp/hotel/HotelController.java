@@ -1,5 +1,6 @@
 package nl.itvitae.BookingApp.hotel;
 
+import static java.util.stream.Collectors.toList;
 import static nl.itvitae.BookingApp.hotel.HotelSpecification.*;
 
 import jakarta.transaction.Transactional;
@@ -64,7 +65,7 @@ public class HotelController {
 
   @GetMapping("locations")
   public List<String> getAllLocations() {
-    return Arrays.stream(Location.values()).map(Enum::name).toList();
+    return Arrays.stream(Location.values()).map(Enum::toString).toList();
   }
 
   @PostMapping

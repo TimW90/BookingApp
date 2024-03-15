@@ -127,6 +127,7 @@ const ManageHotel = ({ hotel }) => {
           <label className="label">
             <span className="label-text">Location</span>
           </label>
+
           <select
             className="select select-bordered"
             {...register('location')}
@@ -139,6 +140,7 @@ const ManageHotel = ({ hotel }) => {
               <option key={location}>{location}</option>
             ))}
           </select>
+
           {errors.location && (
             <ErrorMessage message={errors.location.message} />
           )}

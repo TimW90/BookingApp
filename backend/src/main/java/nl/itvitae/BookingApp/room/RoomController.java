@@ -3,8 +3,10 @@ package nl.itvitae.BookingApp.room;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.HotelDTO;
+import nl.itvitae.BookingApp.hotel.Location;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -15,15 +17,23 @@ public class RoomController {
 
   private final RoomRepository roomRepository;
 
-    @GetMapping
-    public List<RoomDTO> findAll() {
-        return roomRepository.findAll().stream().map(RoomDTO::new).toList();
-    }
+  @GetMapping
+  public List<RoomDTO> findAll() {
+    return roomRepository.findAll().stream().map(RoomDTO::new).toList();
+  }
 
-    @GetMapping("/{id}")
-    public RoomDTO getRoom(@PathVariable("id") Long id) {
-        return new RoomDTO(roomRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Room not found")));
-    }
+  @GetMapping("/{id}")
+  public RoomDTO getRoom(@PathVariable("id") Long id) {
+    return new RoomDTO(
+        roomRepository
+            .findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Room not found")));
+  }
+
+  @GetMapping("types")
+  public List<String> getAllTypes() {
+    return Arrays.stream(Room.Type.values()).map(Enum::toString).toList();
+  }
 
   @PostMapping
   public Room newRoom(@RequestBody Room room) {
@@ -35,13 +45,13 @@ public class RoomController {
     roomRepository.deleteById(id);
   }
 
-    @PatchMapping("/{id}")
-    public Room updateRoom(@PathVariable("id") Long id, @RequestBody Room room) {
-        Room updatedRoom = roomRepository.findById(id).get();
-        updatedRoom.setName(room.getName());
-        updatedRoom.setType(room.getType());
-        updatedRoom.setPrice(room.getPrice());
-        updatedRoom.setDescription(room.getDescription());
-        return roomRepository.save(updatedRoom);
-    }
+  @PatchMapping("/{id}")
+  public Room updateRoom(@PathVariable("id") Long id, @RequestBody Room room) {
+    Room updatedRoom = roomRepository.findById(id).get();
+    updatedRoom.setName(room.getName());
+    updatedRoom.setType(room.getType());
+    updatedRoom.setPrice(room.getPrice());
+    updatedRoom.setDescription(room.getDescription());
+    return roomRepository.save(updatedRoom);
+  }
 }
