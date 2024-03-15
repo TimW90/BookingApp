@@ -3,10 +3,14 @@ package nl.itvitae.BookingApp.seeder;
 import static nl.itvitae.BookingApp.util.ImageUtil.*;
 
 import java.util.List;
+import java.util.Set;
+
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.hotel.Location;
+import nl.itvitae.BookingApp.image.Image;
+import nl.itvitae.BookingApp.image.ImageRepository;
 import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
 import nl.itvitae.BookingApp.user.User;
@@ -14,6 +18,7 @@ import nl.itvitae.BookingApp.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
@@ -21,6 +26,7 @@ public class Seeder implements CommandLineRunner {
 
   private final HotelRepository hotelRepository;
   private final RoomRepository roomRepository;
+  private final ImageRepository imageRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -125,19 +131,49 @@ public class Seeder implements CommandLineRunner {
                     "src/main/resources/images/rotterdam_dockside.jpg"))));
   }
 
+  private Room saveRoom(
+      String name, Room.Type type, double price, String description, List<String> imagePaths) {
+    Room room = new Room(name, type, price, description);
+
+    for (String imagePath : imagePaths) {
+      Image image = new Image(getImageFromPathAsBase64String(imagePath));
+      room.getImageBase64Strings().add(image);
+      image.setRoom(room);
+    }
+
+    return roomRepository.save(room);
+  }
+
   private void seedRooms(List<Hotel> seededHotels) {
     seededHotels.forEach(
-        (hotel) -> {
-          hotel
-              .getRooms()
-              .addAll(
-                  List.of(
-                      new Room(Room.Type.SINGLE, 12000, false),
-                      new Room(Room.Type.SINGLE, 13500, false),
-                      new Room(Room.Type.DOUBLE, 22000, false),
-                      new Room(Room.Type.TRIPPLE, 30000, false),
-                      new Room(Room.Type.QUADRUPPLE, 40000, false)));
-        });
+        (hotel) ->
+            hotel
+                .getRooms()
+                .addAll(
+                    List.of(
+                        saveRoom(
+                            "Single Comfort Room",
+                            Room.Type.SINGLE_ROOM,
+                            120,
+                            "A nice and cozy room for one person",
+                            List.of("src/main/resources/images/room_1_1.png")),
+                        saveRoom(
+                            "Double Comfort Room",
+                            Room.Type.DOUBLE_ROOM,
+                            220,
+                            "A nice and cozy room for two persons",
+                            List.of(
+                                "src/main/resources/images/room_2_1.png",
+                                "src/main/resources/images/room_2_2.png")),
+                        saveRoom(
+                            "Quadruple Deluxe Room",
+                            Room.Type.QUADRUPLE_ROOM,
+                            400,
+                            "A big luxurious room for up to four persons",
+                            List.of(
+                                "src/main/resources/images/room_3_1.png",
+                                "src/main/resources/images/room_3_2.png",
+                                "src/main/resources/images/room_3_3.png")))));
 
     hotelRepository.saveAll(seededHotels);
   }

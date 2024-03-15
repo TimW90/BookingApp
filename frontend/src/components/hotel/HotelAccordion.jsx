@@ -11,7 +11,6 @@ const HotelAccordion = ({ isAdmin }) => {
   const { register, handleSubmit } = useForm();
 
   const { hotels } = usePagination(params, pageNumber);
-
   const onSubmit = (searchForm) => {
     setParams(searchForm);
     setPageNumber(0);
