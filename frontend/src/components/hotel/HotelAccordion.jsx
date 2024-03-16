@@ -4,16 +4,16 @@ import AccordionCard from '../common/AccordionCard';
 import usePagination from '@/hooks/usePagination';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 const HotelAccordion = ({ isAdmin }) => {
   const [params, setParams] = useState({});
-  const [pageNumber, setPageNumber] = useState(1);
   const { register, handleSubmit } = useForm();
 
-  const { hotels } = usePagination(params, pageNumber);
+  const { hotels, loading } = usePagination(params);
+
   const onSubmit = (searchForm) => {
     setParams(searchForm);
-    setPageNumber(0);
   };
 
   return (
@@ -24,15 +24,17 @@ const HotelAccordion = ({ isAdmin }) => {
       </form>
 
       <Accordion>
-        {hotels.map((hotel) => (
+        {hotels.map((hotel, index) => (
           <AccordionCard
             key={hotel.id}
             item={hotel}
             isAdmin={isAdmin}
             length={hotels.length}
             cardType="hotel"
+            index={index}
           />
         ))}
+        {loading && <LoadingSpinner />}
       </Accordion>
     </>
   );

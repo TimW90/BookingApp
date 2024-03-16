@@ -9,6 +9,8 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import useLocations from '@/hooks/useLocations';
 import { useHotels } from './HotelContext';
 import { convertToBase64 } from '../images/ImageUtil';
+import Form from '@/form/Form';
+import Input from '@/form/Input';
 
 const hotelSchema = object().shape({
   name: string().required('Name is a required field'),
@@ -31,27 +33,27 @@ If no hotel is provided the form is empty and the handleAddHotel functions gets 
 const ManageHotel = ({ hotel }) => {
   const {
     register,
-    handleSubmit,
     setError,
     watch,
     reset,
+    handleSubmit,
     formState: { errors, isSubmitSuccessful, isSubmitting },
   } = useForm({
     resolver: yupResolver(hotelSchema),
   });
 
   const [imagePreview, setImagePreview] = useState('');
+  const previewImage = watch('image');
   const locations = useLocations();
-  const watchedFile = watch('image');
   const { togglePopup } = usePopup();
   const { handleAddHotel, handleUpdateHotel } = useHotels();
 
   useEffect(() => {
-    if (watchedFile && watchedFile.length > 0) {
-      const file = watchedFile[0];
+    if (previewImage && previewImage.length > 0) {
+      const file = previewImage[0];
       setImagePreview(URL.createObjectURL(file));
     }
-  }, [watchedFile]);
+  }, [previewImage]);
 
   useEffect(() => {
     reset();
@@ -70,6 +72,7 @@ const ManageHotel = ({ hotel }) => {
   }, [hotel, reset]);
 
   const onSubmit = async (hotelData) => {
+    console.table(hotelData);
     try {
       if (hotelData.image && hotelData.image[0]) {
         const base64String = await convertToBase64(hotelData.image[0]);
@@ -103,7 +106,7 @@ const ManageHotel = ({ hotel }) => {
 
       {imagePreview && <img src={imagePreview} alt="hotel preview image" />}
 
-      <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <label className="label">
             <span className="label-text">Name</span>
@@ -116,6 +119,8 @@ const ManageHotel = ({ hotel }) => {
             autoComplete="name"
           />
         </div>
+
+        {/* <Input register={register} name="Name" aria-label="name-input" /> */}
         {errors.name && <ErrorMessage message={errors.name.message} />}
 
         <div className="form-control">

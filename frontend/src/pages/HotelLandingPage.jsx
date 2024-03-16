@@ -54,11 +54,10 @@ const HotelLandingPage = () => {
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>
-      <p>{hotel.name}</p>
 
       <Accordion>
-        {hotel.rooms.map((room) => (
-          <RoomCard key={room.id} room={room} />
+        {hotel.rooms.map((room, index) => (
+          <RoomCard key={room.id} room={room} index={index} />
         ))}
       </Accordion>
     </>

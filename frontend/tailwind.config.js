@@ -19,10 +19,5 @@ export default {
       },
     },
   },
-  addUtilities: {
-    '.no-snap': {
-      scrollSnapType: 'none',
-    },
-  },
   plugins: [typography, daisyui, noscrollbar],
 };
