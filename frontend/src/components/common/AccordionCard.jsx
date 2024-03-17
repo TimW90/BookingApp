@@ -6,7 +6,7 @@ import DetailImage from '../images/DetailImage';
 import { Link } from 'react-router-dom';
 
 const AccordionCard = ({ item, isAdmin, cardType, index }) => (
-  <div key={item.id} className="collapse join-item bg-base-200 px-12 my-0.5">
+  <div className="collapse join-item bg-base-200 px-12 my-0.5">
     <input
       type={isAdmin ? 'checkbox' : 'radio'}
       name="my-accordion-1"

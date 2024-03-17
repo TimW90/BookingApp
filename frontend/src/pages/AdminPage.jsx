@@ -1,4 +1,4 @@
-import ManageHotel from '../components/hotel/ManageHotel';
+import ManageHotel from '../components/hotel/ManageHotelForm';
 import HotelList from '@/components/hotel/HotelAccordion';
 import { usePopup } from '@/components/popup/PopupContext';
 

@@ -1,6 +1,6 @@
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6';
 import { usePopup } from '../popup/PopupContext';
-import ManageHotel from './ManageHotel';
+import ManageHotel from './ManageHotelForm';
 import PropTypes from 'prop-types';
 import ConfirmDeleteHotel from './ConfirmDeleteHotel';
 

@@ -5,16 +5,20 @@ import { number, object, string, mixed } from 'yup';
 import ErrorMessage from '../alerts/ErrorMessage';
 import { usePopup } from '../popup/PopupContext';
 import PropTypes from 'prop-types';
-import LoadingSpinner from '../common/LoadingSpinner';
 import useLocations from '@/hooks/useLocations';
 import { useHotels } from './HotelContext';
 import { convertToBase64 } from '../images/ImageUtil';
 import Form from '@/form/Form';
 import Input from '@/form/Input';
+import Select from '@/form/Select';
+import StarRatingInput from '@/form/StarRatingInput';
+import FileInput from '@/form/FileInput';
+import TextArea from '@/form/TextArea';
+import SubmitButton from '@/form/SubmitButton';
 
 const hotelSchema = object().shape({
   name: string().required('Name is a required field'),
-  rating: number()
+  starRating: number()
     .required('Rating is a required field')
     .positive('Rating should be one or more')
     .max(5, 'Rating should be five or less'),
@@ -30,7 +34,7 @@ This component "manages" hotel if an hotel is provided the form gets reset with 
 then onSubmit handleUpdateHotel function gets called.
 If no hotel is provided the form is empty and the handleAddHotel functions gets called with the provided form values.
 */
-const ManageHotel = ({ hotel }) => {
+const ManageHotelForm = ({ hotel }) => {
   const {
     register,
     setError,
@@ -106,102 +110,40 @@ const ManageHotel = ({ hotel }) => {
 
       {imagePreview && <img src={imagePreview} alt="hotel preview image" />}
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Name</span>
-          </label>
-          <input
-            className="input input-bordered"
-            type="text"
-            placeholder="Name..."
-            {...register('name')}
-            autoComplete="name"
-          />
-        </div>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          register={register}
+          name="name"
+          aria-label="label-input"
+          errors={errors}
+        />
 
-        {/* <Input register={register} name="Name" aria-label="name-input" /> */}
-        {errors.name && <ErrorMessage message={errors.name.message} />}
+        <Select
+          options={locations}
+          register={register}
+          errors={errors}
+          name="location"
+          aria-label="location-input"
+        />
 
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Location</span>
-          </label>
-          <select
-            className="select select-bordered"
-            {...register('location')}
-            defaultValue=""
-          >
-            <option disabled value="">
-              Location...
-            </option>
-            {locations.map((location) => (
-              <option key={location}>{location}</option>
-            ))}
-          </select>
-          {errors.location && (
-            <ErrorMessage message={errors.location.message} />
-          )}
-        </div>
+        <StarRatingInput
+          register={register}
+          name="starRating"
+          errors={errors}
+        />
 
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Rating</span>
-          </label>
-          <div className="rating">
-            {[1, 2, 3, 4, 5].map((value) => (
-              <input
-                key={value}
-                type="radio"
-                value={value}
-                className="mask mask-star-2 bg-orange-400"
-                name="star-rating"
-                {...register('rating')}
-              />
-            ))}
-          </div>
-          {errors.rating && <ErrorMessage message={errors.rating.message} />}
-        </div>
+        <FileInput register={register} name="image" errors={errors} />
+        <TextArea register={register} name="description" errors={errors} />
+        <SubmitButton isLoading={isSubmitting}>Confirm</SubmitButton>
 
-        <div className="form-control py-2">
-          <label className="label">
-            <span className="label-text">Image</span>
-          </label>
-          <input
-            type="file"
-            className="file-input file-input-bordered w-full max-w-xs"
-            {...register('image')}
-          />
-          {errors.image && <ErrorMessage message={errors.image.message} />}
-        </div>
-
-        <div className="form-control py-2">
-          <label className="label">
-            <span className="label-text">Description</span>
-          </label>
-          <textarea
-            className="textarea textarea-bordered"
-            placeholder="Description"
-            {...register('description')}
-          ></textarea>
-          {errors.description && (
-            <ErrorMessage message={errors.description.message} />
-          )}
-        </div>
-
-        <div className="form-control mt-6">
-          <button type="submit" className="btn m-1">
-            {isSubmitting ? <LoadingSpinner /> : 'Confirm'}
-          </button>
-          {errors.root && <ErrorMessage message={errors.root.message} />}
-        </div>
-      </form>
+        {errors.root && <ErrorMessage message={errors.root.message} />}
+      </Form>
     </div>
   );
 };
 
-ManageHotel.propTypes = {
+ManageHotelForm.propTypes = {
   hotel: PropTypes.object,
 };
 
-export default ManageHotel;
+export default ManageHotelForm;
