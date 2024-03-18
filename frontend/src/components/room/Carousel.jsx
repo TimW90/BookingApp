@@ -23,6 +23,7 @@ const Carousel = ({ images }) => {
                   id={'image' + image.roomId + index}
                   className="carousel-item relative w-full"
                 >
+                  {/*In img src: onClick popup with the image (or carousel) being enlarged */}
                   <img src={image.base64Image} alt="Image of the room" />
                   {index === images.length - 1 && (
                     <div className="absolute flex justify-start transform -translate-y-1/2 left-5 right-5 top-1/2">
@@ -67,11 +68,3 @@ const Carousel = ({ images }) => {
         })()}
       </div>
     </>
-  );
-};
-
-Carousel.propTypes = {
-  images: PropTypes.img,
-};
-
-export default Carousel;
