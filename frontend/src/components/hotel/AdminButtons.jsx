@@ -12,12 +12,6 @@ const AdminButtons = ({ item, type }) => {
       case 'hotel':
         setPopupContent(<ManageHotel hotel={item} />);
         break;
-
-      case 'rooms':
-        setPopupContent(
-          'Room placeholder this is where room form for managing rooms will go'
-        );
-        break;
     }
 
     togglePopup();

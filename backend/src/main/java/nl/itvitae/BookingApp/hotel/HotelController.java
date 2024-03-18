@@ -77,7 +77,7 @@ public class HotelController {
         hotelRepository.save(
             new Hotel(
                 newHotelDTO.name(),
-                newHotelDTO.starRating(),
+                Integer.parseInt(newHotelDTO.starRating()),
                 newHotelDTO.location(),
                 newHotelDTO.description(),
                 newHotelDTO.base64Image()));

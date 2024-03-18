@@ -42,7 +42,7 @@ public class Hotel {
 
   public void updateHotelProperties(HotelDTO hotelDTO) {
     this.name = hotelDTO.name();
-    this.starRating = hotelDTO.starRating();
+    this.starRating = Integer.parseInt(hotelDTO.starRating());
     this.location = hotelDTO.location();
     this.description = hotelDTO.description();
     this.base64Image = hotelDTO.base64Image();

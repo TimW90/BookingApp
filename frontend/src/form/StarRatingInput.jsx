@@ -7,6 +7,7 @@ const StarRatingInput = ({ register, name, errors }) => {
       <label className="label">
         <span className="label-text">Rating</span>
       </label>
+
       <div className="rating">
         {[1, 2, 3, 4, 5].map((value) => (
           <input
@@ -14,7 +15,6 @@ const StarRatingInput = ({ register, name, errors }) => {
             type="radio"
             value={value}
             className="mask mask-star-2 bg-orange-400"
-            name="star-rating"
             {...register(name)}
           />
         ))}

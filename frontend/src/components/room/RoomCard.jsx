@@ -6,7 +6,7 @@ const RoomCard = ({ room, index }) => {
 
   return (
     <>
-      <div className="collapse bg-base-200">
+      <div className="collapse join-item bg-base-200 my-0.5">
         <input
           type="radio"
           name="my-accordion-1"
@@ -32,9 +32,9 @@ const RoomCard = ({ room, index }) => {
               <div className="inline-flex justify-end items-center">
                 <div className="flex mr-5">Price: €{room.price}</div>
 
-                <div className="card-actions justify-end flex flex-col">
+                {/* <div className="card-actions justify-end flex flex-col">
                   <button className="btn btn-secondary">Book now</button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

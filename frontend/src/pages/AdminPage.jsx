@@ -1,5 +1,5 @@
 import ManageHotel from '../components/hotel/ManageHotelForm';
-import HotelList from '@/components/hotel/HotelAccordion';
+import HotelAccordion from '@/components/hotel/HotelAccordion';
 import { usePopup } from '@/components/popup/PopupContext';
 
 const AdminPage = () => {
@@ -16,7 +16,7 @@ const AdminPage = () => {
       >
         Add hotel
       </button>
-      <HotelList isAdmin />
+      <HotelAccordion isAdmin />
     </>
   );
 };

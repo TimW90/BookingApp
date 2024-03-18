@@ -1,19 +1,18 @@
 import { useState } from 'react';
 import Accordion from '../common/Accordion';
 import AccordionCard from '../common/AccordionCard';
-import usePagination from '@/hooks/usePagination';
 import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { useHotels } from './HotelContext';
 
 const HotelAccordion = ({ isAdmin }) => {
-  const [params, setParams] = useState({});
   const { register, handleSubmit } = useForm();
 
-  const { hotels, loading } = usePagination(params);
+  const { hotels, loading, updateSearchParams } = useHotels();
 
   const onSubmit = (searchForm) => {
-    setParams(searchForm);
+    updateSearchParams(searchForm);
   };
 
   return (

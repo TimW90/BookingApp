@@ -5,14 +5,15 @@ import Popup from './Popup';
 const PopupContext = createContext();
 
 export const PopupProvider = ({ children }) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupContent, setPopupContent] = useState(null);
   const popupRef = useRef(null);
 
   const togglePopup = () => {
+    setIsPopupOpen(!isPopupOpen);
     if (!popupRef.current) return;
-    popupRef.current.hasAttribute('open')
-      ? popupRef.current.close()
-      : popupRef.current.showModal();
+
+    isPopupOpen ? popupRef.current.close() : popupRef.current.showModal();
   };
 
   const contextValue = {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { number, object, string, mixed } from 'yup';
+import { object, string, mixed } from 'yup';
 import ErrorMessage from '../alerts/ErrorMessage';
 import { usePopup } from '../popup/PopupContext';
 import PropTypes from 'prop-types';
@@ -17,16 +17,17 @@ import TextArea from '@/form/TextArea';
 import SubmitButton from '@/form/SubmitButton';
 
 const hotelSchema = object().shape({
-  name: string().required('Name is a required field'),
-  starRating: number()
+  name: string().required('Name is a required field').default(''),
+  starRating: string()
     .required('Rating is a required field')
-    .positive('Rating should be one or more')
-    .max(5, 'Rating should be five or less'),
-  location: string().required('Location is a required field'),
+    .oneOf(['1', '2', '3', '4', '5'], 'Invalid star rating') // Ensure it's one of the valid strings
+    .default('1'),
+  location: string().required('Location is a required field').default(''),
   image: mixed(),
   description: string()
     .required('Description is a required field')
-    .min(15, 'Description should be a minimum of 15 characters'),
+    .min(15, 'Description should be a minimum of 15 characters')
+    .default(''),
 });
 
 /*
@@ -35,6 +36,9 @@ then onSubmit handleUpdateHotel function gets called.
 If no hotel is provided the form is empty and the handleAddHotel functions gets called with the provided form values.
 */
 const ManageHotelForm = ({ hotel }) => {
+  console.log(hotel);
+  console.log(hotelSchema.cast(hotel));
+
   const {
     register,
     setError,
@@ -43,6 +47,7 @@ const ManageHotelForm = ({ hotel }) => {
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isSubmitting },
   } = useForm({
+    defaultValues: hotel || hotelSchema.cast(),
     resolver: yupResolver(hotelSchema),
   });
 
@@ -51,6 +56,7 @@ const ManageHotelForm = ({ hotel }) => {
   const locations = useLocations();
   const { togglePopup } = usePopup();
   const { handleAddHotel, handleUpdateHotel } = useHotels();
+  const { isPopupOpen } = usePopup();
 
   useEffect(() => {
     if (previewImage && previewImage.length > 0) {
@@ -60,20 +66,10 @@ const ManageHotelForm = ({ hotel }) => {
   }, [previewImage]);
 
   useEffect(() => {
-    reset();
-  }, [reset, isSubmitSuccessful]);
-
-  useEffect(() => {
-    if (hotel) {
-      hotel.rating = hotel.starRating.toString();
-      reset(hotel);
-
-      // Files can't be set for security reasons so this shows the current image as a preview
-      if (hotel.base64Image) {
-        setImagePreview(hotel.base64Image);
-      }
+    if (!isPopupOpen) {
+      reset();
     }
-  }, [hotel, reset]);
+  }, [reset, isSubmitSuccessful, isPopupOpen]);
 
   const onSubmit = async (hotelData) => {
     console.table(hotelData);
