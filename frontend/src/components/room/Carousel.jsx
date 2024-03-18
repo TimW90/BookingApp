@@ -5,7 +5,7 @@ const Carousel = ({ images }) => {
 
   return (
     <>
-      <div className="carousel mr-5">
+      <div className="carousel no-snap mr-5">
         {(() => {
           // what if images === 0? A placeholder?
           if (images.length === 1) {
