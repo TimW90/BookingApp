@@ -9,6 +9,7 @@ const StarRating = ({ amountOfStars }) => {
             type="radio"
             name="rating-2"
             aria-label="hotel star rating"
+            disabled
           ></input>
         </div>
       ))}

@@ -6,26 +6,58 @@ const HotelContext = createContext();
 
 export const HotelProvider = ({ children }) => {
   const [hotels, setHotels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [page, setPage] = useState(0);
+  const [params, setParams] = useState({});
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    const loadHotelPages = async () => {
-      const fetchedHotelsPages = await getHotels();
-      setHotels(fetchedHotelsPages.content); // content because getHotels returns a page and content is where the actual hotels are
+    setLoading(true);
+
+    const queryHotels = async () => {
+      const queryParams = {
+        ...params,
+        page, // This adds the page parameter to the query
+      };
+
+      const queriedHotelPages = await getHotels(queryParams);
+
+      if (page === 0) {
+        setHotels(queriedHotelPages.content);
+      } else {
+        setHotels((prevHotels) => [
+          ...prevHotels,
+          ...queriedHotelPages.content,
+        ]);
+      }
+
+      console.log(!queriedHotelPages.last);
+      setHasMore(!queriedHotelPages.last);
+      setLoading(false);
     };
 
-    loadHotelPages();
-  }, []);
+    queryHotels();
+  }, [setHotels, params, page]);
 
   const handleAddHotel = async (hotelData) => {
-    const newHotel = await postHotel(hotelData);
-    setHotels((prev) => [newHotel, ...prev]);
+    try {
+      const newHotel = await postHotel(hotelData);
+      setHotels((prev) => [newHotel, ...prev]);
+    } catch (error) {
+      console.error('Error adding new hotel:', error);
+    }
   };
 
   const handleUpdateHotel = async (id, hotelData) => {
-    const updatedHotel = await updateHotel(id, hotelData);
-    setHotels((prev) =>
-      prev.map((hotel) => (hotel.id === id ? updatedHotel : hotel))
-    );
+    try {
+      const updatedHotel = await updateHotel(id, hotelData);
+      setHotels((prev) =>
+        prev.map((hotel) => (hotel.id === id ? updatedHotel : hotel))
+      );
+    } catch (error) {
+      console.error('Error updating hotel:', error);
+    }
   };
 
   const handleDeleteHotel = async (id) => {
@@ -33,9 +65,36 @@ export const HotelProvider = ({ children }) => {
     setHotels((prev) => prev.filter((hotel) => hotel.id !== id));
   };
 
+  const updateSearchParams = (newParams) => {
+    setParams(newParams);
+    setPage(0);
+  };
+
+  // This is a naive approach to endless scrolling that works for now
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleScroll = async () => {
+    if (
+      hasMore &&
+      window.innerHeight + document.documentElement.scrollTop + 1 >=
+        document.documentElement.scrollHeight
+    ) {
+      setLoading(true);
+      setPage((prev) => prev + 1);
+    }
+  };
+
   const contextValue = {
     hotels,
+    loading,
+    error,
+    hasMore,
     setHotels,
+    setPage,
+    updateSearchParams,
     handleAddHotel,
     handleUpdateHotel,
     handleDeleteHotel,

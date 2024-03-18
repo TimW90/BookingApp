@@ -52,7 +52,7 @@ public class HotelController {
       @RequestParam(required = false) Location location,
       @RequestParam(required = false) String name,
       @RequestParam(defaultValue = "1") int starRating,
-      @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+      @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
     Specification<Hotel> specification =
         Specification.where(isInLocation(location))
@@ -78,7 +78,7 @@ public class HotelController {
         hotelRepository.save(
             new Hotel(
                 newHotelDTO.name(),
-                newHotelDTO.starRating(),
+                Integer.parseInt(newHotelDTO.starRating()),
                 newHotelDTO.location(),
                 newHotelDTO.description(),
                 newHotelDTO.base64Image()));
