@@ -10,10 +10,11 @@ export const PopupProvider = ({ children }) => {
   const popupRef = useRef(null);
 
   const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
     if (!popupRef.current) return;
 
-    isPopupOpen ? popupRef.current.close() : popupRef.current.showModal();
+    const isOpen = popupRef.current.hasAttribute('open');
+    isOpen ? popupRef.current.close() : popupRef.current.showModal()
+    setIsPopupOpen(!isOpen); // Toggle so if currently open set it too false and vice versa
   };
 
   const contextValue = {
