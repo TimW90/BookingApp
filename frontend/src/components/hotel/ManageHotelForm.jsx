@@ -36,9 +36,6 @@ then onSubmit handleUpdateHotel function gets called.
 If no hotel is provided the form is empty and the handleAddHotel functions gets called with the provided form values.
 */
 const ManageHotelForm = ({ hotel }) => {
-  console.log(hotel);
-  console.log(hotelSchema.cast(hotel));
-
   const {
     register,
     setError,
@@ -47,16 +44,14 @@ const ManageHotelForm = ({ hotel }) => {
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isSubmitting },
   } = useForm({
-    defaultValues: hotel || hotelSchema.cast(),
     resolver: yupResolver(hotelSchema),
   });
 
   const [imagePreview, setImagePreview] = useState('');
   const previewImage = watch('image');
   const locations = useLocations();
-  const { togglePopup } = usePopup();
+  const { togglePopup, isPopupOpen } = usePopup();
   const { handleAddHotel, handleUpdateHotel } = useHotels();
-  const { isPopupOpen } = usePopup();
 
   useEffect(() => {
     if (previewImage && previewImage.length > 0) {
@@ -65,14 +60,14 @@ const ManageHotelForm = ({ hotel }) => {
     }
   }, [previewImage]);
 
+  // For now this fixes the bug where the add hotel popup was preoccupied with the last update hotel popup values if the update was aborted.
   useEffect(() => {
-    if (!isPopupOpen) {
-      reset();
+    if (isPopupOpen) {
+      reset(hotel ? hotel : hotelSchema.cast()); // hotelSchema.cast() create an hotel with the default values.
     }
-  }, [reset, isSubmitSuccessful, isPopupOpen]);
+  }, [reset, isSubmitSuccessful, isPopupOpen, hotel]);
 
   const onSubmit = async (hotelData) => {
-    console.table(hotelData);
     try {
       if (hotelData.image && hotelData.image[0]) {
         const base64String = await convertToBase64(hotelData.image[0]);

@@ -21,6 +21,7 @@ export const PopupProvider = ({ children }) => {
     popupRef,
     togglePopup,
     setPopupContent,
+    isPopupOpen,
   };
 
   return (
