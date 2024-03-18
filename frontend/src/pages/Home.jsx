@@ -5,7 +5,6 @@ import SearchBar from '@/components/Searchbar';
 const Home = () => (
   <>
     <Hero />
-    <SearchBar />
     <HotelAccordion />
   </>
 );

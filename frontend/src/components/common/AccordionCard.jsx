@@ -5,13 +5,13 @@ import AdminButtons from '../hotel/AdminButtons';
 import DetailImage from '../images/DetailImage';
 import { Link } from 'react-router-dom';
 
-const AccordionCard = ({ item, isAdmin, length, cardType }) => (
-  <div key={item.id} className="collapse join-item bg-base-200 px-12 my-0.5">
+const AccordionCard = ({ item, isAdmin, cardType, index }) => (
+  <div className="collapse join-item bg-base-200 px-12 my-0.5">
     <input
       type={isAdmin ? 'checkbox' : 'radio'}
       name="my-accordion-1"
       aria-label={`${cardType}-item`}
-      defaultChecked={item.id === length || isAdmin} // Check the first item in the list, since it's sorted by last created it's the last item in the array.
+      defaultChecked={index === 0 || isAdmin} // Check the first item in the list.
     />
 
     <div className="flex items-center justify-between collapse-title prose min-w-full p-0">
@@ -21,17 +21,19 @@ const AccordionCard = ({ item, isAdmin, length, cardType }) => (
 
         {isAdmin && <AdminButtons item={item} type={'hotel'} />}
       </div>
-      <StarRating amountOfStars={item.rating} />
+      <StarRating amountOfStars={Number(item.starRating)} />
     </div>
 
     <div className="collapse-content flex justify-between">
-      <article className="w-2/5 prose card-bordered">
+      <article className="w-2/5 prose">
         <h3 className="m-0">Description</h3>
         <hr className="mb-2"></hr>
         <p>{item.description}</p>
       </article>
+
       <div className="flex flex-col justify-center">
         <DetailImage image={item.base64Image} />
+
         <div className="m-3 flex justify-center">
           <Link className="btn btn-secondary" to={`/${cardType}/${item.id}`}>
             Go to {cardType}
@@ -45,7 +47,7 @@ const AccordionCard = ({ item, isAdmin, length, cardType }) => (
 AccordionCard.propTypes = {
   item: PropTypes.object.isRequired,
   isAdmin: PropTypes.bool,
-  length: PropTypes.number,
+  index: PropTypes.number,
   cardType: PropTypes.string.isRequired,
 };
 

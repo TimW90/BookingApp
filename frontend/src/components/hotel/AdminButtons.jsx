@@ -1,6 +1,6 @@
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6';
 import { usePopup } from '../popup/PopupContext';
-import ManageHotel from './ManageHotel';
+import ManageHotel from './ManageHotelForm';
 import PropTypes from 'prop-types';
 import ConfirmDeleteHotel from './ConfirmDeleteHotel';
 
@@ -11,12 +11,6 @@ const AdminButtons = ({ item, type }) => {
     switch (type) {
       case 'hotel':
         setPopupContent(<ManageHotel hotel={item} />);
-        break;
-
-      case 'rooms':
-        setPopupContent(
-          'Room placeholder this is where room form for managing rooms will go'
-        );
         break;
     }
 
