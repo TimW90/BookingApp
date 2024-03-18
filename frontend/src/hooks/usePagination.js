@@ -14,6 +14,7 @@ const usePagination = (params, pageNumber) => {
     setError(false);
 
     const queryHotels = async () => {
+      console.log(params)
       const queriedHotelPages = await getHotels(params);
       setHotels(queriedHotelPages.content);
       setHasMore(queriedHotelPages.last);

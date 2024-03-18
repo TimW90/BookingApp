@@ -1,7 +1,7 @@
 import DateRangePicker from 'flowbite-datepicker/DateRangePicker';
 
 
-const DatePicker = () => {
+const DatePicker = ({register}) => {
 
   
 

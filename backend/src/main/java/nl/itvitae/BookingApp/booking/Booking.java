@@ -1,34 +1,35 @@
-package nl.itvitae.BookingApp.daterange;
+package nl.itvitae.BookingApp.booking;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class DateRange {
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private LocalDate checkIn;
+    private LocalDate checkOut;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
-
-
-    public DateRange(LocalDate startDate, LocalDate endDate) {
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public Booking(LocalDate checkIn, LocalDate checkOut) {
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
 
     }
+
+
+
+
 
 }
