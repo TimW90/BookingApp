@@ -16,9 +16,9 @@ const loginSchema = object().shape({
     .required('Password is required'),
 });
 
-const Login = ({ togglePopup }) => {
+const Login = () => {
   const { handleLogin } = useAuth();
-  const { setFlashMessage } = useAlerts();
+  const { togglePopup } = usePopup();
 
   const {
     register,
@@ -31,10 +31,7 @@ const Login = ({ togglePopup }) => {
 
   const onSubmit = async (loginRequest) => {
     try {
-      console.log(loginRequest);
-      const response = await loginUser(loginRequest);
-      handleLogin(response.data);
-      console.log(response.data);
+      handleLogin(loginRequest);
       togglePopup();
     } catch (error) {
       let errorMessage =
@@ -50,7 +47,7 @@ const Login = ({ togglePopup }) => {
   };
 
   return (
-    <div className="card shrink-0 w-full max-w-sm bg-base-100 prose lg:prose-md">
+    <div className="card shrink-0 w-full max-w-sm prose lg:prose-md">
       <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
         {/* Email field */}
         <div className="form-control">

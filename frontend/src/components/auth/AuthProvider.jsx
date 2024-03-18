@@ -4,6 +4,7 @@ import { setJwtHeader } from '../../api/api';
 import PropTypes from 'prop-types';
 import { createContext } from 'react';
 import { useAlerts } from '../alerts/AlertContext';
+import { loginUser } from '@/api/userApi';
 
 const AuthContext = createContext();
 
@@ -28,11 +29,18 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const handleLogin = useCallback(
-    (token) => {
-      localStorage.setItem('token', token);
-      processToken(token);
-      setFlashMessage(`Logged in successfully`);
-      setJwtHeader(token);
+    async (loginRequest) => {
+      try {
+        console.log(loginRequest);
+        const response = await loginUser(loginRequest);
+        const token = response.data;
+        localStorage.setItem('token', token);
+        processToken(token);
+        setFlashMessage('Logged in successfully!');
+        setJwtHeader(token);
+      } catch (error) {
+        console.error('Error while trying to log in', error);
+      }
     },
     [setFlashMessage]
   );

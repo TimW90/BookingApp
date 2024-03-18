@@ -63,7 +63,15 @@ const ManageHotelForm = ({ hotel }) => {
   // For now this fixes the bug where the add hotel popup was preoccupied with the last update hotel popup values if the update was aborted.
   useEffect(() => {
     if (isPopupOpen) {
-      reset(hotel ? hotel : hotelSchema.cast()); // hotelSchema.cast() create an hotel with the default values.
+      reset(hotel ? hotel : hotelSchema.cast()); // hotelSchema.cast() create an hotel with the default values aka empty with 1 star rating
+
+      // Files can't be set for security reasons so this shows the current image as a preview
+      if (hotel && hotel.base64Image) {
+        setImagePreview(hotel.base64Image);
+      } else {
+        setImagePreview('');
+      }
+      
     }
   }, [reset, isSubmitSuccessful, isPopupOpen, hotel]);
 

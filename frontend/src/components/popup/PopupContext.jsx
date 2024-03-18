@@ -6,8 +6,8 @@ const PopupContext = createContext();
 
 export const PopupProvider = ({ children }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupContent, setPopupContent] = useState(null);
-  const popupRef = useRef(null);
+  const [popupContent, setPopupContent] = useState();
+  const popupRef = useRef();
 
   const togglePopup = () => {
     if (!popupRef.current) return;

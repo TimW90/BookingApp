@@ -5,18 +5,20 @@ import { postUser } from '@/api/userApi';
 import ErrorMessage from '../alerts/ErrorMessage';
 import PropTypes from 'prop-types';
 import { useAuth } from './AuthProvider';
+import { usePopup } from '../popup/PopupContext';
 
 const userSchema = object().shape({
   fullName: string().required('Full name is required'),
-  email: string().email().required('Email is required'),
+  username: string().email().required('Email is required'),
   password: string().min(4, 'Must be at least 4 characters long').required(),
   confirmPassword: string()
     .oneOf([ref('password'), null], "Password doesn't match")
     .required('Confirm password is required'),
 });
 
-const Register = ({ togglePopup }) => {
+const Register = () => {
   const { handleLogin } = useAuth();
+  const { togglePopup } = usePopup();
 
   const {
     register,
@@ -30,14 +32,14 @@ const Register = ({ togglePopup }) => {
   const onSubmit = async (userData) => {
     console.log(userData);
     try {
-      const result = postUser(userData);
-      console.log(result);
+      postUser(userData);
+      handleLogin({ username: userData.username, password: userData.password });
       togglePopup();
     } catch (error) {
       let errorMessage =
         'An unexpected error occurred. Please try again later.';
 
-      console.error(error);
+      console.error('Error while trying to register', error);
       // if (error.response.status === 409) {
       //   errorMessage =
       //     'This email address is already in use. Please use a different email or log in.';
@@ -75,7 +77,7 @@ const Register = ({ togglePopup }) => {
           <input
             className="input input-bordered"
             placeholder="Email..."
-            {...register('email')}
+            {...register('username')}
             autoComplete="email"
           />
         </div>

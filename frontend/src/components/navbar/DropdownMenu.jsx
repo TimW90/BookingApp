@@ -4,6 +4,7 @@ import Registration from '../auth/Register';
 import Logout from '../auth/Logout';
 import { usePopup } from '../popup/PopupContext';
 import { useAuth } from '../auth/AuthProvider';
+import PopupButton from '../popup/PopupButton';
 
 // The dropdown menu as used in the navbar, when the profile picture in the navbar is clicked this is what shows up.
 const DropDownMenu = () => {
@@ -30,37 +31,10 @@ const DropDownMenu = () => {
         tabIndex={0}
         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
       >
-        {/* Log in/out item in the navbar dropdown menu rendered conditionally depending on if user is logged in or not */}
-        <li>
-          <button
-            type="button"
-            onClick={() => {
-              setPopupContent(
-                user ? (
-                  <Logout togglePopup={togglePopup} />
-                ) : (
-                  <Login togglePopup={togglePopup} />
-                )
-              );
-              togglePopup();
-            }}
-          >
-            Log {user ? 'out' : 'in'}
-          </button>
-        </li>
-
         {/* Register button */}
         {!user && (
           <li>
-            <button
-              type="button"
-              onClick={() => {
-                setPopupContent(<Registration togglePopup={togglePopup} />);
-                togglePopup();
-              }}
-            >
-              Register
-            </button>
+            <PopupButton popupContent={<Registration />}>Register</PopupButton>
           </li>
         )}
 
@@ -70,6 +44,19 @@ const DropDownMenu = () => {
             <Link to="/admin">Admin Dashboard</Link>
           </li>
         )}
+
+        {user && (
+          <li>
+            <Link to="/my-bookings">My Bookings</Link>
+          </li>
+        )}
+
+        {/* Log in/out item in the navbar dropdown menu rendered conditionally depending on if user is logged in or not */}
+        <li>
+          <PopupButton popupContent={user ? <Logout /> : <Login />}>
+            Log {user ? 'out' : 'in'}
+          </PopupButton>
+        </li>
       </ul>
     </div>
   );
