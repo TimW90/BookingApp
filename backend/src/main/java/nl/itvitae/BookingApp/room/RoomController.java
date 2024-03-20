@@ -3,9 +3,12 @@ package nl.itvitae.BookingApp.room;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.HotelDTO;
+import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.hotel.Location;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +19,7 @@ import java.util.List;
 public class RoomController {
 
   private final RoomRepository roomRepository;
+  private final HotelRepository hotelRepository;
 
   @GetMapping
   public List<RoomDTO> findAll() {
@@ -36,8 +40,17 @@ public class RoomController {
   }
 
   @PostMapping
-  public Room newRoom(@RequestBody Room room) {
-    return roomRepository.save(room);
+  public List<RoomDTO> newRoom(@RequestBody RoomDTO room) {
+    var hotel = hotelRepository.findById(room.hotelId()).get();
+    List<Room> newRooms = new ArrayList<>();
+    for (int i = 0; i < room.quantity(); i++) {
+      Room newRoom = new Room(room.name(), room.type(), room.price(), room.description());
+      roomRepository.save(newRoom);
+      hotel.addRoom(newRoom);
+      newRooms.add(newRoom);
+    }
+    hotelRepository.save(hotel);
+    return newRooms.stream().map(RoomDTO::new).toList();
   }
 
   @DeleteMapping("/{id}")

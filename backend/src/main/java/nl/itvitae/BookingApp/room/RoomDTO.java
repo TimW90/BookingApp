@@ -11,18 +11,22 @@ import static nl.itvitae.BookingApp.util.EnumUtil.enumName;
 public record RoomDTO(
     Long id,
     String name,
-    String type,
-    BigDecimal price,
+    Room.Type type,
+    double price,
     String description,
+    Long hotelId,
+    int quantity,
     List<ImageDTO> base64Images) {
 
   public RoomDTO(Room room) {
     this(
         room.getId(),
         room.getName(),
-        enumName(room.getType().name()),
-        room.getPrice(),
+        room.getType(),
+        room.getPrice().doubleValue(),
         room.getDescription(),
+        null,
+        1,
         room.getImageBase64Strings().stream()
             .map(ImageDTO::new)
             .sorted(Comparator.comparingInt(a -> a.id().intValue()))

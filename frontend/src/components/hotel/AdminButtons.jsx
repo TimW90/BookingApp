@@ -1,9 +1,9 @@
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6';
 import { usePopup } from '../popup/PopupContext';
-import ManageHotel from './ManageHotelForm';
+import ManageHotelForm from './ManageHotelForm';
 import PropTypes from 'prop-types';
 import ConfirmDeleteHotel from './ConfirmDeleteHotel';
-//import ManageRoom from './ManageRoom';
+import ManageRoomForm from '../room/ManageRoomForm';
 
 const AdminButtons = ({ item, type }) => {
   const { setPopupContent, togglePopup } = usePopup();
@@ -11,7 +11,7 @@ const AdminButtons = ({ item, type }) => {
   const handleEditClick = () => {
     switch (type) {
       case 'hotel':
-        setPopupContent(<ManageHotel hotel={item} />);
+        setPopupContent(<ManageHotelForm hotel={item} />);
         break;
     }
 
@@ -24,7 +24,7 @@ const AdminButtons = ({ item, type }) => {
   };
 
   const handleAddRoomClick = () => {
-    setPopupContent();
+    setPopupContent(<ManageRoomForm hotelId={item.id} />);
     togglePopup();
   };
 
