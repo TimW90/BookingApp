@@ -13,6 +13,7 @@ import SubmitButton from '@/form/SubmitButton';
 import useRoomTypes from '@/hooks/useRoomTypes';
 import ErrorMessage from '../alerts/ErrorMessage';
 import PropTypes from 'prop-types';
+import { convertToBase64 } from '../images/ImageUtil';
 
 const roomSchema = object().shape({
   name: string().required('Name is a required field'),
@@ -27,6 +28,7 @@ const roomSchema = object().shape({
 });
 
 const ManageRoomForm = ({ hotelId }) => {
+  console.log(hotelId);
   const {
     register,
     setError,
@@ -34,21 +36,19 @@ const ManageRoomForm = ({ hotelId }) => {
     reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(roomSchema),
-  });
+  } = useForm();
 
-  const { togglePopup, isPopupOpen } = usePopup();
+  const { togglePopup } = usePopup();
   const roomTypes = useRoomTypes();
-  const [imagePreview, setImagePreview] = useState('');
-  const previewImage = watch('image');
+  // const [imagePreview, setImagePreview] = useState('');
+  // const previewImage = watch('image');
 
-  useEffect(() => {
-    if (previewImage && previewImage.length > 0) {
-      const file = previewImage[0];
-      setImagePreview(URL.createObjectURL(file));
-    }
-  }, [previewImage]);
+  // useEffect(() => {
+  //   if (previewImage && previewImage.length > 0) {
+  //     const file = previewImage[0];
+  //     setImagePreview(URL.createObjectURL(file));
+  //   }
+  // }, [previewImage]);
 
   // useEffect(() => {
   //   if (isPopupOpen) {
@@ -57,12 +57,8 @@ const ManageRoomForm = ({ hotelId }) => {
   // }, [reset, isSubmitSuccessful, isPopupOpen, room]);
 
   const onSubmit = async (roomData) => {
-    console.log('Room submit');
-    setTimeout(() => {
-      console.log('Delayed for 10 second.');
-    }, 10000);
-    const sleep = await new Promise((r) => setTimeout(r, 10000));
-    sleep();
+    console.log(roomData);
+
     try {
       if (roomData.image?.[0]) {
         const base64String = await convertToBase64(roomData.image[0]);
@@ -71,7 +67,7 @@ const ManageRoomForm = ({ hotelId }) => {
 
       const newRoom = await postRoom({ ...roomData, hotelId });
       console.log(newRoom + ' has been made');
-      setImagePreview('');
+      // setImagePreview('');
       togglePopup();
     } catch (error) {
       console.error(error);
@@ -91,7 +87,7 @@ const ManageRoomForm = ({ hotelId }) => {
       {/* <h1 className="m-0">{room ? 'Update Room' : 'Add Room'}</h1> */}
       <h1 className="m-0">Add Room</h1>
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           register={register}
           type="text"
@@ -104,7 +100,7 @@ const ManageRoomForm = ({ hotelId }) => {
           options={roomTypes}
           register={register}
           errors={errors}
-          name="Room type"
+          name="type"
           placeholder="Choose a room type"
           aria-label="type-input"
         />
@@ -118,7 +114,7 @@ const ManageRoomForm = ({ hotelId }) => {
         />
 
         <FileInput register={register} name="image" errors={errors} />
-        {imagePreview && <img src={imagePreview} alt="room preview image" />}
+        {/* {imagePreview && <img src={imagePreview} alt="room preview image" />} */}
         <TextArea register={register} name="description" errors={errors} />
 
         <Input
@@ -132,7 +128,7 @@ const ManageRoomForm = ({ hotelId }) => {
         {/* <SubmitButton isLoading={isSubmitting}>Confirm</SubmitButton> */}
         <input type="submit"></input>
 
-        {errors.root && <ErrorMessage message={errors.root.message} />}
+        {/* {errors.root && <ErrorMessage message={errors.root.message} />} */}
       </form>
     </div>
   );

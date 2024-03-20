@@ -1,16 +1,12 @@
 package nl.itvitae.BookingApp.room;
 
-import lombok.RequiredArgsConstructor;
-import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
-import nl.itvitae.BookingApp.hotel.HotelDTO;
-import nl.itvitae.BookingApp.hotel.HotelRepository;
-import nl.itvitae.BookingApp.hotel.Location;
-import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
+import nl.itvitae.BookingApp.hotel.HotelRepository;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin("http://localhost:5173")
@@ -41,7 +37,10 @@ public class RoomController {
 
   @PostMapping
   public List<RoomDTO> newRoom(@RequestBody RoomDTO room) {
-    var hotel = hotelRepository.findById(room.hotelId()).get();
+    var hotel =
+        hotelRepository
+            .findById(room.hotelId())
+            .orElseThrow(() -> new ResourceNotFoundException("Hotel to add room to not found"));
     List<Room> newRooms = new ArrayList<>();
     for (int i = 0; i < room.quantity(); i++) {
       Room newRoom = new Room(room.name(), room.type(), room.price(), room.description());
