@@ -10,18 +10,17 @@ import { useHotels } from './HotelContext';
 const HotelAccordion = ({ isAdmin }) => {
   const { register, handleSubmit } = useForm();
 
-
   const { hotels, loading, updateSearchParams } = useHotels();
 
   const onSubmit = (searchForm) => {
     updateSearchParams(searchForm);
   };
 
-  const { hotels, hasMore, loading, error } = usePagination(params, pageNumber);
+  // const { hotels, hasMore, loading, error } = usePagination(params, pageNumber);
 
   return (
     <>
-      <SearchBar onSubmit={onSubmit}/>
+      <SearchBar onSubmit={onSubmit} />
       <Accordion>
         {hotels.map((hotel, index) => (
           <AccordionCard
