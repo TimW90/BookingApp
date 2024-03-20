@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getHotelById } from '@/api/hotelApi';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import HotelAccordion from '@/components/hotel/HotelAccordion';
+import RoomCard from '@/components/room/RoomCard';
+import Accordion from '@/components/common/Accordion';
 
 const HotelLandingPage = () => {
   const [hotel, setHotel] = useState(null);
@@ -54,7 +55,11 @@ const HotelLandingPage = () => {
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>
 
-      <HotelAccordion />
+      <Accordion>
+        {hotel.rooms.map((room, index) => (
+          <RoomCard key={room.id} room={room} index={index} />
+        ))}
+      </Accordion>
     </>
   );
 };

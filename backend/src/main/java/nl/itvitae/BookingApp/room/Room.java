@@ -1,10 +1,15 @@
 package nl.itvitae.BookingApp.room;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.itvitae.BookingApp.image.Image;
+
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -12,30 +17,37 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Room {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private Type type;
+    @Column(nullable = false)
+    private String name;
 
-  @Column(nullable = false)
-  private BigDecimal price;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Type type;
 
-  @Column(nullable = false)
-  private boolean luxury;
+    @Column(nullable = false)
+    private BigDecimal price;
 
-  public Room(Type type, double price, boolean luxury) {
-    this.type = type;
-    this.price = BigDecimal.valueOf(price);
-    this.luxury = luxury;
-  }
+    private String description;
 
-  public enum Type {
-    SINGLE,
-    DOUBLE,
-    TRIPPLE,
-    QUADRUPPLE
-  }
+    @Lob
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Image> imageBase64Strings = new HashSet<>();
+
+    public Room(String name, Type type, double price, String description) {
+        this.name = name;
+        this.type = type;
+        this.price = BigDecimal.valueOf(price);
+        this.description = description;
+    }
+
+    public enum Type {
+        SINGLE_ROOM,
+        DOUBLE_ROOM,
+        TRIPLE_ROOM,
+        QUADRUPLE_ROOM
+    }
 }
