@@ -32,7 +32,6 @@ export const HotelProvider = ({ children }) => {
         ]);
       }
 
-      console.log(!queriedHotelPages.last);
       setHasMore(!queriedHotelPages.last);
       setLoading(false);
     };
@@ -74,7 +73,7 @@ export const HotelProvider = ({ children }) => {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [hotels]);
 
   const handleScroll = async () => {
     if (

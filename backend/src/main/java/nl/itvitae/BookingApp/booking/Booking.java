@@ -1,14 +1,12 @@
 package nl.itvitae.BookingApp.booking;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
+import nl.itvitae.BookingApp.room.Room;
+import nl.itvitae.BookingApp.user.User;
 
 @Entity
 @Getter
@@ -16,20 +14,23 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Booking {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private LocalDate checkIn;
-    private LocalDate checkOut;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    public Booking(LocalDate checkIn, LocalDate checkOut) {
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
+  private LocalDate checkIn;
+  private LocalDate checkOut;
 
-    }
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
+  @ManyToOne
+  @JoinColumn(name = "room_id")
+  private Room room;
 
-
-
-
+  public Booking(LocalDate checkIn, LocalDate checkOut) {
+    this.checkIn = checkIn;
+    this.checkOut = checkOut;
+  }
 }

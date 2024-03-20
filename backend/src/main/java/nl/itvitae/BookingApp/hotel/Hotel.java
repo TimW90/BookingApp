@@ -29,7 +29,7 @@ public class Hotel {
 
   @Lob private String base64Image;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
   private List<Room> rooms = new ArrayList<>();
 
   public Hotel(String name, int rating, Location location, String description, String base64Image) {

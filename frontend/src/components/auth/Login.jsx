@@ -1,11 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string } from 'yup';
-import { loginUser } from '@/api/userApi';
 import ErrorMessage from '../alerts/ErrorMessage';
 import { useAuth } from './AuthProvider';
 import PropTypes from 'prop-types';
-import { useAlerts } from '../alerts/AlertContext';
+import { usePopup } from '../popup/PopupContext';
 
 const loginSchema = object().shape({
   username: string()

@@ -17,6 +17,7 @@ const DatePicker = ({ register }) => {
           type="date"
           className="input input-bordered text-sm rounded-lg block w-full ps-10 p-2.5"
           placeholder="Check-In"
+          {...register('startDate')}
         ></input>
       </div>
       <span className="mx-4 ">to</span>
@@ -36,6 +37,7 @@ const DatePicker = ({ register }) => {
           type="date"
           className="input input-bordered text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
           placeholder="Check-Out"
+          {...register('endDate')}
         ></input>
       </div>
     </div>

@@ -3,8 +3,6 @@ package nl.itvitae.BookingApp.seeder;
 import static nl.itvitae.BookingApp.util.ImageUtil.*;
 
 import java.util.List;
-import java.util.Set;
-
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
@@ -18,7 +16,6 @@ import nl.itvitae.BookingApp.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Component
@@ -132,7 +129,12 @@ public class Seeder implements CommandLineRunner {
   }
 
   private Room saveRoom(
-      String name, Room.Type type, double price, String description, List<String> imagePaths) {
+      Hotel hotel,
+      String name,
+      Room.Type type,
+      double price,
+      String description,
+      List<String> imagePaths) {
     Room room = new Room(name, type, price, description);
 
     for (String imagePath : imagePaths) {
@@ -141,39 +143,45 @@ public class Seeder implements CommandLineRunner {
       image.setRoom(room);
     }
 
+    room.setHotel(hotel);
+
     return roomRepository.save(room);
   }
 
   private void seedRooms(List<Hotel> seededHotels) {
-    seededHotels.forEach(
-        (hotel) ->
-            hotel
-                .getRooms()
-                .addAll(
-                    List.of(
-                        saveRoom(
-                            "Single Comfort Room",
-                            Room.Type.SINGLE_ROOM,
-                            120,
-                            "A nice and cozy room for one person",
-                            List.of("src/main/resources/images/room_1_1.png")),
-                        saveRoom(
-                            "Double Comfort Room",
-                            Room.Type.DOUBLE_ROOM,
-                            220,
-                            "A nice and cozy room for two persons",
-                            List.of(
-                                "src/main/resources/images/room_2_1.png",
-                                "src/main/resources/images/room_2_2.png")),
-                        saveRoom(
-                            "Quadruple Deluxe Room",
-                            Room.Type.QUADRUPLE_ROOM,
-                            400,
-                            "A big luxurious room for up to four persons",
-                            List.of(
-                                "src/main/resources/images/room_3_1.png",
-                                "src/main/resources/images/room_3_2.png",
-                                "src/main/resources/images/room_3_3.png")))));
+
+    for (Hotel hotel : seededHotels) {
+      hotel
+          .getRooms()
+          .addAll(
+              List.of(
+                  saveRoom(
+                      hotel,
+                      "Single Comfort Room",
+                      Room.Type.SINGLE_ROOM,
+                      120,
+                      "A nice and cozy room for one person",
+                      List.of("src/main/resources/images/room_1_1.png")),
+                  saveRoom(
+                      hotel,
+                      "Double Comfort Room",
+                      Room.Type.DOUBLE_ROOM,
+                      220,
+                      "A nice and cozy room for two persons",
+                      List.of(
+                          "src/main/resources/images/room_2_1.png",
+                          "src/main/resources/images/room_2_2.png")),
+                  saveRoom(
+                      hotel,
+                      "Quadruple Deluxe Room",
+                      Room.Type.QUADRUPLE_ROOM,
+                      400,
+                      "A big luxurious room for up to four persons",
+                      List.of(
+                          "src/main/resources/images/room_3_1.png",
+                          "src/main/resources/images/room_3_2.png",
+                          "src/main/resources/images/room_3_3.png"))));
+    }
 
     hotelRepository.saveAll(seededHotels);
   }

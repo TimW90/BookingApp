@@ -3,22 +3,27 @@ import { getLocations } from '@/api/hotelApi';
 import DatePicker from './DatePicker';
 import { useForm } from 'react-hook-form';
 import { enumSimpleName } from '../util/util';
+import { useHotels } from '../hotel/HotelContext';
+import useLocations from '@/hooks/useLocations';
 
 const SearchBar = () => {
-  const [locations, setLocations] = useState([]);
-
+  // const [locations, setLocations] = useState([]);
   const { register, handleSubmit } = useForm();
+  const { updateSearchParams } = useHotels();
 
-  useEffect(() => {
-    const loadLocations = async () => {
-      const fetchedLocations = await getLocations();
-      setLocations(fetchedLocations);
-    };
+  // useEffect(() => {
+  //   const loadLocations = async () => {
+  //     const fetchedLocations = await getLocations();
+  //     setLocations(fetchedLocations);
+  //   };
 
-    loadLocations();
-  }, [locations]);
+  //   loadLocations();
+  // }, [locations]);
+
+  const locations = useLocations();
 
   const onSubmit = (searchForm) => {
+    console.log(searchForm);
     updateSearchParams(searchForm);
   };
 

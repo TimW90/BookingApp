@@ -2,6 +2,7 @@ import Carousel from './Carousel';
 import PreviewImage from '../images/PreviewImage';
 import { usePopup } from '../popup/PopupContext';
 import BookingConfirmation from '../booking/BookingConfirmation';
+import RequireAuth from '../auth/RequireAuth';
 
 const RoomCard = ({ room, index }) => {
   const { setPopupContent, togglePopup } = usePopup();
@@ -9,9 +10,9 @@ const RoomCard = ({ room, index }) => {
   if (!room) return;
 
   const openBookingConfirmation = () => {
-    setPopupContent(<BookingConfirmation room={room} />)
+    setPopupContent(<BookingConfirmation room={room} />);
     togglePopup();
-  }
+  };
 
   return (
     <>
@@ -42,7 +43,12 @@ const RoomCard = ({ room, index }) => {
                 <div className="flex mr-5">Price: €{room.price}</div>
 
                 <div className="card-actions justify-end flex flex-col">
-                  <button onClick={openBookingConfirmation} className="btn btn-secondary">Book now</button>
+                  <button
+                    onClick={openBookingConfirmation}
+                    className="btn btn-secondary"
+                  >
+                    Book now
+                  </button>
                 </div>
               </div>
             </div>
