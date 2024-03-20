@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { getLocations } from '@/api/hotelApi';
 import DatePicker from './DatePicker';
 import { useForm } from 'react-hook-form';
+import { enumSimpleName } from '../util/util';
 
-const SearchBar = ({ onSubmit }) => {
+const SearchBar = () => {
   const [locations, setLocations] = useState([]);
 
   const { register, handleSubmit } = useForm();
@@ -17,9 +18,16 @@ const SearchBar = ({ onSubmit }) => {
     loadLocations();
   }, [locations]);
 
+  const onSubmit = (searchForm) => {
+    updateSearchParams(searchForm);
+  };
+
   return (
-    <div className="flex w-full">
-      <form className="flex w-full" onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex w-full py-6">
+      <form
+        className="flex w-full justify-center items-center"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="dropdown">
           <div className="form-control">
             <select
@@ -31,13 +39,13 @@ const SearchBar = ({ onSubmit }) => {
                 Location...
               </option>
               {locations.map((location) => (
-                <option key={location}>{location}</option>
+                <option key={location}>{enumSimpleName(location)}</option>
               ))}
             </select>
           </div>
         </div>
         <div className="divider divider-horizontal"></div>
-        <div className="grid h-15 w-14 flex-grow card bg-base-300 rounded-box place-items-center">
+        <div className="card rounded-box">
           <DatePicker register={register} />
         </div>
         <div className="divider divider-horizontal"></div>
@@ -53,6 +61,7 @@ const SearchBar = ({ onSubmit }) => {
           </ul>
         </details>
         <div className="divider divider-horizontal"></div>
+
         <button method="submit" className="btn">
           Search
         </button>

@@ -8,19 +8,11 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import { useHotels } from './HotelContext';
 
 const HotelAccordion = ({ isAdmin }) => {
-  const { register, handleSubmit } = useForm();
-  
-
-
-  const onSubmit = (searchForm) => {
-    updateSearchParams(searchForm);
-  };
-
-  const { hotels, hasMore, loading, error } = usePagination(params, pageNumber);
+  const { hotels, isLoading } = useHotels();
 
   return (
-    <> 
-      <SearchBar onSubmit={onSubmit}/>
+    <>
+      <SearchBar />
       <Accordion>
         {hotels.map((hotel, index) => (
           <AccordionCard
@@ -32,7 +24,7 @@ const HotelAccordion = ({ isAdmin }) => {
             index={index}
           />
         ))}
-        {loading && <LoadingSpinner />}
+        {isLoading && <LoadingSpinner />}
       </Accordion>
     </>
   );
