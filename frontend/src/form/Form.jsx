@@ -1,11 +1,8 @@
-import { useForm } from 'react-hook-form';
 import PropTypes from 'prop-types';
 
-const Form = ({ defaultValues, children, onSubmit }) => {
-  const { handleSubmit } = useForm({ defaultValues });
-
+const Form = ({ children, onSubmit }) => {
   return (
-    <form className="card-body" onSubmit={handleSubmit(onSubmit)}>
+    <form className="card-body" onSubmit={onSubmit}>
       {children}
     </form>
   );

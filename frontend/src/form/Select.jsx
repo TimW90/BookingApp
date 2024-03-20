@@ -2,7 +2,7 @@ import { capitalize, enumSimpleName } from '@/components/util/util';
 import PropTypes from 'prop-types';
 import ErrorMessage from '@/components/alerts/ErrorMessage';
 
-const Select = ({ register, options, name, errors }) => {
+const Select = ({ register, options, name, errors, placeholder }) => {
   return (
     <div className="form-control">
       <label className="label">
@@ -15,7 +15,7 @@ const Select = ({ register, options, name, errors }) => {
         defaultValue=""
       >
         <option disabled value="">
-          Location...
+          {placeholder}
         </option>
 
         {/* This will be the list of options in the dropdown with their corresponding values */}

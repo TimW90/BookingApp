@@ -2,20 +2,11 @@ import { useEffect, useState } from 'react';
 import { getLocations } from '@/api/hotelApi';
 import DatePicker from './DatePicker';
 import { useForm } from 'react-hook-form';
+import useLocations from '@/hooks/useLocations';
 
 const SearchBar = ({ onSubmit }) => {
-  const [locations, setLocations] = useState([]);
-
   const { register, handleSubmit } = useForm();
-
-  useEffect(() => {
-    const loadLocations = async () => {
-      const fetchedLocations = await getLocations();
-      setLocations(fetchedLocations);
-    };
-
-    loadLocations();
-  }, [locations]);
+  const locations = useLocations();
 
   return (
     <div className="flex w-full">
