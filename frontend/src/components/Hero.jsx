@@ -19,7 +19,9 @@ const Hero = () => {
     fetchData();
   }, []);
 
-  return data ? (
+  if (!data) return <p>Loading...</p>;
+
+  return (
     <div className="hero min-h-50vh bg-base-200">
       <div className="hero-content flex-col lg:flex-row">
         <img
@@ -34,8 +36,6 @@ const Hero = () => {
         </div>
       </div>
     </div>
-  ) : (
-    <p>Loading...</p>
   );
 };
 

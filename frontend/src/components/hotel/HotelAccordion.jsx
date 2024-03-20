@@ -2,26 +2,25 @@ import { useState } from 'react';
 import Accordion from '../common/Accordion';
 import AccordionCard from '../common/AccordionCard';
 import { useForm } from 'react-hook-form';
+import SearchBar from '../searchbar/Searchbar';
 import PropTypes from 'prop-types';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { useHotels } from './HotelContext';
 
 const HotelAccordion = ({ isAdmin }) => {
   const { register, handleSubmit } = useForm();
+  
 
-  const { hotels, loading, updateSearchParams } = useHotels();
 
   const onSubmit = (searchForm) => {
     updateSearchParams(searchForm);
   };
 
-  return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" aria-label="search" {...register('name')}></input>
-        <button method="submit">Submit</button>
-      </form>
+  const { hotels, hasMore, loading, error } = usePagination(params, pageNumber);
 
+  return (
+    <> 
+      <SearchBar onSubmit={onSubmit}/>
       <Accordion>
         {hotels.map((hotel, index) => (
           <AccordionCard
