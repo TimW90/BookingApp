@@ -3,7 +3,7 @@ import { usePopup } from '../popup/PopupContext';
 import ManageHotel from './ManageHotelForm';
 import PropTypes from 'prop-types';
 import ConfirmDeleteHotel from './ConfirmDeleteHotel';
-import ManageRoom from './ManageRoom';
+//import ManageRoom from './ManageRoom';
 
 const AdminButtons = ({ item, type }) => {
   const { setPopupContent, togglePopup } = usePopup();
@@ -24,7 +24,7 @@ const AdminButtons = ({ item, type }) => {
   };
 
   const handleAddRoomClick = () => {
-    setPopupContent(<ManageRoom room={item} />);
+    setPopupContent();
     togglePopup();
   };
 

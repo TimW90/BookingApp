@@ -68,3 +68,7 @@ const Carousel = ({ images }) => {
         })()}
       </div>
     </>
+  );
+};
+
+export default Carousel;
