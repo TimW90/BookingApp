@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import { getBookingsByUserId } from '@/api/bookingApi';
 import LoadingSpinner from '../common/LoadingSpinner';
+import { useAuth } from '../auth/AuthProvider';
 
 const UserBookings = () => {
   const [bookings, setBookings] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchUserBookings = async () => {
-      const fetchedBookings = await getBookingsByUserId();
-      setBookings(fetchedBookings);
+      if (!user) {
+        return <div>No user logged in</div>;
+      } else {
+        const fetchedBookings = await getBookingsByUserId(user.id);
+        setBookings(fetchedBookings);
+        3;
+      }
     };
 
     fetchUserBookings();

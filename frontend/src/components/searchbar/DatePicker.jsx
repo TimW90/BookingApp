@@ -35,7 +35,7 @@ const DatePicker = ({ register }) => {
         <input
           name="end"
           type="date"
-          className="input input-bordered text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+          className="input input-bordered text-sm rounded-lg block w-full ps-10 p-2.5"
           placeholder="Check-Out"
           {...register('endDate')}
         ></input>

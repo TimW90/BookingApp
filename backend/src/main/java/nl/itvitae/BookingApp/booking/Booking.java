@@ -29,8 +29,10 @@ public class Booking {
   @JoinColumn(name = "room_id")
   private Room room;
 
-  public Booking(LocalDate checkIn, LocalDate checkOut) {
+  public Booking(LocalDate checkIn, LocalDate checkOut, User user, Room room) {
     this.checkIn = checkIn;
     this.checkOut = checkOut;
+    this.user = user;
+    this.room = room;
   }
 }
