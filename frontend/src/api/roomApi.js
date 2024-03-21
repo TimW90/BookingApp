@@ -17,5 +17,6 @@ export const postRoom = async (roomData) => {
   console.log(roomData);
   delete roomData.image;
   const response = await api.post(uri, roomData);
+  console.log(response.data);
   return response.data;
 };
