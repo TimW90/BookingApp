@@ -24,6 +24,9 @@ const roomSchema = object().shape({
   description: string()
     .required('Description is a required field')
     .min(15, 'Description should be a minimum of 15 characters'),
+  quantity: number()
+    .required('Quantity is a required field')
+    .min(1, 'Quantity should be atleast 1'),
 });
 
 const ManageRoomForm = ({ hotelId }) => {
