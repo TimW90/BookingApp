@@ -6,20 +6,9 @@ import { enumSimpleName } from '../util/util';
 import { useHotels } from '../hotel/HotelContext';
 import useLocations from '@/hooks/useLocations';
 
-const SearchBar = () => {
-  // const [locations, setLocations] = useState([]);
+const SearchBar = ({ isLocationFixed = false }) => {
   const { register, handleSubmit } = useForm();
   const { updateSearchParams } = useHotels();
-
-  // useEffect(() => {
-  //   const loadLocations = async () => {
-  //     const fetchedLocations = await getLocations();
-  //     setLocations(fetchedLocations);
-  //   };
-
-  //   loadLocations();
-  // }, [locations]);
-
   const locations = useLocations();
 
   const onSubmit = (searchForm) => {

@@ -7,7 +7,14 @@ import LoadingSpinner from '../common/LoadingSpinner';
 const BookingConfirmation = ({ room }) => {
   const { user } = useAuth();
 
-  const onConfirm = () => {};
+  const onConfirm = async () => {
+    try {
+      const newBooking = postBooking({ ...room, user });
+      console.log(newBooking);
+    } catch (error) {
+      console.error('Error while trying to book', error);
+    }
+  };
 
   if (!room) return <LoadingSpinner />;
 

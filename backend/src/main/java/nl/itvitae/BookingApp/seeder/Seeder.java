@@ -2,6 +2,7 @@ package nl.itvitae.BookingApp.seeder;
 
 import static nl.itvitae.BookingApp.util.ImageUtil.*;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.hotel.Location;
 import nl.itvitae.BookingApp.image.Image;
-import nl.itvitae.BookingApp.image.ImageRepository;
 import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
 import nl.itvitae.BookingApp.user.User;
@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Transactional
 @Component
 public class Seeder implements CommandLineRunner {
 
@@ -33,9 +34,24 @@ public class Seeder implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    seedUsers();
-    List<Hotel> seededHotels = seedHotels();
-    seedRooms(seededHotels);
+    if (userRepository.count() == 0) {
+      seedUsers();
+    }
+
+    List<Hotel> seededHotels;
+    if (hotelRepository.count() == 0) {
+      seededHotels = seedHotels();
+    } else {
+      seededHotels = hotelRepository.findAll();
+    }
+
+    if (roomRepository.count() == 0) {
+      seedRooms(seededHotels);
+    }
+
+    if (bookingRepository.count() == 0) {
+      seedBookings(seededHotels);
+    }
   }
 
   private void seedUsers() {
@@ -189,8 +205,8 @@ public class Seeder implements CommandLineRunner {
 
     hotelRepository.saveAll(seededHotels);
   }
+
   private void seedBookings(List<Hotel> seededHotels) {
-    // Assuming you have a list of users
     List<User> users = userRepository.findAll();
     if (users.isEmpty()) {
       throw new ResourceNotFoundException("No users found");
@@ -200,21 +216,18 @@ public class Seeder implements CommandLineRunner {
     LocalDate checkOutDate = LocalDate.now().plusDays(5);
 
     // For simplicity, we'll just use the first user and alternate rooms
-    User bookingUser = users.getFirst();
+    User bookingUser = users.getFirst(); // Has role USER
 
     for (Hotel hotel : seededHotels) {
       for (Room room : hotel.getRooms()) {
         Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, room);
         bookingRepository.save(newBooking);
+        bookingUser.addBooking(newBooking);
 
         // Update check-in/check-out dates for variety
         checkInDate = checkInDate.plusDays(10);
         checkOutDate = checkOutDate.plusDays(15);
       }
     }
-
-
   }
-
-
 }

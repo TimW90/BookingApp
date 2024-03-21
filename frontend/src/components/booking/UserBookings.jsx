@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getBookingsByUserId } from '@/api/bookingApi';
+import { fetchBookingsByUsername } from '@/api/bookingApi';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { useAuth } from '../auth/AuthProvider';
 
@@ -9,34 +9,43 @@ const UserBookings = () => {
 
   useEffect(() => {
     const fetchUserBookings = async () => {
-      if (!user) {
-        return <div>No user logged in</div>;
-      } else {
-        const fetchedBookings = await getBookingsByUserId(user.id);
+      if (user) {
+        const fetchedBookings = await fetchBookingsByUsername(user.sub);
         setBookings(fetchedBookings);
-        3;
+        console.log(fetchedBookings);
       }
     };
 
     fetchUserBookings();
-  }, []);
+  }, [user]);
 
-  if (!bookings) return <LoadingSpinner />;
   return (
-    <div className="prose">
-      <h2>Your Bookings</h2>
+    <div className="overflow-x-auto">
       {bookings.length > 0 ? (
-        <ul>
-          {bookings.map((booking) => (
-            <li key={booking.id}>
-              <h3>{booking.hotel.name}</h3>
-              <p>Room: {booking.room.name}</p>
-              <p>Check-in: {booking.checkIn}</p>
-              <p>Check-out: {booking.checkOut}</p>
-              <p>Price per night: ${booking.room.price}</p>
-            </li>
-          ))}
-        </ul>
+        <table className="table table-zebra">
+          <caption>Your bookings</caption>
+          {/* head */}
+          <thead>
+            <tr>
+              <th>Hotel Name</th>
+              <th>Room</th>
+              <th>Check-in</th>
+              <th>Check-out</th>
+              <th>Price per Night</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookings.map((booking) => (
+              <tr key={booking.id}>
+                <td>{booking.hotelName}</td>
+                <td>{booking.room.name}</td>
+                <td>{booking.checkIn}</td>
+                <td>{booking.checkOut}</td>
+                <td>{booking.room.price}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : (
         <p>No bookings found.</p>
       )}

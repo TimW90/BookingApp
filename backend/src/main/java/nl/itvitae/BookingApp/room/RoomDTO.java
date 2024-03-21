@@ -1,12 +1,11 @@
 package nl.itvitae.BookingApp.room;
 
-import nl.itvitae.BookingApp.image.ImageDTO;
+import static nl.itvitae.BookingApp.util.EnumUtil.enumName;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
-
-import static nl.itvitae.BookingApp.util.EnumUtil.enumName;
+import nl.itvitae.BookingApp.image.ImageDTO;
 
 public record RoomDTO(
     Long id,
