@@ -1,17 +1,13 @@
 package nl.itvitae.BookingApp.room;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.itvitae.BookingApp.image.Image;
-
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
-import static nl.itvitae.BookingApp.util.EnumUtil.enumName;
 
 @Entity
 @Getter
@@ -50,11 +46,6 @@ public class Room {
     SINGLE_ROOM,
     DOUBLE_ROOM,
     TRIPLE_ROOM,
-    QUADRUPLE_ROOM;
-
-    @Override
-    public String toString() {
-      return enumName(this.name());
-    }
+    QUADRUPLE_ROOM
   }
 }

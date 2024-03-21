@@ -14,6 +14,8 @@ export const getRoomTypes = async () => {
 
 export const postRoom = async (roomData) => {
   console.log('posting room');
+  console.log(roomData);
+  delete roomData.image;
   const response = await api.post(uri, roomData);
   return response.data;
-}
+};

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import ErrorMessage from '@/components/alerts/ErrorMessage';
 
 const Select = ({ register, options, name, errors, placeholder }) => {
+  console.log(options);
+
   return (
     <div className="form-control">
       <label className="label">
