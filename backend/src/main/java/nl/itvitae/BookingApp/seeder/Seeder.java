@@ -2,8 +2,12 @@ package nl.itvitae.BookingApp.seeder;
 
 import static nl.itvitae.BookingApp.util.ImageUtil.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.booking.Booking;
+import nl.itvitae.BookingApp.booking.BookingRepository;
+import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.hotel.Location;
@@ -23,7 +27,7 @@ public class Seeder implements CommandLineRunner {
 
   private final HotelRepository hotelRepository;
   private final RoomRepository roomRepository;
-  private final ImageRepository imageRepository;
+  private final BookingRepository bookingRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -185,4 +189,32 @@ public class Seeder implements CommandLineRunner {
 
     hotelRepository.saveAll(seededHotels);
   }
+  private void seedBookings(List<Hotel> seededHotels) {
+    // Assuming you have a list of users
+    List<User> users = userRepository.findAll();
+    if (users.isEmpty()) {
+      throw new ResourceNotFoundException("No users found");
+    }
+
+    LocalDate checkInDate = LocalDate.now();
+    LocalDate checkOutDate = LocalDate.now().plusDays(5);
+
+    // For simplicity, we'll just use the first user and alternate rooms
+    User bookingUser = users.getFirst();
+
+    for (Hotel hotel : seededHotels) {
+      for (Room room : hotel.getRooms()) {
+        Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, room);
+        bookingRepository.save(newBooking);
+
+        // Update check-in/check-out dates for variety
+        checkInDate = checkInDate.plusDays(10);
+        checkOutDate = checkOutDate.plusDays(15);
+      }
+    }
+
+
+  }
+
+
 }
