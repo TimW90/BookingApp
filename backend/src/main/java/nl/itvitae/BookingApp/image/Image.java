@@ -14,18 +14,21 @@ import java.util.List;
 @NoArgsConstructor
 public class Image {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "room_id")
-    private Room room;
+  @ManyToOne()
+  @JoinColumn(name = "room_id")
+  private Room room;
 
-    @Lob
-    private String base64Image;
+  @Lob private String base64Image;
 
-    public Image(String base64Image) {
-        this.base64Image = base64Image;
-    }
+  public Image(String base64Image) {
+    this.base64Image = base64Image;
+  }
+
+  public Image(ImageDTO imageDTO) {
+    this(imageDTO.base64Image());
+  }
 }

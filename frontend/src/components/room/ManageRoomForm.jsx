@@ -21,7 +21,7 @@ const roomSchema = object().shape({
   price: number()
     .required('Price is a required field')
     .positive('Price should be a positive number'),
-  image: mixed(),
+  images: mixed(),
   description: string()
     .required('Description is a required field')
     .min(15, 'Description should be a minimum of 15 characters'),
@@ -39,19 +39,21 @@ const ManageRoomForm = ({ hotelId }) => {
     reset,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isSubmitting },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(roomSchema),
+  });
 
   const { togglePopup } = usePopup();
   const roomTypes = useRoomTypes();
-  // const [imagePreview, setImagePreview] = useState('');
-  // const previewImage = watch('image');
+  const [imagePreview, setImagePreview] = useState('');
+  const previewImage = watch('image');
 
-  // useEffect(() => {
-  //   if (previewImage && previewImage.length > 0) {
-  //     const file = previewImage[0];
-  //     setImagePreview(URL.createObjectURL(file));
-  //   }
-  // }, [previewImage]);
+  useEffect(() => {
+    if (previewImage && previewImage.length > 0) {
+      const file = previewImage[0];
+      setImagePreview(URL.createObjectURL(file));
+    }
+  }, [previewImage]);
 
   // useEffect(() => {
   //   if (isPopupOpen) {
@@ -60,17 +62,19 @@ const ManageRoomForm = ({ hotelId }) => {
   // }, [reset, isSubmitSuccessful, isPopupOpen, room]);
 
   const onSubmit = async (roomData) => {
-    console.log(roomData);
+    roomData.base64Images = {};
+    if (roomData.images) {
+      for (let i = 0; i < roomData.images.length; i++) {
+        const image = roomData.images[i];
+        const base64Image = await convertToBase64(image);
+        roomData.base64Images[i] = { base64Image, imageNumber: i };
+      }
+    }
 
     try {
-      if (roomData.image?.[0]) {
-        const base64String = await convertToBase64(roomData.image[0]);
-        roomData.base64Image = base64String;
-      }
-
       const newRoom = await postRoom({ ...roomData, hotelId });
-      console.log(newRoom + ' has been made');
-      // setImagePreview('');
+      // console.log(JSON.stringify(newRoom[0]) + ' has been made');
+      setImagePreview('');
       togglePopup();
     } catch (error) {
       console.error(error);
@@ -116,8 +120,8 @@ const ManageRoomForm = ({ hotelId }) => {
           errors={errors}
         />
 
-        <FileInput register={register} name="image" errors={errors} />
-        {/* {imagePreview && <img src={imagePreview} alt="room preview image" />} */}
+        <FileInput register={register} name="images" errors={errors} />
+        {imagePreview && <img src={imagePreview} alt="room preview image" />}
         <TextArea register={register} name="description" errors={errors} />
 
         <Input

@@ -29,7 +29,7 @@ public record RoomDTO(
         1,
         room.getImageBase64Strings().stream()
             .map(ImageDTO::new)
-            .sorted(Comparator.comparingInt(a -> a.id().intValue()))
+            .sorted(Comparator.comparingInt(a -> a.imageNumber().intValue()))
             .toList());
   }
 }
