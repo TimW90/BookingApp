@@ -2,15 +2,28 @@ import { useEffect, useState } from 'react';
 import { getLocations } from '@/api/hotelApi';
 import DatePicker from './DatePicker';
 import { useForm } from 'react-hook-form';
-import useLocations from '@/hooks/useLocations';
+import Counter from './Counter';
 
 const SearchBar = ({ onSubmit }) => {
+  const [locations, setLocations] = useState([]);
+
   const { register, handleSubmit } = useForm();
-  const locations = useLocations();
+
+  useEffect(() => {
+    const loadLocations = async () => {
+      const fetchedLocations = await getLocations();
+      setLocations(fetchedLocations);
+    };
+
+    loadLocations();
+  }, [locations]);
 
   return (
     <div className="flex w-full">
-      <form className="flex w-full" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="flex w-full justify-center items-center gap-10 border rounded-lg  mx-40 z-10 border-base-content"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="dropdown">
           <div className="form-control">
             <select
@@ -27,23 +40,18 @@ const SearchBar = ({ onSubmit }) => {
             </select>
           </div>
         </div>
-        <div className="divider divider-horizontal"></div>
-        <div className="grid h-15 w-14 flex-grow card bg-base-300 rounded-box place-items-center">
-          <DatePicker register={register} />
-        </div>
-        <div className="divider divider-horizontal"></div>
+        <DatePicker register={register} />
         <details className="dropdown">
           <summary className="m-1 btn">Occupants</summary>
           <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
             <li>
-              <a>Item 1</a>
+              <Counter text="Adults" />
             </li>
             <li>
-              <a>Item 2</a>
+              <Counter text="Rooms" />
             </li>
           </ul>
         </details>
-        <div className="divider divider-horizontal"></div>
         <button method="submit" className="btn">
           Search
         </button>
