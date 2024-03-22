@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import DatePicker from './DatePicker';
 import { useForm } from 'react-hook-form';
-import { enumSimpleName } from '../util/util';
-import { useHotels } from '../hotel/HotelContext';
-import useLocations from '@/hooks/useLocations';
+import Counter from './Counter';
 import PropTypes from 'prop-types';
+import useLocations from '@/hooks/useLocations';
 import { useSearchParams } from './SearchParamsContext';
-import Select from '@/form/Select';
+import { enumSimpleName } from '../util/util';
+import { FaRegistered } from 'react-icons/fa6';
 
 const SearchBar = ({ isLocationFixed = false }) => {
   const { searchParams, setSearchParams } = useSearchParams();
@@ -14,58 +14,47 @@ const SearchBar = ({ isLocationFixed = false }) => {
   const locations = useLocations();
 
   const onSubmit = (searchForm) => {
-    console.log(searchForm);
     setSearchParams((prevParams) => ({ ...prevParams, ...searchForm }));
   };
 
   return (
-    <div className="flex w-full py-6">
+    <div className="flex w-full">
       <form
-        className="flex w-full justify-center items-center"
+        className="flex w-full justify-center items-center gap-10 border rounded-lg  mx-40 z-10 border-base-content"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/* On the hotel landing page we dont render the location anymore,
-         since the hotel is bound to a location already */}
-        {!isLocationFixed && (
-          <>
-            <div className="form-control">
-              <select
-                className="select select-bordered"
-                {...register('location')}
-                defaultValue=""
-              >
-                <option disabled value="">
-                  Location...
+        <div className="dropdown">
+          <div className="form-control">
+            <select
+              className="select select-bordered"
+              {...register('location')}
+              defaultValue=""
+            >
+              <option disabled value="">
+                Location...
+              </option>
+
+              {locations.map((value) => (
+                <option key={value} value={value}>
+                  {enumSimpleName(value)}
                 </option>
-
-                {locations.map((location) => (
-                  <option key={location} value={location}>
-                    {enumSimpleName(location)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="divider divider-horizontal"></div>
-          </>
-        )}
-
-        <div className="card rounded-box">
-          <DatePicker register={register} />
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="divider divider-horizontal"></div>
+
+        <DatePicker register={register} />
         <details className="dropdown">
           <summary className="m-1 btn">Occupants</summary>
           <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
             <li>
-              <a>Item 1</a>
+              <Counter register={register} text="Persons" />
             </li>
             <li>
-              <a>Item 2</a>
+              <Counter register={register} text="Rooms" />
             </li>
           </ul>
         </details>
-        <div className="divider divider-horizontal"></div>
-
         <button method="submit" className="btn">
           Search
         </button>

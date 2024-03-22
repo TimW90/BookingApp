@@ -4,7 +4,7 @@ const DatePicker = ({ register }) => {
       <div className="relative">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
-            className="w-4 h-4 "
+            className="w-4 h-4"
             aria-hidden="true"
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -15,16 +15,16 @@ const DatePicker = ({ register }) => {
         <input
           name="start"
           type="date"
-          className="input input-bordered text-sm rounded-lg block w-full ps-10 p-2.5"
+          className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Check-In"
-          {...register('startDate')}
+          {...register('checkInData')}
         ></input>
       </div>
-      <span className="mx-4 ">to</span>
+      <span className="mx-4">to</span>
       <div className="relative">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
-            className="w-4 h-4 "
+            className="w-4 h-4"
             aria-hidden="true"
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -35,9 +35,9 @@ const DatePicker = ({ register }) => {
         <input
           name="end"
           type="date"
-          className="input input-bordered text-sm rounded-lg block w-full ps-10 p-2.5"
+          className=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Check-Out"
-          {...register('endDate')}
+          {...register('checkOutDate')}
         ></input>
       </div>
     </div>
