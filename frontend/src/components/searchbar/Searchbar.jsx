@@ -5,15 +5,17 @@ import { enumSimpleName } from '../util/util';
 import { useHotels } from '../hotel/HotelContext';
 import useLocations from '@/hooks/useLocations';
 import PropTypes from 'prop-types';
+import { useSearchParams } from './SearchParamsContext';
+import Select from '@/form/Select';
 
 const SearchBar = ({ isLocationFixed = false }) => {
-  const { register, handleSubmit } = useForm();
-  const { updateSearchParams } = useHotels();
+  const { searchParams, setSearchParams } = useSearchParams();
+  const { register, handleSubmit } = useForm({ defaultValues: searchParams });
   const locations = useLocations();
 
   const onSubmit = (searchForm) => {
     console.log(searchForm);
-    updateSearchParams(searchForm);
+    setSearchParams((prevParams) => ({ ...prevParams, ...searchForm }));
   };
 
   return (
@@ -35,8 +37,11 @@ const SearchBar = ({ isLocationFixed = false }) => {
                 <option disabled value="">
                   Location...
                 </option>
+
                 {locations.map((location) => (
-                  <option key={location}>{enumSimpleName(location)}</option>
+                  <option key={location} value={location}>
+                    {enumSimpleName(location)}
+                  </option>
                 ))}
               </select>
             </div>

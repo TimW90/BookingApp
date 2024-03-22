@@ -1,16 +1,9 @@
-// SearchParamsContext.js
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const SearchParamsContext = createContext();
 
 export const SearchParamsProvider = ({ children }) => {
-  const [searchParams, setSearchParams] = useState({
-    location: null,
-    persons: null,
-    amountOfRooms: null,
-    startDate: null,
-    endDate: null,
-  });
+  const [searchParams, setSearchParams] = useState({});
 
   const contextValue = {
     searchParams,

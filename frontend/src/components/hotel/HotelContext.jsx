@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getHotels, postHotel, updateHotel, deleteHotel } from '@/api/hotelApi';
 import PropTypes from 'prop-types';
+import { useSearchParams } from '../searchbar/SearchParamsContext';
 
 const HotelContext = createContext();
 
@@ -9,14 +10,16 @@ export const HotelProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(0);
-  const [params, setParams] = useState({});
   const [hasMore, setHasMore] = useState(true);
+  const { searchParams } = useSearchParams();
 
   useEffect(() => {
     setLoading(true);
 
     const queryHotels = async () => {
-      const queriedHotelPages = await getHotels({ ...params, page });
+      const queryParams = { ...searchParams, page };
+      console.log('SearchParams or page changed', queryParams, page);
+      const queriedHotelPages = await getHotels(queryParams);
 
       if (page === 0) {
         setHotels(queriedHotelPages.content);
@@ -32,7 +35,7 @@ export const HotelProvider = ({ children }) => {
     };
 
     queryHotels();
-  }, [setHotels, params, page]);
+  }, [setHotels, searchParams, page]);
 
   const handleAddHotel = async (hotelData) => {
     try {
@@ -59,11 +62,6 @@ export const HotelProvider = ({ children }) => {
     setHotels((prev) => prev.filter((hotel) => hotel.id !== id));
   };
 
-  const updateSearchParams = (newParams) => {
-    setParams(newParams);
-    setPage(0);
-  };
-
   // This is a naive approach to endless scrolling that works for now
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -88,8 +86,6 @@ export const HotelProvider = ({ children }) => {
     hasMore,
     setHotels,
     setPage,
-    updateSearchParams,
-    params,
     handleAddHotel,
     handleUpdateHotel,
     handleDeleteHotel,
