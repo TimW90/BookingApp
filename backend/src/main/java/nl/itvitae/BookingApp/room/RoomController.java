@@ -1,13 +1,15 @@
 package nl.itvitae.BookingApp.room;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeRepository;
 import nl.itvitae.BookingApp.image.Image;
-import nl.itvitae.BookingApp.image.ImageDTO;
 import nl.itvitae.BookingApp.image.ImageRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ public class RoomController {
   private final RoomRepository roomRepository;
   private final HotelRepository hotelRepository;
   private final ImageRepository imageRepository;
+  private final HotelRoomTypeRepository hotelRoomTypeRepository;
 
   @GetMapping
   public List<RoomDTO> findAll() {
@@ -36,23 +39,27 @@ public class RoomController {
             .orElseThrow(() -> new ResourceNotFoundException("Room not found")));
   }
 
-  @GetMapping("types")
-  public List<String> getAllTypes() {
-    return Arrays.stream(Room.Type.values()).map(Enum::toString).toList();
-  }
+  //  @GetMapping("types")
+  //  public List<String> getAllTypes() {
+  //    return Arrays.stream(Room.Type.values()).map(Enum::toString).toList();
+  //  }
 
   @PostMapping
-  public List<RoomDTO> newRoom(@RequestBody RoomDTO room) {
+  public List<RoomDTO> newRoom(@RequestBody RoomDTO roomDTO) {
     var hotel =
         hotelRepository
-            .findById(room.hotelId())
+            .findById(roomDTO.hotelRoomType().getHotel().getId())
             .orElseThrow(() -> new ResourceNotFoundException("Hotel to add room to not found"));
     List<Room> newRooms = new ArrayList<>();
-    List<Image> newImages = room.base64Images().stream().map(Image::new).toList();
+    Set<Image> newImages = roomDTO.hotelRoomType().getImageBase64Strings();
     imageRepository.saveAll(newImages);
-    for (int i = 0; i < room.quantity(); i++) {
-      Room newRoom = new Room(room.name(), room.type(), room.price(), room.description());
-      newRoom.getImageBase64Strings().addAll(newImages);
+
+    for (int i = 0; i < roomDTO.quantity(); i++) {
+      Room newRoom =
+          new Room(roomDTO.name(), roomDTO.hotelRoomType(), roomDTO.price(), roomDTO.description());
+      for (Image image : newImages) {
+        image.setHotelRoomType(newRoom.getHotelRoomType());
+      }
       roomRepository.save(newRoom);
       hotel.addRoom(newRoom);
       newRooms.add(newRoom);
@@ -71,7 +78,7 @@ public class RoomController {
   public Room updateRoom(@PathVariable("id") Long id, @RequestBody Room room) {
     Room updatedRoom = roomRepository.findById(id).get();
     updatedRoom.setName(room.getName());
-    updatedRoom.setType(room.getType());
+    updatedRoom.setHotelRoomType(room.getHotelRoomType());
     updatedRoom.setPrice(room.getPrice());
     updatedRoom.setDescription(room.getDescription());
     return roomRepository.save(updatedRoom);

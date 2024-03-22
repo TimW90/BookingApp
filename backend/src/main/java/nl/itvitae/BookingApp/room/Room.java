@@ -7,6 +7,7 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
 import nl.itvitae.BookingApp.image.Image;
 
 @Entity
@@ -22,30 +23,17 @@ public class Room {
   @Column(nullable = false)
   private String name;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private Type type;
+  @ManyToOne private HotelRoomType hotelRoomType;
 
   @Column(nullable = false)
   private BigDecimal price;
 
   private String description;
 
-  @Lob
-  @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-  private Set<Image> imageBase64Strings = new HashSet<>();
-
-  public Room(String name, Type type, double price, String description) {
+  public Room(String name, HotelRoomType hotelRoomType, double price, String description) {
     this.name = name;
-    this.type = type;
+    this.hotelRoomType = hotelRoomType;
     this.price = BigDecimal.valueOf(price);
     this.description = description;
-  }
-
-  public enum Type {
-    SINGLE_ROOM,
-    DOUBLE_ROOM,
-    TRIPLE_ROOM,
-    QUADRUPLE_ROOM
   }
 }

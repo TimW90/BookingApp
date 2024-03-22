@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.hotel.Location;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeRepository;
 import nl.itvitae.BookingApp.image.Image;
 import nl.itvitae.BookingApp.image.ImageRepository;
 import nl.itvitae.BookingApp.room.Room;
@@ -27,6 +29,7 @@ public class Seeder implements CommandLineRunner {
   private final HotelRepository hotelRepository;
   private final RoomRepository roomRepository;
   private final ImageRepository imageRepository;
+  private final HotelRoomTypeRepository hotelRoomTypeRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -132,13 +135,19 @@ public class Seeder implements CommandLineRunner {
   }
 
   private Room saveRoom(
-      String name, Room.Type type, double price, String description, List<String> imagePaths) {
-    Room room = new Room(name, type, price, description);
+      String name,
+      HotelRoomType hotelRoomType,
+      double price,
+      String description,
+      List<String> imagePaths) {
+    hotelRoomTypeRepository.save(hotelRoomType);
+    Room room = new Room(name, hotelRoomType, price, description);
 
     for (String imagePath : imagePaths) {
       Image image = new Image(getImageFromPathAsBase64String(imagePath));
-      room.getImageBase64Strings().add(image);
-      image.setRoom(room);
+      imageRepository.save(image);
+      room.getHotelRoomType().getImageBase64Strings().add(image);
+      image.setHotelRoomType(room.getHotelRoomType());
     }
 
     return roomRepository.save(room);
@@ -153,13 +162,13 @@ public class Seeder implements CommandLineRunner {
                     List.of(
                         saveRoom(
                             "Single Comfort Room",
-                            Room.Type.SINGLE_ROOM,
+                            new HotelRoomType(hotel, HotelRoomType.Type.SINGLE_ROOM),
                             120,
                             "A nice and cozy room for one person",
                             List.of("src/main/resources/images/room_1_1.png")),
                         saveRoom(
                             "Double Comfort Room",
-                            Room.Type.DOUBLE_ROOM,
+                            new HotelRoomType(hotel, HotelRoomType.Type.DOUBLE_ROOM),
                             220,
                             "A nice and cozy room for two persons",
                             List.of(
@@ -167,7 +176,7 @@ public class Seeder implements CommandLineRunner {
                                 "src/main/resources/images/room_2_2.png")),
                         saveRoom(
                             "Quadruple Deluxe Room",
-                            Room.Type.QUADRUPLE_ROOM,
+                            new HotelRoomType(hotel, HotelRoomType.Type.QUADRUPLE_ROOM),
                             400,
                             "A big luxurious room for up to four persons",
                             List.of(

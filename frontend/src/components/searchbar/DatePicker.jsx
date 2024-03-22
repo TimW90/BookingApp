@@ -2,11 +2,11 @@ import DateRangePicker from 'flowbite-datepicker/DateRangePicker';
 
 const DatePicker = ({ register }) => {
   return (
-    <div date-rangepicker class="flex items-center">
-      <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+    <div className="flex items-center">
+      <div className="relative">
+        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
-            class="w-4 h-4"
+            className="w-4 h-4"
             aria-hidden="true"
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -17,15 +17,15 @@ const DatePicker = ({ register }) => {
         <input
           name="start"
           type="date"
-          class="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Check-In"
         ></input>
       </div>
-      <span class="mx-4">to</span>
-      <div class="relative">
-        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+      <span className="mx-4">to</span>
+      <div className="relative">
+        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
-            class="w-4 h-4"
+            className="w-4 h-4"
             aria-hidden="true"
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -36,7 +36,7 @@ const DatePicker = ({ register }) => {
         <input
           name="end"
           type="date"
-          class=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Check-Out"
         ></input>
       </div>
