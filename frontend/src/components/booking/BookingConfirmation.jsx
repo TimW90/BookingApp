@@ -7,11 +7,12 @@ import { postBooking } from '@/api/bookingApi';
 import DatePicker from '../searchbar/DatePicker';
 import { useHotels } from '../hotel/HotelContext';
 import { useForm } from 'react-hook-form';
+import { useSearchParams } from '../searchbar/SearchParamsContext';
 
 const BookingConfirmation = ({ room }) => {
   const { user } = useAuth();
-  const { params } = useHotels();
-  const { register, handleSubmit } = useForm();
+  const { searchParams } = useSearchParams();
+  const { register, handleSubmit } = useForm({ defaultValues: searchParams });
   console.log(room.id);
 
   const onConfirm = async () => {
