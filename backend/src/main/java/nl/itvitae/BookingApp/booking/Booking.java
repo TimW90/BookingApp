@@ -18,7 +18,10 @@ public class Booking {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @Column(nullable = false)
   private LocalDate checkIn;
+
+  @Column(nullable = false)
   private LocalDate checkOut;
 
   @ManyToOne

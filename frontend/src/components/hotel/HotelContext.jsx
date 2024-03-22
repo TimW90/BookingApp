@@ -16,12 +16,7 @@ export const HotelProvider = ({ children }) => {
     setLoading(true);
 
     const queryHotels = async () => {
-      const queryParams = {
-        ...params,
-        page, // This adds the page parameter to the query
-      };
-
-      const queriedHotelPages = await getHotels(queryParams);
+      const queriedHotelPages = await getHotels({ ...params, page });
 
       if (page === 0) {
         setHotels(queriedHotelPages.content);
@@ -73,9 +68,9 @@ export const HotelProvider = ({ children }) => {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [hotels]);
+  });
 
-  const handleScroll = async () => {
+  const handleScroll = () => {
     if (
       hasMore &&
       window.innerHeight + document.documentElement.scrollTop + 1 >=
@@ -94,6 +89,7 @@ export const HotelProvider = ({ children }) => {
     setHotels,
     setPage,
     updateSearchParams,
+    params,
     handleAddHotel,
     handleUpdateHotel,
     handleDeleteHotel,

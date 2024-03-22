@@ -38,10 +38,10 @@ const UserBookings = () => {
             {bookings.map((booking) => (
               <tr key={booking.id}>
                 <td>{booking.hotelName}</td>
-                <td>{booking.room.name}</td>
+                <td>{booking.roomName}</td>
                 <td>{booking.checkIn}</td>
                 <td>{booking.checkOut}</td>
-                <td>{booking.room.price}</td>
+                <td>€{booking.price}</td>
               </tr>
             ))}
           </tbody>

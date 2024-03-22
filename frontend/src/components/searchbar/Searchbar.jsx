@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { getLocations } from '@/api/hotelApi';
 import DatePicker from './DatePicker';
 import { useForm } from 'react-hook-form';
 import { enumSimpleName } from '../util/util';
 import { useHotels } from '../hotel/HotelContext';
 import useLocations from '@/hooks/useLocations';
+import PropTypes from 'prop-types';
 
 const SearchBar = ({ isLocationFixed = false }) => {
   const { register, handleSubmit } = useForm();
@@ -22,23 +22,28 @@ const SearchBar = ({ isLocationFixed = false }) => {
         className="flex w-full justify-center items-center"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="dropdown">
-          <div className="form-control">
-            <select
-              className="select select-bordered"
-              {...register('location')}
-              defaultValue=""
-            >
-              <option disabled value="">
-                Location...
-              </option>
-              {locations.map((location) => (
-                <option key={location}>{enumSimpleName(location)}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-        <div className="divider divider-horizontal"></div>
+        {/* On the hotel landing page we dont render the location anymore,
+         since the hotel is bound to a location already */}
+        {!isLocationFixed && (
+          <>
+            <div className="form-control">
+              <select
+                className="select select-bordered"
+                {...register('location')}
+                defaultValue=""
+              >
+                <option disabled value="">
+                  Location...
+                </option>
+                {locations.map((location) => (
+                  <option key={location}>{enumSimpleName(location)}</option>
+                ))}
+              </select>
+            </div>
+            <div className="divider divider-horizontal"></div>
+          </>
+        )}
+
         <div className="card rounded-box">
           <DatePicker register={register} />
         </div>
@@ -62,6 +67,10 @@ const SearchBar = ({ isLocationFixed = false }) => {
       </form>
     </div>
   );
+};
+
+SearchBar.propTypes = {
+  isLocationFixed: PropTypes.bool,
 };
 
 export default SearchBar;
