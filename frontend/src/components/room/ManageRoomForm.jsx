@@ -62,7 +62,7 @@ const ManageRoomForm = ({ hotelId }) => {
   // }, [reset, isSubmitSuccessful, isPopupOpen, room]);
 
   const onSubmit = async (roomData) => {
-    roomData.base64Images = {};
+    roomData.base64Images = [];
     if (roomData.images) {
       for (let i = 0; i < roomData.images.length; i++) {
         const image = roomData.images[i];

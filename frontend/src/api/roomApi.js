@@ -13,10 +13,14 @@ export const getRoomTypes = async () => {
 };
 
 export const postRoom = async (roomData) => {
-  console.log('posting room');
-  console.log(roomData);
-  delete roomData.image;
-  const response = await api.post(uri, roomData);
-  console.log(response.data);
-  return response.data;
+  try {
+    console.log('posting room');
+    console.log(roomData);
+    delete roomData.image;
+    const response = await api.post(uri, roomData);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error while trying to post a new room', error.response.data);
+  }
 };
