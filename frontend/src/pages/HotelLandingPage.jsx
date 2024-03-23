@@ -5,6 +5,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import RoomCard from '@/components/room/RoomCard';
 import Accordion from '@/components/common/Accordion';
 import SearchBar from '@/components/searchbar/Searchbar';
+import stockHotelImage from '@/images/Hotel.jpeg';
 
 const HotelLandingPage = () => {
   const [hotel, setHotel] = useState(null);
@@ -51,7 +52,7 @@ const HotelLandingPage = () => {
       </div>
       <div
         style={{
-          backgroundImage: `url('${hotel.rooms[2].base64Images[0].base64Image}')`,
+          backgroundImage: `url('${hotel.rooms[2]?.base64Images[0]?.base64Image ? hotel.rooms[2].base64Images[0].base64Image : stockHotelImage}')`,
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>

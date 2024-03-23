@@ -12,12 +12,23 @@ export const fetchBookingsByUsername = async (username) => {
   }
 };
 
-export const postBooking = async (roomId, email) => {
-  console.log({ roomId, email });
+export const postBooking = async (bookingDetails) => {
+  console.log(bookingDetails);
   try {
-    const result = await api.post(uri, { roomId, email });
+    const result = await api.post(uri, bookingDetails);
+    console.log(result.data);
     return result.data;
   } catch (error) {
     console.error('Error posting new booking: ');
+  }
+};
+
+export const cancelBookingById = async (bookingId) => {
+  console.log('Cancelling booking');
+
+  try {
+    await api.delete(`${uri}/${bookingId}`);
+  } catch (error) {
+    console.error('Error cancelling booking');
   }
 };

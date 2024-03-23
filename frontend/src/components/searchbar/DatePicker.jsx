@@ -15,9 +15,9 @@ const DatePicker = ({ register }) => {
         <input
           name="start"
           type="date"
-          className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="input input-bordered bg-primary-content text-sm rounded-lg block w-full ps-10 p-2.5"
           placeholder="Check-In"
-          {...register('checkInData')}
+          {...register('checkInDate')}
         ></input>
       </div>
       <span className="mx-4">to</span>
@@ -35,7 +35,7 @@ const DatePicker = ({ register }) => {
         <input
           name="end"
           type="date"
-          className=" text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="input input-bordered bg-primary-content text-sm rounded-lg block w-full ps-10 p-2.5"
           placeholder="Check-Out"
           {...register('checkOutDate')}
         ></input>

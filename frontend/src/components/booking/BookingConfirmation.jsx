@@ -8,24 +8,50 @@ import DatePicker from '../searchbar/DatePicker';
 import { useHotels } from '../hotel/HotelContext';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from '../searchbar/SearchParamsContext';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, date, ref } from 'yup';
+import { usePopup } from '../popup/PopupContext';
+import { useNavigate } from 'react-router-dom';
+
+const requiredDatesSchema = object().shape({
+  checkInDate: date().required('Check-in date is required'),
+  checkOutDate: date()
+    .required('Check-out date is required')
+    .min(ref('checkInDate'), 'Check-out date must be after check-in date'),
+});
 
 const BookingConfirmation = ({ room }) => {
   const { user } = useAuth();
   const { searchParams } = useSearchParams();
-  const { register, handleSubmit } = useForm({ defaultValues: searchParams });
-  console.log(room.id);
+  const { togglePopup } = usePopup();
+  const { navigate } = useNavigate();
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ yupResolver: requiredDatesSchema });
 
   const onConfirm = async () => {
     try {
-      const newBooking = postBooking(room.id, user.sub);
-      console.log(newBooking);
+      const isValid = await requiredDatesSchema.isValid(searchParams);
+
+      if (isValid) {
+        const bookingDetails = {
+          roomId: room.id,
+          userEmail: user.sub,
+          checkInDate: searchParams.checkInDate,
+          checkOutDate: searchParams.checkOutDate,
+        };
+
+        const newBooking = postBooking(bookingDetails);
+        togglePopup();
+        navigate('http:localhost:5173/my-bookings');
+        console.log(newBooking);
+      } else {
+        console.log('Update data');
+      }
     } catch (error) {
       console.error('Error while trying to book', error);
     }
-  };
-
-  const onSubmit = (dateData) => {
-    console.log(dateData);
   };
 
   if (!room) return <LoadingSpinner />;
@@ -33,9 +59,6 @@ const BookingConfirmation = ({ room }) => {
     <>
       <div className="prose p-4 max-w-md mx-auto">
         <h2>Confirm Booking</h2>
-        <form onSubmit={handleSubmit(onSubmit())}>
-          <DatePicker register={register} />
-        </form>
         <div className="mb-4">
           <h3>{room.name}</h3>
           <p>{room.description}</p>
@@ -48,9 +71,13 @@ const BookingConfirmation = ({ room }) => {
             <ErrorMessage message="Create an account or login to book a room!" />
           )}
 
-          <button className="btn btn-secondary py-2" onClick={onConfirm}>
+          <button
+            className="btn btn-secondary py-2"
+            onClick={handleSubmit(onConfirm)}
+          >
             Confirm Booking
           </button>
+          {errors.root && <ErrorMessage message={errors.root.message} />}
         </div>
       </div>
     </>

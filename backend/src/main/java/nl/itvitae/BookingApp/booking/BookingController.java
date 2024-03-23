@@ -58,11 +58,12 @@ public class BookingController {
       @RequestBody BookingRequest bookingRequest, UriComponentsBuilder ucb) {
     User user =
         userRepository
-            .findByEmail(bookingRequest.email())
+            .findByEmail(bookingRequest.userEmail())
             .orElseThrow(
                 () ->
                     new UsernameNotFoundException(
-                        String.format("User with username %s not found.", bookingRequest.email())));
+                        String.format(
+                            "User with username %s not found.", bookingRequest.userEmail())));
     Room room =
         roomRepository
             .findById(bookingRequest.roomId())
@@ -70,7 +71,7 @@ public class BookingController {
 
     Booking newBooking =
         bookingRepository.save(
-            new Booking(bookingRequest.checkIn(), bookingRequest.checkOut(), user, room));
+            new Booking(bookingRequest.checkInDate(), bookingRequest.checkOutDate(), user, room));
 
     URI locationOfNewBooking =
         ucb.path("api/v1/bookings/{id}").buildAndExpand(newBooking.getId()).toUri();
@@ -79,5 +80,20 @@ public class BookingController {
         .body(BookingDTO.createBookingDTO(newBooking));
   }
 
-  public record BookingRequest(Long roomId, String email, LocalDate checkIn, LocalDate checkOut) {}
+  @DeleteMapping("{bookingId}")
+  public ResponseEntity<?> cancelBooking(@PathVariable Long bookingId) {
+    Booking bookingToDelete =
+        bookingRepository
+            .findById(bookingId)
+            .orElseThrow(
+                () ->
+                    new ResourceNotFoundException(
+                        String.format("Booking with id %d not found", bookingId)));
+
+    bookingRepository.deleteById(bookingId);
+    return ResponseEntity.noContent().build();
+  }
+
+  public record BookingRequest(
+      Long roomId, String userEmail, LocalDate checkInDate, LocalDate checkOutDate) {}
 }
