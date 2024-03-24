@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       processToken(token);
     }
@@ -34,19 +34,20 @@ export const AuthProvider = ({ children }) => {
         console.log(loginRequest);
         const response = await loginUser(loginRequest);
         const token = response.data;
-        localStorage.setItem('token', token);
+        sessionStorage.setItem('token', token);
         processToken(token);
         setFlashMessage('Logged in successfully!');
         setJwtHeader(token);
       } catch (error) {
         console.error('Error while trying to log in', error);
+        throw error;
       }
     },
     [setFlashMessage]
   );
 
   const handleLogout = useCallback(() => {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     setUser(null);
     setIsAdmin(false);
     setFlashMessage('Logged out successfully!');

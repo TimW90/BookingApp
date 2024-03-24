@@ -26,7 +26,7 @@ const Select = ({ register, options, name, errors }) => {
         ))}
       </select>
       {errors && errors[name] && (
-        <ErrorMessage message={errors[name].message} />
+        <ErrorMessage message={errors[name]?.message} />
       )}
     </div>
   );

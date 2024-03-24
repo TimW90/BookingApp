@@ -32,11 +32,13 @@ public class JWTService {
   public String generateUserJWT(String username) {
     User user =
         userRepository
-            .findByEmail(username)
+            .findByUsername(username)
             .orElseThrow(() -> new UsernameNotFoundException(username));
+
     Map<String, Object> claims = new HashMap<>();
     claims.put("roles", user.getRoles().split(","));
-    return buildJWT(claims, user.getEmail());
+    claims.put("fullName", user.getFullName());
+    return buildJWT(claims, user.getUsername());
   }
 
   private String buildJWT(Map<String, Object> claims, String username) {

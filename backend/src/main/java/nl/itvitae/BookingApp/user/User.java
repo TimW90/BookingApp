@@ -22,14 +22,14 @@ public class User {
   private Long id;
 
   private String fullName;
-  private String email;
+  private String username;
   private String password;
   private String roles;
 
-  public User(String fullName, String password, String email, String roles) {
+  public User(String fullName, String password, String username, String roles) {
     this.fullName = fullName;
     this.password = password;
-    this.email = email;
+    this.username = username;
     this.roles = roles;
   }
 

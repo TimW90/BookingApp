@@ -31,7 +31,7 @@ public class BookingController {
   public Set<BookingDTO> getBookingsByUsername(@PathVariable String username) {
     User user =
         userRepository
-            .findByEmail(username)
+            .findByUsername(username)
             .orElseThrow(
                 () ->
                     new UsernameNotFoundException(
@@ -58,7 +58,7 @@ public class BookingController {
       @RequestBody BookingRequest bookingRequest, UriComponentsBuilder ucb) {
     User user =
         userRepository
-            .findByEmail(bookingRequest.userEmail())
+            .findByUsername(bookingRequest.userEmail())
             .orElseThrow(
                 () ->
                     new UsernameNotFoundException(

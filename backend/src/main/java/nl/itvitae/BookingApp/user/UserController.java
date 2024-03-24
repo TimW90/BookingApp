@@ -26,14 +26,14 @@ public class UserController {
 
   @GetMapping("/{email}")
   public User findByEmail(@PathVariable("email") String email) {
-    return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+    return userRepository.findByUsername(email).orElseThrow(() -> new UserNotFoundException(email));
   }
 
   @PostMapping()
   public ResponseEntity<UserDTO> saveUser(@RequestBody User user, UriComponentsBuilder ucb) {
-    Optional<User> fetchedUser = userRepository.findByEmail(user.getEmail());
+    Optional<User> fetchedUser = userRepository.findByUsername(user.getUsername());
     if (fetchedUser.isPresent()) {
-      throw new ResourceAlreadyExistsException(user.getEmail());
+      throw new ResourceAlreadyExistsException(user.getUsername());
     }
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setRoles("USER");

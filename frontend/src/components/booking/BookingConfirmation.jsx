@@ -24,39 +24,40 @@ const BookingConfirmation = ({ room }) => {
   const { user } = useAuth();
   const { searchParams } = useSearchParams();
   const { togglePopup } = usePopup();
-  const { navigate } = useNavigate();
   const {
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm({ yupResolver: requiredDatesSchema });
+  } = useForm({
+    defaultValues: searchParams,
+    resolver: yupResolver(requiredDatesSchema),
+  });
 
-  const onConfirm = async () => {
+  const onConfirm = async (data) => {
     try {
-      const isValid = await requiredDatesSchema.isValid(searchParams);
+      const bookingDetails = {
+        roomId: room.id,
+        userEmail: user.sub,
+        checkInDate: searchParams.checkInDate,
+        checkOutDate: searchParams.checkOutDate,
+      };
+      console.log(bookingDetails);
 
-      if (isValid) {
-        const bookingDetails = {
-          roomId: room.id,
-          userEmail: user.sub,
-          checkInDate: searchParams.checkInDate,
-          checkOutDate: searchParams.checkOutDate,
-        };
-
-        const newBooking = postBooking(bookingDetails);
-        togglePopup();
-        navigate('http:localhost:5173/my-bookings');
-        console.log(newBooking);
-      } else {
-        console.log('Update data');
-      }
+      const newBooking = postBooking(bookingDetails);
+      togglePopup();
+      console.log(newBooking);
     } catch (error) {
       console.error('Error while trying to book', error);
     }
   };
 
+  useEffect(() => {
+    reset(searchParams); // when parameters are updated we reset the values to the updates ones
+  }, [searchParams, reset]);
+
   if (!room) return <LoadingSpinner />;
   return (
-    <>
+    <form>
       <div className="prose p-4 max-w-md mx-auto">
         <h2>Confirm Booking</h2>
         <div className="mb-4">
@@ -74,13 +75,16 @@ const BookingConfirmation = ({ room }) => {
           <button
             className="btn btn-secondary py-2"
             onClick={handleSubmit(onConfirm)}
+            type="submit"
           >
             Confirm Booking
           </button>
-          {errors.root && <ErrorMessage message={errors.root.message} />}
+          {<ErrorMessage message={errors.checkInDate?.message} />}
+          {<ErrorMessage message={errors.checkOutDate?.message} />}
+          {<ErrorMessage message={errors.root?.message} />}
         </div>
       </div>
-    </>
+    </form>
   );
 };
 

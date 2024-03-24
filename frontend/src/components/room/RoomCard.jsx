@@ -25,7 +25,7 @@ const RoomCard = ({ room, index }) => {
 
       <div className="collapse-title prose">
         <div className="flex items-center gap-4">
-          <PreviewImage image={room.base64Images[0].base64Image} />
+          <PreviewImage image={room.base64Images[0]?.base64Image} />
           <h2 className="m-0">{room.name}</h2>
         </div>
       </div>

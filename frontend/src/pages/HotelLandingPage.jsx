@@ -56,8 +56,10 @@ const HotelLandingPage = () => {
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>
-
       <SearchBar isLocationFixed />
+      <h1 className="flex text-xl w-full justify-center">
+        {hotel.rooms.length} accommodations found
+      </h1>
       <Accordion>
         {hotel.rooms.map((room, index) => (
           <RoomCard key={room.id} room={room} index={index} />

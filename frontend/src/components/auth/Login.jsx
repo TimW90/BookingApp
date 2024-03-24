@@ -30,7 +30,7 @@ const Login = () => {
 
   const onSubmit = async (loginRequest) => {
     try {
-      handleLogin(loginRequest);
+      await handleLogin(loginRequest);
       togglePopup();
     } catch (error) {
       let errorMessage =

@@ -10,7 +10,7 @@ const setJwtHeader = (jwtToken) => {
   api.defaults.headers.common.Authorization = `Bearer ${jwtToken}`;
 };
 
-const jwt = localStorage.getItem('token');
+const jwt = sessionStorage.getItem('token');
 if (jwt) setJwtHeader(jwt);
 
 const handleError = (error) => {
@@ -25,6 +25,8 @@ const handleError = (error) => {
     // Something happened in setting up the request that triggered an Error
     console.error('Error:', error.message);
   }
+
+  throw error;
 };
 
 api.interceptors.response.use(

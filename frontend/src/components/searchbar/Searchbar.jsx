@@ -6,13 +6,14 @@ import useLocations from '@/hooks/useLocations';
 import { useSearchParams } from './SearchParamsContext';
 import { enumSimpleName } from '../util/util';
 import OccupantsDropdown from './OccupantsDropdown';
+import { useHotels } from '../hotel/HotelContext';
 
 const SearchBar = ({ isLocationFixed = false }) => {
   const { searchParams, setSearchParams } = useSearchParams();
+  const locations = useLocations();
   const { register, handleSubmit, control } = useForm({
     defaultValues: searchParams,
   });
-  const locations = useLocations();
 
   const onSubmit = (searchForm) => {
     setSearchParams((prevParams) => ({ ...prevParams, ...searchForm }));
@@ -21,7 +22,7 @@ const SearchBar = ({ isLocationFixed = false }) => {
   return (
     <div className="flex w-full">
       <form
-        className="flex flex-col sm:flex-row w-full justify-center bg-base-100 gap-4 items-center border border-base-content border-opacity-50 rounded-lg mx-40 my-4 px-4 py-1 z-10 "
+        className="flex flex-col sm:flex-row w-full justify-center bg-base-100 gap-4 items-center border border-base-content border-opacity-50 rounded-lg mx-36 my-4 px-4 py-1 z-10 "
         onSubmit={handleSubmit(onSubmit)}
       >
         {!isLocationFixed && (

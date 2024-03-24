@@ -108,15 +108,11 @@ public class HotelController {
   }
 
   @DeleteMapping("{id}")
-  public ResponseEntity<?> deleteHotel(@PathVariable long hotelId) {
-    Hotel hotelToDelete =
-        hotelRepository
-            .findById(hotelId)
-            .orElseThrow(
-                () ->
-                    new ResourceNotFoundException(
-                        String.format("Hotel with id %d not found", hotelId)));
-
+  public ResponseEntity<?> deleteHotel(@PathVariable long id) {
+    if (hotelRepository.existsById(id)) {
+      hotelRepository.deleteById(id);
+      return ResponseEntity.noContent().build();
+    }
     return ResponseEntity.notFound().build();
   }
 

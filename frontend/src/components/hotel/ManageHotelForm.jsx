@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import useLocations from '@/hooks/useLocations';
 import { useHotels } from './HotelContext';
 import { convertToBase64 } from '../images/ImageUtil';
-import Form from '@/form/Form';
 import Input from '@/form/Input';
 import Select from '@/form/Select';
 import StarRatingInput from '@/form/StarRatingInput';
@@ -71,7 +70,6 @@ const ManageHotelForm = ({ hotel }) => {
       } else {
         setImagePreview('');
       }
-      
     }
   }, [reset, isSubmitSuccessful, isPopupOpen, hotel]);
 
@@ -109,7 +107,7 @@ const ManageHotelForm = ({ hotel }) => {
 
       {imagePreview && <img src={imagePreview} alt="hotel preview image" />}
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           register={register}
           name="name"
@@ -135,8 +133,8 @@ const ManageHotelForm = ({ hotel }) => {
         <TextArea register={register} name="description" errors={errors} />
         <SubmitButton isLoading={isSubmitting}>Confirm</SubmitButton>
 
-        {errors.root && <ErrorMessage message={errors.root.message} />}
-      </Form>
+        {<ErrorMessage message={errors.root?.message} />}
+      </form>
     </div>
   );
 };

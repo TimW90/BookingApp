@@ -32,18 +32,21 @@ const Register = () => {
   const onSubmit = async (userData) => {
     console.log(userData);
     try {
-      postUser(userData);
-      handleLogin({ username: userData.username, password: userData.password });
+      await postUser(userData);
+      await handleLogin({
+        username: userData.username,
+        password: userData.password,
+      });
       togglePopup();
     } catch (error) {
       let errorMessage =
         'An unexpected error occurred. Please try again later.';
 
       console.error('Error while trying to register', error);
-      // if (error.response.status === 409) {
-      //   errorMessage =
-      //     'This email address is already in use. Please use a different email or log in.';
-      // }
+      if (error.response.status === 409) {
+        errorMessage =
+          'This email address is already in use. Please use a different email or log in.';
+      }
 
       setError('root', { message: errorMessage });
     }
