@@ -32,7 +32,7 @@ const Hero = () => {
         <div>
           <h1 className="text-5xl font-bold">{data.name}</h1>
           <p className="py-6">{data.description}</p>
-          <button className="btn btn-primary">Get Started</button>
+          <button className="btn btn-primary">Go to Hotel</button>
         </div>
       </div>
     </div>
