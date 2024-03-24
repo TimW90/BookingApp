@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
 import nl.itvitae.BookingApp.room.Room;
 import org.hibernate.annotations.*;
 
@@ -56,7 +57,7 @@ public class Hotel {
     this.base64Image = hotelDTO.base64Image();
   }
 
-  public void addRoom(Room room) {
-    rooms.add(room);
+  public void addHotelRoomTypes(HotelRoomType hotelRoomType) {
+    hotelRoomTypes.add(hotelRoomType);
   }
 }

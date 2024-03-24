@@ -39,6 +39,9 @@ public class Seeder implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
+    seedUsers();
+    List<Hotel> seededHotels = seedHotels();
+    seedHotelRoomTypes(seededHotels);
     if (userRepository.count() == 0) {
       seedUsers();
     }
@@ -153,51 +156,60 @@ public class Seeder implements CommandLineRunner {
                     "src/main/resources/images/rotterdam_dockside.jpg"))));
   }
 
-  private Room saveRoom(
+  private HotelRoomType saveHotelRoomType(
+      Hotel hotel,
+      HotelRoomType.Type type,
       String name,
-      HotelRoomType hotelRoomType,
       double price,
       String description,
       List<String> imagePaths) {
+    HotelRoomType hotelRoomType = new HotelRoomType(hotel, type, name, price, description);
     hotelRoomTypeRepository.save(hotelRoomType);
-    Room room = new Room(name, hotelRoomType, price, description);
 
     for (String imagePath : imagePaths) {
       Image image = new Image(getImageFromPathAsBase64String(imagePath));
       imageRepository.save(image);
-      room.getHotelRoomType().getImageBase64Strings().add(image);
-      image.setHotelRoomType(room.getHotelRoomType());
+      hotelRoomType.getImageBase64Strings().add(image);
+      image.setHotelRoomType(hotelRoomType);
     }
-
-    room.setHotel(hotel);
-
-    return roomRepository.save(room);
+    return hotelRoomType;
   }
 
-  private void seedRooms(List<Hotel> seededHotels) {
+  //  private Room saveRoom(
+  //      HotelRoomType hotelRoomType) {
+  //    hotelRoomTypeRepository.save(hotelRoomType);
+  //    Room room = new Room(hotelRoomType);
+  //
+  //    return roomRepository.save(room);
+  //  }
+
+  private void seedHotelRoomTypes(List<Hotel> seededHotels) {
     seededHotels.forEach(
         (hotel) ->
             hotel
-                .getRooms()
+                .getHotelRoomTypes()
                 .addAll(
                     List.of(
-                        saveRoom(
+                        saveHotelRoomType(
+                            hotel,
+                            HotelRoomType.Type.SINGLE_ROOM,
                             "Single Comfort Room",
-                            new HotelRoomType(hotel, HotelRoomType.Type.SINGLE_ROOM),
                             120,
                             "A nice and cozy room for one person",
                             List.of("src/main/resources/images/room_1_1.png")),
-                        saveRoom(
+                        saveHotelRoomType(
+                            hotel,
+                            HotelRoomType.Type.DOUBLE_ROOM,
                             "Double Comfort Room",
-                            new HotelRoomType(hotel, HotelRoomType.Type.DOUBLE_ROOM),
                             220,
                             "A nice and cozy room for two persons",
                             List.of(
                                 "src/main/resources/images/room_2_1.png",
                                 "src/main/resources/images/room_2_2.png")),
-                        saveRoom(
+                        saveHotelRoomType(
+                            hotel,
+                            HotelRoomType.Type.QUADRUPLE_ROOM,
                             "Quadruple Deluxe Room",
-                            new HotelRoomType(hotel, HotelRoomType.Type.QUADRUPLE_ROOM),
                             400,
                             "A big luxurious room for up to four persons",
                             List.of(
