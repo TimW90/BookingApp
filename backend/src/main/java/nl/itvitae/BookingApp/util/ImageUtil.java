@@ -11,7 +11,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 public class ImageUtil {
 
-  public static String getImageFromPathAsBase64String(String imagePath) {
+  public static String convertImagePathToBase64String(String imagePath) {
     try {
       Path path = Path.of(imagePath);
       byte[] fileContent = Files.readAllBytes(path);

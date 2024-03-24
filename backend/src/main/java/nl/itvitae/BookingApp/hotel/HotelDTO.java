@@ -1,9 +1,7 @@
 package nl.itvitae.BookingApp.hotel;
 
-import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
-import nl.itvitae.BookingApp.room.RoomDTO;
-
 import java.util.List;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeDTO;
 
 public record HotelDTO(
     Long id,
@@ -21,6 +19,6 @@ public record HotelDTO(
         hotel.getLocation(),
         hotel.getDescription(),
         hotel.getBase64Image(),
-        hotel.get
+        hotel.getHotelRoomTypes().stream().map(HotelRoomTypeDTO::createHotelRoomTypeDTO).toList());
   }
 }

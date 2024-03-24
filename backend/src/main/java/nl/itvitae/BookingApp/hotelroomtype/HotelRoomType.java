@@ -2,13 +2,16 @@ package nl.itvitae.BookingApp.hotelroomtype;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.image.Image;
+import nl.itvitae.BookingApp.room.Room;
 
 @Entity
 @Getter
@@ -34,9 +37,11 @@ public class HotelRoomType {
 
   private String description;
 
-  @Lob
+  @OneToMany(mappedBy = "hotelRoomType")
+  private Set<Room> rooms = new HashSet<>();
+
   @OneToMany(mappedBy = "hotelRoomType", fetch = FetchType.EAGER)
-  private Set<Image> imagePaths = new HashSet<>();
+  private List<Image> imagePaths = new ArrayList<>();
 
   public HotelRoomType(RoomType type, String name, double price, String description) {
     this.type = type;
