@@ -1,7 +1,8 @@
 package nl.itvitae.BookingApp.hotel;
 
-import java.util.List;
 import nl.itvitae.BookingApp.room.RoomDTO;
+
+import java.util.List;
 
 public record HotelDTO(
     Long id,

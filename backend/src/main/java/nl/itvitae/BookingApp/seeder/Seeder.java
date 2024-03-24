@@ -12,6 +12,8 @@ import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.hotel.Location;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeRepository;
 import nl.itvitae.BookingApp.image.Image;
 import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
@@ -28,6 +30,8 @@ public class Seeder implements CommandLineRunner {
 
   private final HotelRepository hotelRepository;
   private final RoomRepository roomRepository;
+  private final ImageRepository imageRepository;
+  private final HotelRoomTypeRepository hotelRoomTypeRepository;
   private final BookingRepository bookingRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
@@ -149,18 +153,19 @@ public class Seeder implements CommandLineRunner {
   }
 
   private Room saveRoom(
-      Hotel hotel,
       String name,
-      Room.Type type,
+      HotelRoomType hotelRoomType,
       double price,
       String description,
       List<String> imagePaths) {
-    Room room = new Room(name, type, price, description);
+    hotelRoomTypeRepository.save(hotelRoomType);
+    Room room = new Room(name, hotelRoomType, price, description);
 
     for (String imagePath : imagePaths) {
       Image image = new Image(getImageFromPathAsBase64String(imagePath));
-      room.getImageBase64Strings().add(image);
-      image.setRoom(room);
+      imageRepository.save(image);
+      room.getHotelRoomType().getImageBase64Strings().add(image);
+      image.setHotelRoomType(room.getHotelRoomType());
     }
 
     room.setHotel(hotel);
@@ -169,6 +174,35 @@ public class Seeder implements CommandLineRunner {
   }
 
   private void seedRooms(List<Hotel> seededHotels) {
+    seededHotels.forEach(
+        (hotel) ->
+            hotel
+                .getRooms()
+                .addAll(
+                    List.of(
+                        saveRoom(
+                            "Single Comfort Room",
+                            new HotelRoomType(hotel, HotelRoomType.Type.SINGLE_ROOM),
+                            120,
+                            "A nice and cozy room for one person",
+                            List.of("src/main/resources/images/room_1_1.png")),
+                        saveRoom(
+                            "Double Comfort Room",
+                            new HotelRoomType(hotel, HotelRoomType.Type.DOUBLE_ROOM),
+                            220,
+                            "A nice and cozy room for two persons",
+                            List.of(
+                                "src/main/resources/images/room_2_1.png",
+                                "src/main/resources/images/room_2_2.png")),
+                        saveRoom(
+                            "Quadruple Deluxe Room",
+                            new HotelRoomType(hotel, HotelRoomType.Type.QUADRUPLE_ROOM),
+                            400,
+                            "A big luxurious room for up to four persons",
+                            List.of(
+                                "src/main/resources/images/room_3_1.png",
+                                "src/main/resources/images/room_3_2.png",
+                                "src/main/resources/images/room_3_3.png")))));
 
     for (Hotel hotel : seededHotels) {
       hotel

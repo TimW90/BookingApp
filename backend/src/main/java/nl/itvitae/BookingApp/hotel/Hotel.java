@@ -55,4 +55,8 @@ public class Hotel {
     this.description = hotelDTO.description();
     this.base64Image = hotelDTO.base64Image();
   }
+
+  public void addRoom(Room room) {
+    rooms.add(room);
+  }
 }

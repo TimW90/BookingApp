@@ -1,30 +1,22 @@
 package nl.itvitae.BookingApp.room;
 
-import static nl.itvitae.BookingApp.util.EnumUtil.enumName;
-
-import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
-import nl.itvitae.BookingApp.image.ImageDTO;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
 
 public record RoomDTO(
     Long id,
     String name,
-    String type,
-    BigDecimal price,
+    HotelRoomType hotelRoomType,
+    double price,
     String description,
-    List<ImageDTO> base64Images) {
+    int quantity) {
 
   public RoomDTO(Room room) {
     this(
         room.getId(),
         room.getName(),
-        enumName(room.getType().name()),
-        room.getPrice(),
+        room.getHotelRoomType(),
+        room.getPrice().doubleValue(),
         room.getDescription(),
-        room.getImageBase64Strings().stream()
-            .map(ImageDTO::new)
-            .sorted(Comparator.comparingInt(a -> a.id().intValue()))
-            .toList());
+        1);
   }
 }

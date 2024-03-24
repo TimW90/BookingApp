@@ -75,7 +75,7 @@ const ManageHotelForm = ({ hotel }) => {
 
   const onSubmit = async (hotelData) => {
     try {
-      if (hotelData.image && hotelData.image[0]) {
+      if (hotelData.image?.[0]) {
         const base64String = await convertToBase64(hotelData.image[0]);
         hotelData.base64Image = base64String;
       }

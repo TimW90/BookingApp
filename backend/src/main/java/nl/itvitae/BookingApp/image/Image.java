@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
 import nl.itvitae.BookingApp.room.Room;
 
 import java.util.List;
@@ -14,18 +15,19 @@ import java.util.List;
 @NoArgsConstructor
 public class Image {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "room_id")
-    private Room room;
+  @ManyToOne() private HotelRoomType hotelRoomType;
 
-    @Lob
-    private String base64Image;
+  @Lob private String base64Image;
 
-    public Image(String base64Image) {
-        this.base64Image = base64Image;
-    }
+  public Image(String base64Image) {
+    this.base64Image = base64Image;
+  }
+
+  public Image(ImageDTO imageDTO) {
+    this(imageDTO.base64Image());
+  }
 }
