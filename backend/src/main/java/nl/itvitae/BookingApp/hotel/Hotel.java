@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
-import nl.itvitae.BookingApp.room.Room;
 import org.hibernate.annotations.*;
 
 @Entity
@@ -36,7 +35,7 @@ public class Hotel {
 
   @Lob private String base64Image;
 
-    @OneToMany(mappedBy = "hotel")
+  @OneToMany(mappedBy = "hotel")
   private List<HotelRoomType> hotelRoomTypes = new ArrayList<>();
 
   private boolean deleted = Boolean.FALSE;
@@ -55,9 +54,5 @@ public class Hotel {
     this.location = hotelDTO.location();
     this.description = hotelDTO.description();
     this.base64Image = hotelDTO.base64Image();
-  }
-
-  public void addHotelRoomTypes(HotelRoomType hotelRoomType) {
-    hotelRoomTypes.add(hotelRoomType);
   }
 }

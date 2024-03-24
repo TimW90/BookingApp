@@ -1,17 +1,14 @@
 package nl.itvitae.BookingApp.hotelroomtype;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.image.Image;
-import nl.itvitae.BookingApp.image.ImageDTO;
-
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -27,7 +24,7 @@ public class HotelRoomType {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private Type type;
+  private RoomType type;
 
   @Column(nullable = false)
   private String name;
@@ -39,20 +36,12 @@ public class HotelRoomType {
 
   @Lob
   @OneToMany(mappedBy = "hotelRoomType", fetch = FetchType.EAGER)
-  private Set<Image> imageBase64Strings = new HashSet<>();
+  private Set<Image> imagePaths = new HashSet<>();
 
-  public HotelRoomType(Hotel hotel, Type type, String name, double price, String description) {
-    this.hotel = hotel;
+  public HotelRoomType(RoomType type, String name, double price, String description) {
     this.type = type;
     this.name = name;
     this.price = BigDecimal.valueOf(price);
     this.description = description;
-  }
-
-  public enum Type {
-    SINGLE_ROOM,
-    DOUBLE_ROOM,
-    TRIPLE_ROOM,
-    QUADRUPLE_ROOM
   }
 }
