@@ -15,13 +15,14 @@ const RoomCard = ({ room, index }) => {
   };
 
   return (
-    <div className="collapse join-item bg-base-200 my-0.5">
-      <input
-        type="radio"
-        name="my-accordion-1"
-        aria-label="room-item"
-        defaultChecked={index === 0}
-      />
+    <>
+      <div className="collapse join-item bg-base-200 my-0.5">
+        <input
+          type="radio"
+          name="my-accordion-1"
+          aria-label="room-item"
+          defaultChecked={index === 0}
+        />
 
         <div className="collapse-title prose">
           <div className="flex items-center gap-4">
@@ -54,7 +55,7 @@ const RoomCard = ({ room, index }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
