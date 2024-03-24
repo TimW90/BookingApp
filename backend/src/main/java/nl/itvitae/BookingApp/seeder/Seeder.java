@@ -2,15 +2,17 @@ package nl.itvitae.BookingApp.seeder;
 
 import static nl.itvitae.BookingApp.util.ImageUtil.*;
 
+import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
-
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.booking.Booking;
+import nl.itvitae.BookingApp.booking.BookingRepository;
+import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.hotel.Location;
 import nl.itvitae.BookingApp.image.Image;
-import nl.itvitae.BookingApp.image.ImageRepository;
 import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
 import nl.itvitae.BookingApp.user.User;
@@ -18,23 +20,38 @@ import nl.itvitae.BookingApp.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Component
 public class Seeder implements CommandLineRunner {
 
   private final HotelRepository hotelRepository;
   private final RoomRepository roomRepository;
-  private final ImageRepository imageRepository;
+  private final BookingRepository bookingRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
   @Override
   public void run(String... args) throws Exception {
-    seedUsers();
-    List<Hotel> seededHotels = seedHotels();
-    seedRooms(seededHotels);
+    if (userRepository.count() == 0) {
+      seedUsers();
+    }
+
+    List<Hotel> seededHotels;
+    if (hotelRepository.count() == 0) {
+      seededHotels = seedHotels();
+    } else {
+      seededHotels = hotelRepository.findAll();
+    }
+
+    if (roomRepository.count() == 0) {
+      seedRooms(seededHotels);
+    }
+
+    if (bookingRepository.count() == 0) {
+      seedBookings(seededHotels);
+    }
   }
 
   private void seedUsers() {
@@ -132,7 +149,12 @@ public class Seeder implements CommandLineRunner {
   }
 
   private Room saveRoom(
-      String name, Room.Type type, double price, String description, List<String> imagePaths) {
+      Hotel hotel,
+      String name,
+      Room.Type type,
+      double price,
+      String description,
+      List<String> imagePaths) {
     Room room = new Room(name, type, price, description);
 
     for (String imagePath : imagePaths) {
@@ -141,40 +163,71 @@ public class Seeder implements CommandLineRunner {
       image.setRoom(room);
     }
 
+    room.setHotel(hotel);
+
     return roomRepository.save(room);
   }
 
   private void seedRooms(List<Hotel> seededHotels) {
-    seededHotels.forEach(
-        (hotel) ->
-            hotel
-                .getRooms()
-                .addAll(
-                    List.of(
-                        saveRoom(
-                            "Single Comfort Room",
-                            Room.Type.SINGLE_ROOM,
-                            120,
-                            "A nice and cozy room for one person",
-                            List.of("src/main/resources/images/room_1_1.png")),
-                        saveRoom(
-                            "Double Comfort Room",
-                            Room.Type.DOUBLE_ROOM,
-                            220,
-                            "A nice and cozy room for two persons",
-                            List.of(
-                                "src/main/resources/images/room_2_1.png",
-                                "src/main/resources/images/room_2_2.png")),
-                        saveRoom(
-                            "Quadruple Deluxe Room",
-                            Room.Type.QUADRUPLE_ROOM,
-                            400,
-                            "A big luxurious room for up to four persons",
-                            List.of(
-                                "src/main/resources/images/room_3_1.png",
-                                "src/main/resources/images/room_3_2.png",
-                                "src/main/resources/images/room_3_3.png")))));
+
+    for (Hotel hotel : seededHotels) {
+      hotel
+          .getRooms()
+          .addAll(
+              List.of(
+                  saveRoom(
+                      hotel,
+                      "Single Comfort Room",
+                      Room.Type.SINGLE_ROOM,
+                      120,
+                      "A nice and cozy room for one person",
+                      List.of("src/main/resources/images/room_1_1.png")),
+                  saveRoom(
+                      hotel,
+                      "Double Comfort Room",
+                      Room.Type.DOUBLE_ROOM,
+                      220,
+                      "A nice and cozy room for two persons",
+                      List.of(
+                          "src/main/resources/images/room_2_1.png",
+                          "src/main/resources/images/room_2_2.png")),
+                  saveRoom(
+                      hotel,
+                      "Quadruple Deluxe Room",
+                      Room.Type.QUADRUPLE_ROOM,
+                      400,
+                      "A big luxurious room for up to four persons",
+                      List.of(
+                          "src/main/resources/images/room_3_1.png",
+                          "src/main/resources/images/room_3_2.png",
+                          "src/main/resources/images/room_3_3.png"))));
+    }
 
     hotelRepository.saveAll(seededHotels);
+  }
+
+  private void seedBookings(List<Hotel> seededHotels) {
+    List<User> users = userRepository.findAll();
+    if (users.isEmpty()) {
+      throw new ResourceNotFoundException("No users found");
+    }
+
+    LocalDate checkInDate = LocalDate.now();
+    LocalDate checkOutDate = LocalDate.now().plusDays(5);
+
+    // For simplicity, we'll just use the first user and alternate rooms
+    User bookingUser = users.getFirst(); // Has role USER
+
+    for (Hotel hotel : seededHotels) {
+      for (Room room : hotel.getRooms()) {
+        Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, room);
+        bookingRepository.save(newBooking);
+        bookingUser.addBooking(newBooking);
+
+        // Update check-in/check-out dates for variety
+        checkInDate = checkInDate.plusDays(10);
+        checkOutDate = checkOutDate.plusDays(15);
+      }
+    }
   }
 }

@@ -1,8 +1,10 @@
 import { useAuth } from './AuthProvider';
 import PropTypes from 'prop-types';
+import { usePopup } from '../popup/PopupContext';
 
-const Logout = ({ togglePopup }) => {
+const Logout = () => {
   const { handleLogout } = useAuth();
+  const { togglePopup } = usePopup();
 
   return (
     <button

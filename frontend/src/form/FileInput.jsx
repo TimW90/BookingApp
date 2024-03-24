@@ -11,7 +11,7 @@ const FileInput = ({ register, name, errors }) => (
       className="file-input file-input-bordered w-full max-w-xs"
       {...register(name)}
     />
-    {errors[name] && <ErrorMessage message={errors[name].message} />}
+    {errors[name] && <ErrorMessage message={errors[name]?.message} />}
   </div>
 );
 

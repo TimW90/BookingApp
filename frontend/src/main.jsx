@@ -6,6 +6,8 @@ import App from './App.jsx';
 import './index.css';
 import Home from './pages/Home.jsx';
 import HotelLandingPage from './pages/HotelLandingPage';
+import UserBookings from './components/booking/UserBookings';
+import RequireAuth from './components/auth/RequireAuth';
 
 const router = createBrowserRouter([
   {
@@ -83,11 +85,19 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin',
-        element: <AdminPage />,
+        element: (
+          <RequireAuth>
+            <AdminPage />
+          </RequireAuth>
+        ),
       },
       {
         path: '/hotel/:id',
         element: <HotelLandingPage />,
+      },
+      {
+        path: '/my-bookings',
+        element: <UserBookings />,
       },
     ],
   },

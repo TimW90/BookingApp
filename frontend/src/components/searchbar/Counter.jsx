@@ -1,45 +1,33 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaMinus, FaPlus } from 'react-icons/fa';
 
-const Counter = (props) => {
-  const [adults, setAdults] = useState(1); // Starting number of adults
-
-  // Increment the number of adults
-  const incrementAdults = () => {
-    setAdults((prevAdults) => prevAdults + 1);
-  };
-
-  // Decrement the number of adults, ensuring it never goes below 1
-  const decrementAdults = () => {
-    setAdults((prevAdults) => (prevAdults > 1 ? prevAdults - 1 : 1));
-  };
-
+const Counter = ({ onIncrement, onDecrement, value, text }) => {
   return (
-    <div className="flex justify-center items-center join">
-      {props.text}
-      <button
-        aria-label="Decrease number of adults"
-        onClick={decrementAdults}
-        type="button"
-        className="btn btn-xs rounded-l-full join-item"
-      >
-        <FaMinus />
-      </button>
-      <input
-        className="input-xs w-12 input input-bordered text-center mx-2 join-item"
-        type="text"
-        aria-label="Number of adults"
-        value={adults}
-        readOnly
-      />
-      <button
-        aria-label="Increase number of adults"
-        onClick={incrementAdults}
-        type="button"
-        className="btn btn-xs rounded-r-full join-item"
-      >
-        <FaPlus />
-      </button>
+    <div className="flex justify-between items-center mx-4">
+      <span>{text}</span>
+
+      <div className="flex items-center">
+        <button
+          aria-label="Decrease number of counter"
+          onClick={onDecrement}
+          type="button"
+          className="btn btn-xs ml-4 rounded-r-none"
+        >
+          <FaMinus />
+        </button>
+        {/* Display the current count */}
+        <span className="px-3 py-1 border border-primary-content rounded-btn">
+          {value}
+        </span>
+        <button
+          aria-label="Increase number of counter"
+          onClick={onIncrement}
+          type="button"
+          className="btn btn-xs rounded-l-none"
+        >
+          <FaPlus />
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import PreviewImage from '../images/PreviewImage';
-import StarRating from '../hotel/StarRating';
-import AdminButtons from '../hotel/AdminButtons';
+import StarRating from './StarRating';
+import AdminButtons from './AdminButtons';
 import DetailImage from '../images/DetailImage';
 import { Link } from 'react-router-dom';
 
-const AccordionCard = ({ item, isAdmin, cardType, index }) => (
+const AccordionCard = ({ item, isAdminPage, cardType, index }) => (
   <div className="collapse join-item bg-base-200 px-12 my-0.5">
     <input
-      type={isAdmin ? 'checkbox' : 'radio'}
+      type={isAdminPage ? 'checkbox' : 'radio'}
       name="my-accordion-1"
       aria-label={`${cardType}-item`}
-      defaultChecked={index === 0 || isAdmin} // Check the first item in the list.
+      defaultChecked={index === 0 || isAdminPage} // Check the first item in the list.
     />
 
     <div className="flex items-center justify-between collapse-title prose min-w-full p-0">
@@ -19,7 +19,7 @@ const AccordionCard = ({ item, isAdmin, cardType, index }) => (
         <PreviewImage image={item.base64Image} />
         <h2 className="m-0">{item.name}</h2>
 
-        {isAdmin && <AdminButtons item={item} type={'hotel'} />}
+        {isAdminPage && <AdminButtons item={item} type={'hotel'} />}
       </div>
       <StarRating amountOfStars={Number(item.starRating)} />
     </div>
@@ -46,7 +46,7 @@ const AccordionCard = ({ item, isAdmin, cardType, index }) => (
 
 AccordionCard.propTypes = {
   item: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool,
+  isAdminPage: PropTypes.bool,
   index: PropTypes.number,
   cardType: PropTypes.string.isRequired,
 };

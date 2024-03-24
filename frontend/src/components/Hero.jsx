@@ -22,7 +22,7 @@ const Hero = () => {
   if (!data) return <p>Loading...</p>;
 
   return (
-    <div className="hero min-h-50vh bg-base-200">
+    <div className="hero min-h-50vh bg-base-200 rounded-b-lg">
       <div className="hero-content flex-col lg:flex-row">
         <img
           src={data.base64Image ? data.base64Image : defaultImage}

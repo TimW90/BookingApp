@@ -20,7 +20,7 @@ public class MyUserDetails implements UserDetails {
   private List<GrantedAuthority> authorities;
 
   public MyUserDetails(User user) {
-    username = user.getEmail();
+    username = user.getUsername();
     password = user.getPassword();
     authorities =
         Arrays.stream(user.getRoles().split(","))

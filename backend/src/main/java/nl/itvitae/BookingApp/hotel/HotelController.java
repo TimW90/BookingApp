@@ -4,6 +4,7 @@ import static nl.itvitae.BookingApp.hotel.HotelSpecification.*;
 
 import jakarta.transaction.Transactional;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,8 @@ public class HotelController {
   public Page<HotelDTO> getByQuery(
       @RequestParam(required = false) Location location,
       @RequestParam(required = false) String name,
+      @RequestParam(required = false) LocalDate checkInDate,
+      @RequestParam(required = false) LocalDate checkOutDate,
       @RequestParam(defaultValue = "1") int starRating,
       @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
@@ -110,7 +113,6 @@ public class HotelController {
       hotelRepository.deleteById(id);
       return ResponseEntity.noContent().build();
     }
-
     return ResponseEntity.notFound().build();
   }
 
