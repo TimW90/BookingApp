@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 import PropTypes from 'prop-types';
 import { usePopup } from '../popup/PopupContext';

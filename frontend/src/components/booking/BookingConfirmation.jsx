@@ -1,17 +1,14 @@
 import DetailImage from '../images/DetailImage';
 import ErrorMessage from '../alerts/ErrorMessage';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '../auth/AuthProvider';
 import LoadingSpinner from '../common/LoadingSpinner';
 import { postBooking } from '@/api/bookingApi';
-import DatePicker from '../searchbar/DatePicker';
-import { useHotels } from '../hotel/HotelContext';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from '../searchbar/SearchParamsContext';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, date, ref } from 'yup';
 import { usePopup } from '../popup/PopupContext';
-import { useNavigate } from 'react-router-dom';
 
 const requiredDatesSchema = object().shape({
   checkInDate: date().required('Check-in date is required'),
