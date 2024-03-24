@@ -20,20 +20,9 @@ public class Room {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @Column(nullable = false)
-  private String name;
-
   @ManyToOne private HotelRoomType hotelRoomType;
 
-  @Column(nullable = false)
-  private BigDecimal price;
-
-  private String description;
-
-  public Room(String name, HotelRoomType hotelRoomType, double price, String description) {
-    this.name = name;
+  public Room(HotelRoomType hotelRoomType) {
     this.hotelRoomType = hotelRoomType;
-    this.price = BigDecimal.valueOf(price);
-    this.description = description;
   }
 }
