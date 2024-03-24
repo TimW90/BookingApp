@@ -8,11 +8,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
 import nl.itvitae.BookingApp.room.Room;
+import org.hibernate.annotations.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE hotel SET deleted = true WHERE id=?")
+@FilterDef(
+    name = "deletedHotelFilter",
+    parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
+@Filter(name = "deletedHotelFilter", condition = "deleted = :isDeleted")
 public class Hotel {
 
   @Id
@@ -30,8 +36,10 @@ public class Hotel {
 
   @Lob private String base64Image;
 
-  @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hotel")
   private List<HotelRoomType> hotelRoomTypes = new ArrayList<>();
+
+  private boolean deleted = Boolean.FALSE;
 
   public Hotel(String name, int rating, Location location, String description, String base64Image) {
     this.name = name;

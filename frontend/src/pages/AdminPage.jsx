@@ -16,7 +16,7 @@ const AdminPage = () => {
       >
         Add hotel
       </button>
-      <HotelAccordion isAdmin />
+      <HotelAccordion isAdminPage />
     </>
   );
 };

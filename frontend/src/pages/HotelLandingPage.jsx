@@ -4,6 +4,8 @@ import { getHotelById } from '@/api/hotelApi';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import RoomCard from '@/components/room/RoomCard';
 import Accordion from '@/components/common/Accordion';
+import SearchBar from '@/components/searchbar/Searchbar';
+import stockHotelImage from '@/images/Hotel.jpeg';
 
 const HotelLandingPage = () => {
   const [hotel, setHotel] = useState(null);
@@ -50,11 +52,14 @@ const HotelLandingPage = () => {
       </div>
       <div
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+          backgroundImage: `url('${hotel.rooms[2]?.base64Images[0]?.base64Image ? hotel.rooms[2].base64Images[0].base64Image : stockHotelImage}')`,
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>
-
+      <SearchBar isLocationFixed />
+      <h1 className="flex text-xl w-full justify-center">
+        {hotel.rooms.length} accommodations found
+      </h1>
       <Accordion>
         {hotel.rooms.map((room, index) => (
           <RoomCard key={room.id} room={room} index={index} />

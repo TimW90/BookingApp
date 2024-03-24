@@ -12,7 +12,7 @@ const Popup = forwardRef(({ children, togglePopup }, ref) => {
         }
       }}
     >
-      <div className="modal-box px-8 scrollbar-hide">
+      <div className="modal-box min-w-md px-8 m-10 scrollbar-hide">
         {children}
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"

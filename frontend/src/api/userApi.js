@@ -1,12 +1,14 @@
 import { api } from './api';
 
+const uri = 'users';
+
 export const postUser = (userData) => {
   console.table(userData);
-  return api.post('/users', userData);
+  return api.post(uri, userData);
 };
 
 export const fetchUser = (id) => {
-  return api.get(`/users/${id}`);
+  return api.get(`${uri}/${id}`);
 };
 
 export const loginUser = (loginRequest) => {

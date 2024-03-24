@@ -22,7 +22,7 @@ const Hero = () => {
   if (!data) return <p>Loading...</p>;
 
   return (
-    <div className="hero min-h-50vh bg-base-200">
+    <div className="hero min-h-50vh bg-base-200 rounded-b-lg">
       <div className="hero-content flex-col lg:flex-row">
         <img
           src={data.base64Image ? data.base64Image : defaultImage}
@@ -32,7 +32,7 @@ const Hero = () => {
         <div>
           <h1 className="text-5xl font-bold">{data.name}</h1>
           <p className="py-6">{data.description}</p>
-          <button className="btn btn-primary">Get Started</button>
+          <button className="btn btn-primary">Go to Hotel</button>
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 package nl.itvitae.BookingApp.hotel;
 
-import nl.itvitae.BookingApp.util.EnumUtil;
 
 public enum Location {
   AMSTERDAM,
@@ -8,10 +7,5 @@ public enum Location {
   PRAGUE,
   BARCELONA,
   VIENNA,
-  BERLIN;
-
-  @Override
-  public String toString() {
-    return EnumUtil.enumName(this.name());
-  }
+  BERLIN
 }

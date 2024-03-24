@@ -2,17 +2,19 @@ package nl.itvitae.BookingApp.seeder;
 
 import static nl.itvitae.BookingApp.util.ImageUtil.*;
 
+import jakarta.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
-
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.booking.Booking;
+import nl.itvitae.BookingApp.booking.BookingRepository;
+import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.hotel.Location;
 import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
 import nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeRepository;
 import nl.itvitae.BookingApp.image.Image;
-import nl.itvitae.BookingApp.image.ImageRepository;
 import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
 import nl.itvitae.BookingApp.user.User;
@@ -20,9 +22,9 @@ import nl.itvitae.BookingApp.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
+@Transactional
 @Component
 public class Seeder implements CommandLineRunner {
 
@@ -30,6 +32,7 @@ public class Seeder implements CommandLineRunner {
   private final RoomRepository roomRepository;
   private final ImageRepository imageRepository;
   private final HotelRoomTypeRepository hotelRoomTypeRepository;
+  private final BookingRepository bookingRepository;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -38,6 +41,25 @@ public class Seeder implements CommandLineRunner {
     seedUsers();
     List<Hotel> seededHotels = seedHotels();
     seedHotelRoomTypes(seededHotels);
+
+    if (userRepository.count() == 0) {
+      seedUsers();
+    }
+
+    List<Hotel> seededHotels;
+    if (hotelRepository.count() == 0) {
+      seededHotels = seedHotels();
+    } else {
+      seededHotels = hotelRepository.findAll();
+    }
+
+    if (roomRepository.count() == 0) {
+      seedRooms(seededHotels);
+    }
+
+    if (bookingRepository.count() == 0) {
+      seedBookings(seededHotels);
+    }
   }
 
   private void seedUsers() {
@@ -196,5 +218,30 @@ public class Seeder implements CommandLineRunner {
                                 "src/main/resources/images/room_3_3.png")))));
 
     hotelRepository.saveAll(seededHotels);
+  }
+
+  private void seedBookings(List<Hotel> seededHotels) {
+    List<User> users = userRepository.findAll();
+    if (users.isEmpty()) {
+      throw new ResourceNotFoundException("No users found");
+    }
+
+    LocalDate checkInDate = LocalDate.now();
+    LocalDate checkOutDate = LocalDate.now().plusDays(5);
+
+    // For simplicity, we'll just use the first user and alternate rooms
+    User bookingUser = users.getFirst(); // Has role USER
+
+    for (Hotel hotel : seededHotels) {
+      for (Room room : hotel.getRooms()) {
+        Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, room);
+        bookingRepository.save(newBooking);
+        bookingUser.addBooking(newBooking);
+
+        // Update check-in/check-out dates for variety
+        checkInDate = checkInDate.plusDays(10);
+        checkOutDate = checkOutDate.plusDays(15);
+      }
+    }
   }
 }
