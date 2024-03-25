@@ -19,10 +19,10 @@ public class Booking {
   private Long id;
 
   @Column(nullable = false)
-  private LocalDate checkIn;
+  private LocalDate checkInDate;
 
   @Column(nullable = false)
-  private LocalDate checkOut;
+  private LocalDate checkOutDate;
 
   @ManyToOne
   @JoinColumn(name = "user_id")
@@ -32,9 +32,9 @@ public class Booking {
   @JoinColumn(name = "room_id")
   private Room room;
 
-  public Booking(LocalDate checkIn, LocalDate checkOut, User user, Room room) {
-    this.checkIn = checkIn;
-    this.checkOut = checkOut;
+  public Booking(LocalDate checkInDate, LocalDate checkOutDate, User user, Room room) {
+    this.checkInDate = checkInDate;
+    this.checkOutDate = checkOutDate;
     this.user = user;
     this.room = room;
   }

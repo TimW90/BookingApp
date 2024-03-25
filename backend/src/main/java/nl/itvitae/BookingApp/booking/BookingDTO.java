@@ -16,10 +16,10 @@ public record BookingDTO(
     return new BookingDTO(
         booking.getId(),
         booking.getUser().getId(),
-        booking.getRoom().getHotel().getName(),
-        booking.getRoom().getName(),
-        booking.getRoom().getPrice(),
-        booking.getCheckIn(),
-        booking.getCheckOut());
+        booking.getRoom().getHotelRoomType().getHotel().getName(),
+        booking.getRoom().getHotelRoomType().getName(),
+        booking.getRoom().getHotelRoomType().getPrice(),
+        booking.getCheckInDate(),
+        booking.getCheckOutDate());
   }
 }

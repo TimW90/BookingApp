@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceAlreadyExistsException;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
+import nl.itvitae.BookingApp.util.ImageUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -67,7 +68,7 @@ public class HotelController {
 
   @GetMapping("locations")
   public List<String> getAllLocations() {
-    return Arrays.stream(Location.values()).map(Enum::name).toList();
+    return Arrays.stream(Location.values()).map(Enum::toString).toList();
   }
 
   @PostMapping
@@ -76,6 +77,7 @@ public class HotelController {
       throw new ResourceAlreadyExistsException(newHotelDTO.name());
     }
 
+    String newImagePath = ImageUtil.saveBase64Image(newHotelDTO.base64Image(), newHotelDTO.name());
     Hotel newHotel =
         hotelRepository.save(
             new Hotel(
@@ -83,7 +85,7 @@ public class HotelController {
                 Integer.parseInt(newHotelDTO.starRating()),
                 newHotelDTO.location(),
                 newHotelDTO.description(),
-                newHotelDTO.base64Image()));
+                newImagePath));
 
     URI locationOfNewHotel =
         ucb.path("api/v1/hotels/{id}").buildAndExpand(newHotel.getId()).toUri();

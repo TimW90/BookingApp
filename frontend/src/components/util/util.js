@@ -3,5 +3,5 @@ export const capitalize = (string) => {
 };
 
 export const enumSimpleName = (enumString) => {
-  return capitalize(enumString.toLowerCase());
+  return capitalize(enumString.toLowerCase().replace('_', ' '));
 };
