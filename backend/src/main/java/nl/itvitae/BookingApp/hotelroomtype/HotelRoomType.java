@@ -25,12 +25,12 @@ public class HotelRoomType {
 
   @ManyToOne private Hotel hotel;
 
+  @Column(nullable = false)
+  private String name;
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private RoomType type;
-
-  @Column(nullable = false)
-  private String name;
 
   @Column(nullable = false)
   private BigDecimal price;
@@ -43,9 +43,10 @@ public class HotelRoomType {
   @OneToMany(mappedBy = "hotelRoomType", fetch = FetchType.EAGER)
   private List<Image> imagePaths = new ArrayList<>();
 
-  public HotelRoomType(RoomType type, String name, double price, String description) {
-    this.type = type;
+  public HotelRoomType(Hotel hotel, RoomType type, String name, double price, String description) {
+    this.hotel = hotel;
     this.name = name;
+    this.type = type;
     this.price = BigDecimal.valueOf(price);
     this.description = description;
   }

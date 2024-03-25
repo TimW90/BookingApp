@@ -4,13 +4,14 @@ import { usePopup } from '../popup/PopupContext';
 import BookingConfirmation from '../booking/BookingConfirmation';
 import RequireAuth from '../auth/RequireAuth';
 
-const RoomCard = ({ room, index }) => {
+const RoomCard = ({ roomType, index }) => {
   const { setPopupContent, togglePopup } = usePopup();
 
-  if (!room) return;
+  console.log(roomType.images);
+  if (!roomType) return;
 
   const openBookingConfirmation = () => {
-    setPopupContent(<BookingConfirmation room={room} />);
+    setPopupContent(<BookingConfirmation roomType={roomType} />);
     togglePopup();
   };
 
@@ -19,33 +20,33 @@ const RoomCard = ({ room, index }) => {
       <input
         type="radio"
         name="my-accordion-1"
-        aria-label="room-item"
+        aria-label="roomType-item"
         defaultChecked={index === 0}
       />
 
-        <div className="collapse-title prose">
-          <div className="flex items-center gap-4">
-            <PreviewImage image={room.base64Images[0]?.base64Image} />
-            <h2 className="m-0">{room.name}</h2>
-          </div>
-        </div>
       <div className="collapse-title prose">
         <div className="flex items-center gap-4">
-          <PreviewImage image={room.base64Images[0]?.base64Image} />
-          <h2 className="m-0">{room.name}</h2>
+          <PreviewImage image={roomType.images[0]?.base64Image} />
+          <h2 className="m-0">{roomType.name}</h2>
+        </div>
+      </div>
+      <div className="collapse-title prose">
+        <div className="flex items-center gap-4">
+          <PreviewImage image={roomType.images[0]?.base64Image} />
+          <h2 className="m-0">{roomType.name}</h2>
         </div>
       </div>
 
       <div className="collapse-content">
         <div className="card lg:card-side bg-base-100">
           <div className="flex flex-col items-center w-1/2">
-            {room && <Carousel images={room.base64Images} />}
+            {roomType && <Carousel images={roomType.images} />}
           </div>
-          <div className="room-properties flex flex-col w-1/2">
-            <div className="flex h-1/2">{room.description}</div>
+          <div className="roomType-properties flex flex-col w-1/2">
+            <div className="flex h-1/2">{roomType.description}</div>
 
             <div className="inline-flex justify-end items-center">
-              <div className="flex mr-5">Price: €{room.price}</div>
+              <div className="flex mr-5">Price: €{roomType.price}</div>
 
               <div className="card-actions justify-end flex flex-col">
                 <button

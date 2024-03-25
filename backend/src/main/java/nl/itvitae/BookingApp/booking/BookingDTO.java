@@ -19,7 +19,7 @@ public record BookingDTO(
         booking.getRoom().getHotelRoomType().getHotel().getName(),
         booking.getRoom().getHotelRoomType().getName(),
         booking.getRoom().getHotelRoomType().getPrice(),
-        booking.getCheckIn(),
-        booking.getCheckOut());
+        booking.getCheckInDate(),
+        booking.getCheckOutDate());
   }
 }
