@@ -28,7 +28,7 @@ const Carousel = ({ images }) => {
                   {index === images.length - 1 && (
                     <div className="absolute flex justify-start transform -translate-y-1/2 left-5 right-5 top-1/2">
                       <a
-                        href={'#image' + image.room + (index - 1)}
+                        href={'#image' + image.hotelRoomTypeId + (index - 1)}
                         className="btn btn-circle"
                       >
                         ❮

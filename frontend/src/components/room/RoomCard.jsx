@@ -7,7 +7,7 @@ import RequireAuth from '../auth/RequireAuth';
 const RoomCard = ({ roomType, index }) => {
   const { setPopupContent, togglePopup } = usePopup();
 
-  console.log(roomType.images);
+  console.log('Roomtype = ' + roomType);
   if (!roomType) return;
 
   const openBookingConfirmation = () => {
