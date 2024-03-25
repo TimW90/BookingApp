@@ -1,7 +1,10 @@
 package nl.itvitae.BookingApp.user;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +18,7 @@ import nl.itvitae.BookingApp.booking.Booking;
 public class User {
 
   @OneToMany(mappedBy = "user")
-  Set<Booking> bookings = new HashSet<>();
+  List<Booking> bookings = new ArrayList<>();
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

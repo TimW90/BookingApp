@@ -9,8 +9,8 @@ public record BookingDTO(
     String hotelName,
     String roomName,
     BigDecimal price,
-    LocalDate checkIn,
-    LocalDate checkOut) {
+    LocalDate checkInDate,
+    LocalDate checkOutDate) {
 
   public static BookingDTO createBookingDTO(Booking booking) {
     return new BookingDTO(

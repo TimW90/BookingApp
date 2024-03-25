@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.room.Room;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +38,9 @@ public class HotelRoomTypeController {
     } else {
       // Dates provided, calculate availability
       for (HotelRoomType hotelRoomType : hotelRoomTypes) {
-        Long amountOfAvailableRooms =
-            hotelRoomTypeRepository.countAvailableRoomsForHotelRoomType(
-                hotelRoomType, checkInDate, checkOutDate);
+        Integer amountOfAvailableRooms =
+            hotelRoomTypeRepository.findAvailableRoomsForHotelRoomType(
+                hotelRoomType, checkInDate, checkOutDate).size();
 
         hotelRoomTypeAvailabilityDTOS.add(
             new HotelRoomTypeAvailabilityDTO(
@@ -51,7 +52,7 @@ public class HotelRoomTypeController {
   }
 
   public record HotelRoomTypeAvailabilityDTO(
-      HotelRoomTypeDTO hotelRoomTypeDTO, Long availableRoomsCount) {}
+      HotelRoomTypeDTO hotelRoomTypeDTO, Integer availableRoomsCount) {}
 
   //    @PostMapping
   //    public List<RoomDTO> newRoom(@RequestBody RoomDTO roomDTO) {

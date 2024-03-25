@@ -161,6 +161,7 @@ public class Seeder implements CommandLineRunner {
 
     HotelRoomType hotelRoomType = new HotelRoomType(hotel, type, name, price, description);
     hotelRoomTypeRepository.save(hotelRoomType);
+    hotel.getHotelRoomTypes().add(hotelRoomType);
 
     for (String imagePath : imagePaths) {
       int imageNumber = 1;
@@ -210,7 +211,7 @@ public class Seeder implements CommandLineRunner {
   private void seedRooms() {
     List<HotelRoomType> seededHotelRoomTypes = hotelRoomTypeRepository.findAll();
 
-    int minRooms = 5, maxRooms = 20;
+    int minRooms = 4, maxRooms = 10;
     for (HotelRoomType hotelRoomType : seededHotelRoomTypes) {
       int roomCount = (int) (Math.random() * maxRooms - minRooms + 1) + minRooms;
 
@@ -227,21 +228,17 @@ public class Seeder implements CommandLineRunner {
     User bookingUser = userRepository.findAll().getFirst(); // Has role USER
     List<Hotel> hotels = hotelRepository.findAll();
 
-    LocalDate checkInDate = LocalDate.now();
-    LocalDate checkOutDate = LocalDate.now().plusDays(5);
+    LocalDate checkInDate = LocalDate.now().minusYears(1).minusMonths(6);
+    LocalDate checkOutDate = checkInDate.plusDays(5);
 
     for (Hotel hotel : hotels) {
       for (HotelRoomType hotelRoomType : hotel.getHotelRoomTypes()) {
-        List<Room> availableRooms =
-            roomRepository.findAvailableRoomsByHotelRoomTypeAndDateRange(
-                hotelRoomType, checkInDate, checkOutDate);
 
-        if (!availableRooms.isEmpty()) {
-          Room availableRoom = availableRooms.getFirst();
+          Room availableRoom = hotelRoomTypeRepository.findAvailableRoomsForHotelRoomType(hotelRoomType, checkInDate, checkOutDate).getFirst();
           Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, availableRoom);
           bookingRepository.save(newBooking);
           bookingUser.addBooking(newBooking);
-        }
+
 
         // Update check-in/check-out dates for variety
         checkInDate = checkInDate.plusDays(10);
