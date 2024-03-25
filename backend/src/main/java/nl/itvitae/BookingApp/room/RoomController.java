@@ -32,12 +32,13 @@ public class RoomController {
   //            .orElseThrow(() -> new ResourceNotFoundException("Room not found")));
   //  }
   //
-  //  //  @GetMapping("types")
-  //  //  public List<String> getAllTypes() {
-  //  //    return
-  //  //
+  //    //  @GetMapping("types")
+  //    //  public List<String> getAllTypes() {
+  //    //    return
+  //    //
+  //
   // Arrays.stream(Room.nl.itvitae.BookingApp.hotelroomtype.RoomType.values()).map(Enum::toString).toList();
-  //  //  }
+  //    //  }
   //
   //  @PostMapping
   //  public List<RoomDTO> newRoom(@RequestBody RoomDTO roomDTO) {

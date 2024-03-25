@@ -42,10 +42,12 @@ const RoomCard = ({ roomType, index }) => {
           <div className="flex flex-col items-center w-1/2">
             {roomType && <Carousel images={roomType.images} />}
           </div>
-          <div className="roomType-properties flex flex-col w-1/2">
+          <div className="flex flex-col w-1/2 m-4">
             <div className="flex h-1/2">{roomType.description}</div>
 
-            <div className="inline-flex justify-end items-center">
+            <div className="flex flex-grow"></div>
+
+            <div className="flex justify-end items-center">
               <div className="flex mr-5">Price: €{roomType.price}</div>
 
               <div className="card-actions justify-end flex flex-col">
