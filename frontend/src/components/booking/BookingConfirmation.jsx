@@ -65,10 +65,10 @@ const BookingConfirmation = ({ roomType }) => {
           <p>Price: €{roomType.price}</p>
         </div>
         <div className="flex flex-col justify-between items-center mt-4">
-          <DetailImage image={roomType.images[0]?.base64Image} />
+          <DetailImage image={roomType.base64Images[0]?.base64Image} />
 
           {!user && (
-            <ErrorMessage message="Create an account or login to book a roomType!" />
+            <ErrorMessage message="Create an account or login to book a Hotel Room!" />
           )}
 
           <button
@@ -78,9 +78,11 @@ const BookingConfirmation = ({ roomType }) => {
           >
             Confirm Booking
           </button>
-          {<ErrorMessage message={errors.checkInDate?.message} />}
-          {<ErrorMessage message={errors.checkOutDate?.message} />}
-          {<ErrorMessage message={errors.root?.message} />}
+          <div className="flex">
+            {<ErrorMessage message={errors.checkInDate?.message} />}
+            {<ErrorMessage message={errors.checkOutDate?.message} />}
+            {<ErrorMessage message={errors.root?.message} />}
+          </div>
         </div>
       </div>
     </form>

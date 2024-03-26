@@ -10,7 +10,7 @@ public record HotelRoomTypeDTO(
     String name,
     double price,
     String description,
-    List<ImageDTO> images,
+    List<ImageDTO> base64Images,
     int quantity) {
 
   public static HotelRoomTypeDTO createHotelRoomTypeDTO(HotelRoomType hotelRoomType) {
@@ -21,7 +21,7 @@ public record HotelRoomTypeDTO(
         hotelRoomType.getName(),
         hotelRoomType.getPrice().doubleValue(),
         hotelRoomType.getDescription(),
-        hotelRoomType.getImagePaths().stream().map(ImageDTO::new).toList(),
+        hotelRoomType.getBase64Images().stream().map(ImageDTO::new).toList(),
         1);
   }
 }

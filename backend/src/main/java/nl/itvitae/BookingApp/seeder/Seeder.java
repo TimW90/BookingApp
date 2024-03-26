@@ -1,7 +1,5 @@
 package nl.itvitae.BookingApp.seeder;
 
-import static nl.itvitae.BookingApp.util.ImageUtil.*;
-
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +18,7 @@ import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
 import nl.itvitae.BookingApp.user.User;
 import nl.itvitae.BookingApp.user.UserRepository;
+import nl.itvitae.BookingApp.util.ImageUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -165,10 +164,11 @@ public class Seeder implements CommandLineRunner {
 
     for (String imagePath : imagePaths) {
       int imageNumber = 1;
-      Image image = new Image(imagePath, imageNumber++);
-      imageRepository.save(image);
-      hotelRoomType.getImagePaths().add(image);
-      image.setHotelRoomType(hotelRoomType);
+      String base64Image = ImageUtil.convertImagePathToBase64String(imagePath);
+      Image newImage = new Image(base64Image, imageNumber++);
+      imageRepository.save(newImage);
+      hotelRoomType.getBase64Images().add(newImage);
+      newImage.setHotelRoomType(hotelRoomType);
     }
     return hotelRoomType;
   }
@@ -234,11 +234,13 @@ public class Seeder implements CommandLineRunner {
     for (Hotel hotel : hotels) {
       for (HotelRoomType hotelRoomType : hotel.getHotelRoomTypes()) {
 
-          Room availableRoom = hotelRoomTypeRepository.findAvailableRoomsForHotelRoomType(hotelRoomType, checkInDate, checkOutDate).getFirst();
-          Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, availableRoom);
-          bookingRepository.save(newBooking);
-          bookingUser.addBooking(newBooking);
-
+        Room availableRoom =
+            hotelRoomTypeRepository
+                .findAvailableRoomsForHotelRoomType(hotelRoomType, checkInDate, checkOutDate)
+                .getFirst();
+        Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, availableRoom);
+        bookingRepository.save(newBooking);
+        bookingUser.addBooking(newBooking);
 
         // Update check-in/check-out dates for variety
         checkInDate = checkInDate.plusDays(10);

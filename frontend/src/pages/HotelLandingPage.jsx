@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import RoomCard from '@/components/room/RoomCard';
 import Accordion from '@/components/common/Accordion';
@@ -12,6 +12,7 @@ const HotelLandingPage = () => {
   const [hotel, setHotel] = useState({});
   const [roomTypes, setRoomTypes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { searchParams } = useSearchParams();
 
   const { id } = useParams();
 
@@ -59,7 +60,7 @@ const HotelLandingPage = () => {
       </div>
       <div
         style={{
-          backgroundImage: `url('${roomTypes[2]?.hotelRoomTypeDTO.images[0].base64Image || stockHotelImage}')`,
+          backgroundImage: `url('${roomTypes[2]?.hotelRoomTypeDTO.base64Images[0].base64Image || stockHotelImage}')`,
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>

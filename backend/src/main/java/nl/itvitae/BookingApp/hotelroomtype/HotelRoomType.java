@@ -41,7 +41,7 @@ public class HotelRoomType {
   private Set<Room> rooms = new HashSet<>();
 
   @OneToMany(mappedBy = "hotelRoomType", fetch = FetchType.EAGER)
-  private List<Image> imagePaths = new ArrayList<>();
+  private List<Image> base64Images = new ArrayList<>();
 
   public HotelRoomType(Hotel hotel, RoomType type, String name, double price, String description) {
     this.hotel = hotel;

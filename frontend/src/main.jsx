@@ -8,6 +8,9 @@ import Home from './pages/Home.jsx';
 import HotelLandingPage from './pages/HotelLandingPage';
 import UserBookings from './components/booking/UserBookings';
 import RequireAuth from './components/auth/RequireAuth';
+import { AuthProvider } from './components/auth/AuthProvider';
+import { AlertProvider } from './components/alerts/AlertContext';
+import { PopupProvider } from './components/popup/PopupContext';
 
 const router = createBrowserRouter([
   {
@@ -104,5 +107,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <AlertProvider>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  </AlertProvider>
 );

@@ -11,7 +11,7 @@ import { convertToBase64 } from '../images/ImageUtil';
 import Input from '@/form/Input';
 import Select from '@/form/Select';
 import StarRatingInput from '@/form/StarRatingInput';
-import FileInput from '@/form/FileInput';
+import FileInput from '@/form/FileImageInput';
 import TextArea from '@/form/TextArea';
 import SubmitButton from '@/form/SubmitButton';
 

@@ -26,26 +26,24 @@ const RoomCard = ({ roomType, index }) => {
 
       <div className="collapse-title prose">
         <div className="flex items-center gap-4">
-          <PreviewImage image={roomType.images[0]?.base64Image} />
+          <PreviewImage image={roomType.base64Images[0]?.base64Image} />
           <h2 className="m-0">{roomType.name}</h2>
         </div>
       </div>
       <div className="collapse-title prose">
         <div className="flex items-center gap-4">
-          <PreviewImage image={roomType.images[0]?.base64Image} />
+          <PreviewImage image={roomType.base64Images[0]?.base64Image} />
           <h2 className="m-0">{roomType.name}</h2>
         </div>
       </div>
 
-      <div className="collapse-content">
+      <div className="collapse-content ">
         <div className="card lg:card-side bg-base-100">
           <div className="flex flex-col items-center w-1/2">
-            {roomType && <Carousel images={roomType.images} />}
+            {roomType && <Carousel images={roomType.base64Images} />}
           </div>
           <div className="flex flex-col w-1/2 m-4">
             <div className="flex h-1/2">{roomType.description}</div>
-
-            <div className="flex flex-grow"></div>
 
             <div className="flex justify-end items-center">
               <div className="flex mr-5">Price: €{roomType.price}</div>
@@ -62,7 +60,7 @@ const RoomCard = ({ roomType, index }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
