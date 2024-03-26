@@ -1,27 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getHotelById } from '@/api/hotelApi';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import RoomCard from '@/components/room/RoomCard';
 import Accordion from '@/components/common/Accordion';
 import SearchBar from '@/components/searchbar/Searchbar';
 import stockHotelImage from '@/images/Hotel.jpeg';
+import { fetchHotelRoomTypesByHotelId } from '@/api/hotelRoomTypesApi';
+import { getHotelById } from '@/api/hotelApi';
 
 const HotelLandingPage = () => {
-  const [hotel, setHotel] = useState(null);
+  const [hotel, setHotel] = useState({});
+  const [roomTypes, setRoomTypes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const { id } = useParams();
 
   useEffect(() => {
     setIsLoading(true);
-    const loadHotel = async () => {
+    const loadHotelRoomTypes = async () => {
+      const fetchedRoomTypes = await fetchHotelRoomTypesByHotelId({
+        hotelId: id,
+      });
       const fetchedHotel = await getHotelById(id);
+      setRoomTypes(fetchedRoomTypes);
+      console.table(fetchedRoomTypes);
       setHotel(fetchedHotel);
       setIsLoading(false);
     };
 
-    loadHotel();
+    loadHotelRoomTypes();
   }, [id]);
 
   if (isLoading) {
@@ -52,17 +59,21 @@ const HotelLandingPage = () => {
       </div>
       <div
         style={{
-          backgroundImage: `url('${hotel.rooms[2]?.base64Images[0]?.base64Image ? hotel.rooms[2].base64Images[0].base64Image : stockHotelImage}')`,
+          backgroundImage: `url('${roomTypes[2]?.hotelRoomTypeDTO.images[0].base64Image || stockHotelImage}')`,
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>
       <SearchBar isLocationFixed />
       <h1 className="flex text-xl w-full justify-center">
-        {hotel.rooms.length} accommodations found
+        {roomTypes.length} accommodations found
       </h1>
       <Accordion>
-        {hotel.rooms.map((room, index) => (
-          <RoomCard key={room.id} room={room} index={index} />
+        {roomTypes.map((roomType, index) => (
+          <RoomCard
+            key={roomType.hotelRoomTypeDTO.id}
+            roomType={roomType.hotelRoomTypeDTO}
+            index={index}
+          />
         ))}
       </Accordion>
     </>

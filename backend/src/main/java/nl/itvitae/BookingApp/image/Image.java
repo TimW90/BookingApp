@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
-import nl.itvitae.BookingApp.room.Room;
-
-import java.util.List;
+import nl.itvitae.BookingApp.util.ImageUtil;
 
 @Entity
 @Getter
@@ -21,13 +19,18 @@ public class Image {
 
   @ManyToOne() private HotelRoomType hotelRoomType;
 
-  @Lob private String base64Image;
+  private String path;
 
-  public Image(String base64Image) {
-    this.base64Image = base64Image;
+  private int imageOrder;
+
+  public Image(String path, int imageOrder) {
+    this.path = path;
+    this.imageOrder = imageOrder;
   }
 
   public Image(ImageDTO imageDTO) {
-    this(imageDTO.base64Image());
+    this(
+        ImageUtil.saveBase64Image(imageDTO.base64Image(), "new_image" + imageDTO.imageId()),
+        imageDTO.imageOrder());
   }
 }

@@ -1,17 +1,17 @@
 package nl.itvitae.BookingApp.hotelroomtype;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.image.Image;
-import nl.itvitae.BookingApp.image.ImageDTO;
-
-import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import nl.itvitae.BookingApp.room.Room;
 
 @Entity
 @Getter
@@ -25,34 +25,29 @@ public class HotelRoomType {
 
   @ManyToOne private Hotel hotel;
 
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private Type type;
-
   @Column(nullable = false)
   private String name;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private RoomType type;
 
   @Column(nullable = false)
   private BigDecimal price;
 
   private String description;
 
-  @Lob
-  @OneToMany(mappedBy = "hotelRoomType", fetch = FetchType.EAGER)
-  private Set<Image> imageBase64Strings = new HashSet<>();
+  @OneToMany(mappedBy = "hotelRoomType")
+  private Set<Room> rooms = new HashSet<>();
 
-  public HotelRoomType(Hotel hotel, Type type, String name, double price, String description) {
+  @OneToMany(mappedBy = "hotelRoomType", fetch = FetchType.EAGER)
+  private List<Image> imagePaths = new ArrayList<>();
+
+  public HotelRoomType(Hotel hotel, RoomType type, String name, double price, String description) {
     this.hotel = hotel;
-    this.type = type;
     this.name = name;
+    this.type = type;
     this.price = BigDecimal.valueOf(price);
     this.description = description;
-  }
-
-  public enum Type {
-    SINGLE_ROOM,
-    DOUBLE_ROOM,
-    TRIPLE_ROOM,
-    QUADRUPLE_ROOM
   }
 }

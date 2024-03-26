@@ -1,15 +1,12 @@
 package nl.itvitae.BookingApp.room;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nl.itvitae.BookingApp.booking.Booking;
 import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
-import nl.itvitae.BookingApp.hotel.Hotel;
-import nl.itvitae.BookingApp.image.Image;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
@@ -31,6 +28,8 @@ public class Room {
   private Long id;
 
   @ManyToOne private HotelRoomType hotelRoomType;
+
+  @OneToMany private Set<Booking> bookings;
 
   public Room(HotelRoomType hotelRoomType) {
     this.hotelRoomType = hotelRoomType;

@@ -1,8 +1,8 @@
 package nl.itvitae.BookingApp.hotel;
 
-import nl.itvitae.BookingApp.room.RoomDTO;
-
 import java.util.List;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeDTO;
+import nl.itvitae.BookingApp.util.ImageUtil;
 
 public record HotelDTO(
     Long id,
@@ -11,7 +11,7 @@ public record HotelDTO(
     Location location,
     String description,
     String base64Image,
-    List<RoomDTO> rooms) {
+    List<HotelRoomTypeDTO> hotelRoomTypes) {
   public HotelDTO(Hotel hotel) {
     this(
         hotel.getId(),
@@ -19,7 +19,7 @@ public record HotelDTO(
         String.valueOf(hotel.getStarRating()),
         hotel.getLocation(),
         hotel.getDescription(),
-        hotel.getBase64Image(),
-        hotel.getRooms().stream().map(RoomDTO::new).toList());
+        ImageUtil.convertImagePathToBase64String(hotel.getImagePath()),
+        hotel.getHotelRoomTypes().stream().map(HotelRoomTypeDTO::createHotelRoomTypeDTO).toList());
   }
 }
