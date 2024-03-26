@@ -54,26 +54,4 @@ public class HotelRoomTypeController {
   public record HotelRoomTypeAvailabilityDTO(
       HotelRoomTypeDTO hotelRoomTypeDTO, Integer availableRoomsCount) {}
 
-  //    @PostMapping
-  //    public List<RoomDTO> newRoom(@RequestBody RoomDTO roomDTO) {
-  //      var hotel =
-  //          hotelRepository
-  //              .findById(roomDTO.hotelRoomType().getHotel().getId())
-  //              .orElseThrow(() -> new ResourceNotFoundException("Hotel to add room to not
-  // found"));
-  //      List<Room> newRooms = new ArrayList<>();
-  //      Set<Image> newImages = roomDTO.hotelRoomType().getImageBase64Strings();
-  //      imageRepository.saveAll(newImages);
-  //
-  //      for (int i = 0; i < roomDTO.quantity(); i++) {
-  //        Room newRoom =
-  //            new Room(roomDTO.name(), roomDTO.hotelRoomType(), roomDTO.price(),
-  //   roomDTO.description());
-  //        for (Image image : newImages) {
-  //          image.setHotelRoomType(newRoom.getHotelRoomType());
-  //        }
-  //        roomRepository.save(newRoom);
-  //        hotel.addRoom(newRoom);
-  //        newRooms.add(newRoom);
-  //      }
 }
