@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import ErrorMessage from '@/components/alerts/ErrorMessage';
 import { capitalize } from '@/components/util/util';
 
-const Input = ({ register, name, errors }) => {
+const Input = ({ register, name, errors, type }) => {
   return (
     <div className="form-control">
       <label className="label">
@@ -10,7 +10,7 @@ const Input = ({ register, name, errors }) => {
       </label>
       <input
         className="input input-bordered"
-        type="text"
+        type={type}
         placeholder={`${capitalize(name)}...`}
         {...register(name)}
         autoComplete={name}

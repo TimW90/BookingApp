@@ -17,7 +17,7 @@ const requiredDatesSchema = object().shape({
     .min(ref('checkInDate'), 'Check-out date must be after check-in date'),
 });
 
-const BookingConfirmation = ({ room }) => {
+const BookingConfirmation = ({ roomType }) => {
   const { user } = useAuth();
   const { searchParams } = useSearchParams();
   const { togglePopup } = usePopup();
@@ -30,10 +30,12 @@ const BookingConfirmation = ({ room }) => {
     resolver: yupResolver(requiredDatesSchema),
   });
 
+  console.log(roomType);
+
   const onConfirm = async (data) => {
     try {
       const bookingDetails = {
-        roomId: room.id,
+        hotelRoomTypeId: roomType.id,
         userEmail: user.sub,
         checkInDate: searchParams.checkInDate,
         checkOutDate: searchParams.checkOutDate,
@@ -52,21 +54,21 @@ const BookingConfirmation = ({ room }) => {
     reset(searchParams); // when parameters are updated we reset the values to the updates ones
   }, [searchParams, reset]);
 
-  if (!room) return <LoadingSpinner />;
+  if (!roomType) return <LoadingSpinner />;
   return (
     <form>
       <div className="prose p-4 max-w-md mx-auto">
         <h2>Confirm Booking</h2>
         <div className="mb-4">
-          <h3>{room.name}</h3>
-          <p>{room.description}</p>
-          <p>Price: €{room.price}</p>
+          <h3>{roomType.name}</h3>
+          <p>{roomType.description}</p>
+          <p>Price: €{roomType.price}</p>
         </div>
         <div className="flex flex-col justify-between items-center mt-4">
-          <DetailImage image={room.base64Images[0].base64Image} />
+          <DetailImage image={roomType.images[0]?.base64Image} />
 
           {!user && (
-            <ErrorMessage message="Create an account or login to book a room!" />
+            <ErrorMessage message="Create an account or login to book a roomType!" />
           )}
 
           <button

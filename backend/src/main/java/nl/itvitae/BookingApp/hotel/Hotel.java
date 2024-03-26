@@ -6,7 +6,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import nl.itvitae.BookingApp.room.Room;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomType;
+import nl.itvitae.BookingApp.util.ImageUtil;
 import org.hibernate.annotations.*;
 
 @Entity
@@ -33,19 +34,19 @@ public class Hotel {
   @Column(length = 1500)
   private String description;
 
-  @Lob private String base64Image;
+  private String imagePath;
 
   @OneToMany(mappedBy = "hotel")
-  private List<Room> rooms = new ArrayList<>();
+  private List<HotelRoomType> hotelRoomTypes = new ArrayList<>();
 
   private boolean deleted = Boolean.FALSE;
 
-  public Hotel(String name, int rating, Location location, String description, String base64Image) {
+  public Hotel(String name, int rating, Location location, String description, String imagePath) {
     this.name = name;
     this.starRating = rating;
     this.location = location;
     this.description = description;
-    this.base64Image = base64Image;
+    this.imagePath = imagePath;
   }
 
   public void updateHotelProperties(HotelDTO hotelDTO) {
@@ -53,6 +54,6 @@ public class Hotel {
     this.starRating = Integer.parseInt(hotelDTO.starRating());
     this.location = hotelDTO.location();
     this.description = hotelDTO.description();
-    this.base64Image = hotelDTO.base64Image();
+    this.imagePath = ImageUtil.saveBase64Image(hotelDTO.base64Image(), hotelDTO.name());
   }
 }
