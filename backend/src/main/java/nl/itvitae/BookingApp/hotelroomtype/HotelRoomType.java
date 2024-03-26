@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nl.itvitae.BookingApp.hotel.Hotel;
+import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.image.Image;
 import nl.itvitae.BookingApp.room.Room;
 
@@ -49,5 +50,20 @@ public class HotelRoomType {
     this.type = type;
     this.price = BigDecimal.valueOf(price);
     this.description = description;
+  }
+
+  public void updateHotelRoomTypeProperties(
+      HotelRepository hotelRepository, HotelRoomTypeDTO hotelRoomTypeDTO) {
+    this.hotel =
+        hotelRepository
+            .findById(hotelRoomTypeDTO.hotelId())
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "Hotel not found with ID: " + hotelRoomTypeDTO.hotelId()));
+    this.name = hotelRoomTypeDTO.name();
+    this.type = hotelRoomTypeDTO.type();
+    this.price = BigDecimal.valueOf(hotelRoomTypeDTO.price());
+    this.description = hotelRoomTypeDTO.description();
   }
 }

@@ -8,8 +8,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
+import nl.itvitae.BookingApp.hotel.Hotel;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.image.Image;
 import nl.itvitae.BookingApp.image.ImageDTO;
@@ -97,6 +99,32 @@ public class HotelRoomTypeController {
   public List<String> getAllTypes() {
     System.out.println("Getting enum RoomTypes...");
     return Arrays.stream(RoomType.values()).map(Enum::name).toList();
+  }
+
+  @PutMapping("{id}")
+  public ResponseEntity<?> updateHotelRoomType(
+      @PathVariable long id, @RequestBody HotelRoomTypeDTO updatedHotelRoomTypeDTO) {
+
+    HotelRoomType hotelRoomTypeToUpdate =
+        hotelRoomTypeRepository
+            .findById(id)
+            .orElseThrow(
+                () -> new ResourceNotFoundException(String.format("HotelRoomType with id %s", id)));
+
+    Hotel hotel =
+        hotelRepository
+            .findById(updatedHotelRoomTypeDTO.hotelId())
+            .orElseThrow(
+                () ->
+                    new EntityNotFoundException(
+                        "Hotel not found with ID: " + updatedHotelRoomTypeDTO.hotelId()));
+
+    hotelRoomTypeToUpdate.setHotel(hotel);
+
+    hotelRoomTypeToUpdate.updateHotelRoomTypeProperties(updatedHotelRoomTypeDTO);
+    hotelRoomTypeRepository.save(hotelRoomTypeToUpdate);
+
+    return ResponseEntity.ok().body(new HotelRoomTypeDTO(hotelRoomTypeToUpdate));
   }
 
   public record HotelRoomTypeAvailabilityDTO(
