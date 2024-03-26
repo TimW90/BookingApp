@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { number, object, string, mixed } from 'yup';
 import { usePopup } from '../popup/PopupContext';
-import { postRoom } from '@/api/roomApi';
+import { postHotelRoomTypes } from '@/api/hotelRoomTypesApi';
 import Form from '@/form/Form';
 import Input from '@/form/Input';
 import Select from '@/form/Select';
@@ -70,10 +70,10 @@ const ManageRoomForm = ({ hotelId }) => {
         roomData.base64Images[i] = { base64Image, imageNumber: i };
       }
     }
-
+    delete roomData.images;
     try {
-      const newRoom = await postRoom({ ...roomData, hotelId });
-      // console.log(JSON.stringify(newRoom[0]) + ' has been made');
+      const newRoomType = await postHotelRoomTypes({ ...roomData, hotelId });
+      console.log(JSON.stringify(newRoomType) + ' has been made');
       setImagePreview('');
       togglePopup();
     } catch (error) {

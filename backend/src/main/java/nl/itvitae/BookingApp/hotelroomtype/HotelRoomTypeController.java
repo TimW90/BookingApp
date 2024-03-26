@@ -4,9 +4,18 @@ import static nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeDTO.createHotelRo
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+
 import lombok.RequiredArgsConstructor;
+import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
+import nl.itvitae.BookingApp.hotel.HotelRepository;
+import nl.itvitae.BookingApp.image.Image;
+import nl.itvitae.BookingApp.image.ImageDTO;
+import nl.itvitae.BookingApp.image.ImageRepository;
 import nl.itvitae.BookingApp.room.Room;
+import nl.itvitae.BookingApp.room.RoomRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 public class HotelRoomTypeController {
 
   private final HotelRoomTypeRepository hotelRoomTypeRepository;
+  private final HotelRepository hotelRepository;
+  private final ImageRepository imageRepository;
+  private final RoomRepository roomRepository;
 
   @GetMapping("/availability")
   public ResponseEntity<List<HotelRoomTypeAvailabilityDTO>> getRoomTypesWithAvailability(
@@ -51,7 +63,42 @@ public class HotelRoomTypeController {
     return ResponseEntity.ok(hotelRoomTypeAvailabilityDTOS);
   }
 
-  public record HotelRoomTypeAvailabilityDTO(
-      HotelRoomTypeDTO hotelRoomTypeDTO, Integer availableRoomsCount) {}
+  @PostMapping
+  public HotelRoomTypeDTO newHotelRoomType(@RequestBody HotelRoomTypeDTO hotelRoomTypeDTO) {
+    var hotel =
+        hotelRepository
+            .findById(hotelRoomTypeDTO.hotelId())
+            .orElseThrow(() -> new ResourceNotFoundException("Hotel not found"));
+    List<Room> newRooms = new ArrayList<>();
+    HotelRoomType newHotelRoomType =
+        new HotelRoomType(
+            hotel,
+            hotelRoomTypeDTO.type(),
+            hotelRoomTypeDTO.name(),
+            hotelRoomTypeDTO.price(),
+            hotelRoomTypeDTO.description());
+    hotelRoomTypeRepository.save(newHotelRoomType);
+    //    List<ImageDTO> newImages = hotelRoomTypeDTO.images();
+    //    imageRepository.saveAll(newImages);
 
+    for (int i = 0; i < hotelRoomTypeDTO.quantity(); i++) {
+      Room newRoom = new Room(newHotelRoomType);
+      //      for (Image image : newImages) {
+      //        image.setHotelRoomType(newRoom.getHotelRoomType());
+      //      }
+      roomRepository.save(newRoom);
+      newHotelRoomType.getRooms().add(newRoom);
+      newRooms.add(newRoom);
+    }
+    return HotelRoomTypeDTO.createHotelRoomTypeDTO(newHotelRoomType);
+  }
+
+  @GetMapping()
+  public List<String> getAllTypes() {
+    System.out.println("Getting enum RoomTypes...");
+    return Arrays.stream(RoomType.values()).map(Enum::name).toList();
+  }
+
+  public record HotelRoomTypeAvailabilityDTO(
+      HotelRoomTypeDTO hotelRoomTypeDTO, Long availableRoomsCount) {}
 }

@@ -5,20 +5,23 @@ import nl.itvitae.BookingApp.image.ImageDTO;
 
 public record HotelRoomTypeDTO(
     Long id,
-    String type,
+    Long hotelId,
+    RoomType type,
     String name,
     double price,
     String description,
-    List<ImageDTO> images
-    ) {
+    List<ImageDTO> images,
+    int quantity) {
 
   public static HotelRoomTypeDTO createHotelRoomTypeDTO(HotelRoomType hotelRoomType) {
     return new HotelRoomTypeDTO(
         hotelRoomType.getId(),
-        hotelRoomType.getType().toString(),
+        hotelRoomType.getHotel().getId(),
+        hotelRoomType.getType(),
         hotelRoomType.getName(),
         hotelRoomType.getPrice().doubleValue(),
         hotelRoomType.getDescription(),
-        hotelRoomType.getImagePaths().stream().map(ImageDTO::new).toList());
+        hotelRoomType.getImagePaths().stream().map(ImageDTO::new).toList(),
+        1);
   }
 }
