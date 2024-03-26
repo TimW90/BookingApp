@@ -6,7 +6,6 @@ import useLocations from '@/hooks/useLocations';
 import { useSearchParams } from './SearchParamsContext';
 import { enumSimpleName } from '../util/util';
 import OccupantsDropdown from './OccupantsDropdown';
-import { useHotels } from '../hotel/HotelContext';
 import StarRatingInput from '@/form/StarRatingInput';
 import Input from '@/form/Input';
 

@@ -18,7 +18,7 @@ const HotelLandingPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const loadHotelRoomTypes = async () => {
+    const loadHotelById = async () => {
       const fetchedRoomTypes = await fetchHotelRoomTypesByHotelId({
         hotelId: id,
       });
@@ -29,8 +29,22 @@ const HotelLandingPage = () => {
       setIsLoading(false);
     };
 
-    loadHotelRoomTypes();
+    loadHotelById();
   }, [id]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const loadHotelRoomTypes = async () => {
+      const fetchedRoomTypes = await fetchHotelRoomTypesByHotelId({
+        hotelId: id,
+      });
+      setRoomTypes(fetchedRoomTypes);
+      console.table(fetchedRoomTypes);
+      setIsLoading(false);
+    };
+
+    loadHotelRoomTypes();
+  }, [searchParams, id]);
 
   if (isLoading) {
     return <LoadingSpinner />;

@@ -14,8 +14,11 @@ export const HotelProvider = ({ children }) => {
   const { searchParams } = useSearchParams();
 
   useEffect(() => {
-    setLoading(true);
+    setPage(0);
+  }, [searchParams]);
 
+  useEffect(() => {
+    setLoading(true);
     const queryHotels = async () => {
       const queryParams = { ...searchParams, page };
       console.log('SearchParams or page changed', queryParams, page);
