@@ -102,6 +102,7 @@ const ManageRoomForm = ({ hotelId }) => {
           register={register}
           type="text"
           name="name"
+          label="name"
           aria-label="label-input"
           errors={errors}
         />

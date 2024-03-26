@@ -111,6 +111,7 @@ const ManageHotelForm = ({ hotel }) => {
         <Input
           register={register}
           name="name"
+          label="Name"
           aria-label="label-input"
           errors={errors}
         />
@@ -126,6 +127,7 @@ const ManageHotelForm = ({ hotel }) => {
         <StarRatingInput
           register={register}
           name="starRating"
+          label="Star Rating"
           errors={errors}
         />
 

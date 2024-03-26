@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 import ErrorMessage from '@/components/alerts/ErrorMessage';
 
-const StarRatingInput = ({ register, name, errors }) => {
+const StarRatingInput = ({ register, name, label, errors }) => {
   return (
     <div className="form-control">
-      <label className="label">
-        <span className="label-text">Rating</span>
-      </label>
+      {label && (
+        <label className="label">
+          <span className="label-text">{label}</span>
+        </label>
+      )}
 
       <div className="rating">
         {[1, 2, 3, 4, 5].map((value) => (
@@ -19,7 +21,9 @@ const StarRatingInput = ({ register, name, errors }) => {
           />
         ))}
       </div>
-      {errors[name] && <ErrorMessage message={errors[name].message} />}
+      {errors && errors[name] && (
+        <ErrorMessage message={errors[name].message} />
+      )}
     </div>
   );
 };
@@ -27,6 +31,7 @@ const StarRatingInput = ({ register, name, errors }) => {
 StarRatingInput.propTypes = {
   register: PropTypes.func,
   name: PropTypes.string,
+  labe: PropTypes.string,
   errors: PropTypes.object,
   ratingLevels: PropTypes.number,
 };

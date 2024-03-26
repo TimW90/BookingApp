@@ -4,12 +4,12 @@ import static nl.itvitae.BookingApp.hotel.HotelSpecification.*;
 
 import jakarta.transaction.Transactional;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceAlreadyExistsException;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
+import nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeRepository;
 import nl.itvitae.BookingApp.util.ImageUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class HotelController {
 
   private final HotelRepository hotelRepository;
+  private final HotelRoomTypeRepository hotelRoomTypeRepository;
 
   @GetMapping
   public Page<HotelDTO> findAll(
@@ -51,19 +52,31 @@ public class HotelController {
   @GetMapping("get")
   public Page<HotelDTO> getByQuery(
       @RequestParam(required = false) Location location,
-      @RequestParam(required = false) String name,
-      @RequestParam(required = false) LocalDate checkInDate,
-      @RequestParam(required = false) LocalDate checkOutDate,
+      @RequestParam(required = false) String hotelName,
       @RequestParam(defaultValue = "1") int starRating,
       @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
 
     Specification<Hotel> specification =
         Specification.where(isInLocation(location))
-            .and(nameLike(name))
+            .and(nameLike(hotelName))
             .and(starRatingIsHigherThanOrEqualTo(starRating));
 
-    Page<Hotel> hotels = hotelRepository.findAll(specification, pageable);
-    return hotels.map(HotelDTO::new);
+    return hotelRepository.findAll(specification, pageable).map(HotelDTO::new);
+
+    //    // This will get messy
+    //    for (Hotel hotel : hotels) {
+    //      for (HotelRoomType hotelRoomType : hotel.getHotelRoomTypes()) {
+    //        List<Room> availableRooms =
+    //            hotelRoomTypeRepository.findAvailableRoomsForHotelRoomType(
+    //                hotelRoomType, checkInDate, checkOutDate);
+    //
+    //        if (availableRooms.size() <= amountOfRooms) {
+    //          hotels.remove(hotel);
+    //        }
+    //
+    //        for (Room room : availableRooms) {}
+    //      }
+    //    }
   }
 
   @GetMapping("locations")

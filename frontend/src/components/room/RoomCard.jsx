@@ -7,7 +7,7 @@ import RequireAuth from '../auth/RequireAuth';
 const RoomCard = ({ roomType, index }) => {
   const { setPopupContent, togglePopup } = usePopup();
 
-  console.log('Roomtype = ' + roomType);
+  console.log('Roomtype = ' + JSON.stringify(roomType));
   if (!roomType) return;
 
   const openBookingConfirmation = () => {
@@ -43,7 +43,7 @@ const RoomCard = ({ roomType, index }) => {
             {roomType && <Carousel images={roomType.base64Images} />}
           </div>
           <div className="flex flex-col w-1/2 m-4">
-            <div className="flex h-1/2">{roomType.description}</div>
+            <div className="flex h-1/2 flex-grow">{roomType.description}</div>
 
             <div className="flex justify-end items-center">
               <div className="flex mr-5">Price: €{roomType.price}</div>
