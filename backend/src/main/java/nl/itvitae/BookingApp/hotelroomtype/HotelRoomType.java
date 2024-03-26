@@ -52,15 +52,8 @@ public class HotelRoomType {
     this.description = description;
   }
 
-  public void updateHotelRoomTypeProperties(
-      HotelRepository hotelRepository, HotelRoomTypeDTO hotelRoomTypeDTO) {
-    this.hotel =
-        hotelRepository
-            .findById(hotelRoomTypeDTO.hotelId())
-            .orElseThrow(
-                () ->
-                    new EntityNotFoundException(
-                        "Hotel not found with ID: " + hotelRoomTypeDTO.hotelId()));
+  public void updateHotelRoomTypeProperties(Hotel hotel, HotelRoomTypeDTO hotelRoomTypeDTO) {
+    this.hotel = hotel;
     this.name = hotelRoomTypeDTO.name();
     this.type = hotelRoomTypeDTO.type();
     this.price = BigDecimal.valueOf(hotelRoomTypeDTO.price());

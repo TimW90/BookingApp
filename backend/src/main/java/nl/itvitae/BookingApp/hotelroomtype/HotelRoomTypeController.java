@@ -121,10 +121,10 @@ public class HotelRoomTypeController {
 
     hotelRoomTypeToUpdate.setHotel(hotel);
 
-    hotelRoomTypeToUpdate.updateHotelRoomTypeProperties(updatedHotelRoomTypeDTO);
+    hotelRoomTypeToUpdate.updateHotelRoomTypeProperties(hotel, updatedHotelRoomTypeDTO);
     hotelRoomTypeRepository.save(hotelRoomTypeToUpdate);
 
-    return ResponseEntity.ok().body(new HotelRoomTypeDTO(hotelRoomTypeToUpdate));
+    return ResponseEntity.ok().body(createHotelRoomTypeDTO(hotelRoomTypeToUpdate));
   }
 
   public record HotelRoomTypeAvailabilityDTO(
