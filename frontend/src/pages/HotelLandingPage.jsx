@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import RoomCard from '@/components/room/RoomCard';
 import Accordion from '@/components/common/Accordion';
@@ -7,12 +7,13 @@ import SearchBar from '@/components/searchbar/Searchbar';
 import stockHotelImage from '@/images/Hotel.jpeg';
 import { fetchHotelRoomTypesByHotelId } from '@/api/hotelRoomTypesApi';
 import { getHotelById } from '@/api/hotelApi';
+import { useSearchParams } from '@/components/searchbar/SearchParamsContext';
 
 const HotelLandingPage = () => {
   const [hotel, setHotel] = useState({});
   const [roomTypes, setRoomTypes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { searchParams } = useSearchParams();
+  const { roomSearchParams } = useSearchParams();
 
   const { id } = useParams();
 
@@ -34,8 +35,15 @@ const HotelLandingPage = () => {
 
   useEffect(() => {
     setIsLoading(true);
+
+    if (!roomSearchParams) {
+      setIsLoading(false);
+      return;
+    }
+
     const loadHotelRoomTypes = async () => {
       const fetchedRoomTypes = await fetchHotelRoomTypesByHotelId({
+        ...roomSearchParams,
         hotelId: id,
       });
       setRoomTypes(fetchedRoomTypes);
@@ -44,7 +52,7 @@ const HotelLandingPage = () => {
     };
 
     loadHotelRoomTypes();
-  }, [searchParams, id]);
+  }, [roomSearchParams, id]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -74,21 +82,17 @@ const HotelLandingPage = () => {
       </div>
       <div
         style={{
-          backgroundImage: `url('${roomTypes[2]?.hotelRoomTypeDTO.base64Images[0].base64Image || stockHotelImage}')`,
+          backgroundImage: `url('${roomTypes[2]?.base64Images[0].base64Image || stockHotelImage}')`,
         }}
         className="min-h-96 bg-center bg-no-repeat bg-cover bg-fixed"
       ></div>
-      <SearchBar isLocationFixed />
+      <SearchBar isRoomSearchBar />
       <h1 className="flex text-xl w-full justify-center">
         {roomTypes.length} accommodations found
       </h1>
       <Accordion>
         {roomTypes.map((roomType, index) => (
-          <RoomCard
-            key={roomType.hotelRoomTypeDTO.id}
-            roomType={roomType.hotelRoomTypeDTO}
-            index={index}
-          />
+          <RoomCard key={roomType.id} roomType={roomType} index={index} />
         ))}
       </Accordion>
     </>

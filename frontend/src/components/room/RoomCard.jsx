@@ -7,7 +7,6 @@ import RequireAuth from '../auth/RequireAuth';
 const RoomCard = ({ roomType, index }) => {
   const { setPopupContent, togglePopup } = usePopup();
 
-  console.log('Roomtype = ' + JSON.stringify(roomType));
   if (!roomType) return;
 
   const openBookingConfirmation = () => {
@@ -37,6 +36,12 @@ const RoomCard = ({ roomType, index }) => {
         </div>
       </div>
 
+      {roomType.amountOfRooms <= 5 && (
+        <div className="collapse-title flex justify-end items-center">
+          <p className="text-red-400 m-1">Only {roomType.amountOfRooms} left</p>
+        </div>
+      )}
+
       <div className="collapse-content ">
         <div className="card lg:card-side bg-base-100">
           <div className="flex flex-col items-center w-1/2">
@@ -51,7 +56,8 @@ const RoomCard = ({ roomType, index }) => {
               <div className="card-actions justify-end flex flex-col">
                 <button
                   onClick={openBookingConfirmation}
-                  className="btn btn-secondary"
+                  className={'btn btn-secondary'}
+                  disabled={roomType.amountOfRooms === 0}
                 >
                   Book now
                 </button>

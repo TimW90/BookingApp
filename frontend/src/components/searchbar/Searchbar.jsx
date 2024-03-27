@@ -9,15 +9,26 @@ import OccupantsDropdown from './OccupantsDropdown';
 import StarRatingInput from '@/form/StarRatingInput';
 import Input from '@/form/Input';
 
-const SearchBar = ({ isLocationFixed = false }) => {
-  const { searchParams, setSearchParams } = useSearchParams();
+const SearchBar = ({ isRoomSearchBar = false }) => {
+  const {
+    hotelSearchParams,
+    setHotelSearchParams,
+    roomSearchParams,
+    setRoomSearchParams,
+  } = useSearchParams();
   const locations = useLocations();
   const { register, handleSubmit, control } = useForm({
-    defaultValues: searchParams,
+    defaultValues: isRoomSearchBar ? roomSearchParams : hotelSearchParams,
   });
 
   const onSubmit = (searchForm) => {
-    setSearchParams((prevParams) => ({ ...prevParams, ...searchForm }));
+    if (isRoomSearchBar) {
+      console.log('Updating room search params', searchForm);
+      setRoomSearchParams((prevParams) => ({ ...prevParams, ...searchForm }));
+    } else {
+      console.log('Updating hotel search params', searchForm);
+      setHotelSearchParams((prevParams) => ({ ...prevParams, ...searchForm }));
+    }
   };
 
   return (
@@ -27,7 +38,7 @@ const SearchBar = ({ isLocationFixed = false }) => {
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* This part only renders on an hotel landing page */}
-        {!isLocationFixed ? (
+        {!isRoomSearchBar ? (
           <>
             {/* location could be refactored to use <Select/> */}
             <div className="relative">
@@ -69,7 +80,7 @@ const SearchBar = ({ isLocationFixed = false }) => {
 };
 
 SearchBar.propTypes = {
-  isLocationFixed: PropTypes.bool,
+  isRoomSearchBar: PropTypes.bool,
 };
 
 export default SearchBar;

@@ -211,7 +211,7 @@ public class Seeder implements CommandLineRunner {
   private void seedRooms() {
     List<HotelRoomType> seededHotelRoomTypes = hotelRoomTypeRepository.findAll();
 
-    int minRooms = 1, maxRooms = 10;
+    int minRooms = 1, maxRooms = 5;
     for (HotelRoomType hotelRoomType : seededHotelRoomTypes) {
       int roomCount = (int) (Math.random() * maxRooms - minRooms + 1) + minRooms;
 

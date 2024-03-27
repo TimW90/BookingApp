@@ -16,7 +16,6 @@ export const AuthProvider = ({ children }) => {
 
   const processToken = (token) => {
     const decodedUser = jwtDecode(token);
-    console.log(decodedUser);
     setUser(decodedUser);
     setIsAdmin(decodedUser.roles.includes('ADMIN'));
   };
@@ -31,7 +30,6 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = useCallback(
     async (loginRequest) => {
       try {
-        console.log(loginRequest);
         const response = await loginUser(loginRequest);
         const token = response.data;
         localStorage.setItem('token', token);

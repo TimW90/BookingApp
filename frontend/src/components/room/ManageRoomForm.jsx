@@ -26,7 +26,7 @@ const roomSchema = object().shape({
   description: string()
     .required('Description is a required field')
     .min(15, 'Description should be a minimum of 15 characters'),
-  quantity: number()
+  amountOfRooms: number()
     .typeError('Quantity is a required field')
     .required('Quantity is a required field')
     .min(1, 'Quantity should be atleast 1'),
@@ -75,6 +75,7 @@ const ManageRoomForm = ({ hotelId }) => {
     delete roomData.imageFiles; // Confuses the backend so we remove it
 
     try {
+      console.log('Posting room');
       await postHotelRoomTypes({ ...roomData, hotelId });
       setCarouselPreview([]);
       reset();
@@ -102,7 +103,7 @@ const ManageRoomForm = ({ hotelId }) => {
           register={register}
           type="text"
           name="name"
-          label="name"
+          label="Name"
           aria-label="label-input"
           errors={errors}
         />
@@ -119,6 +120,7 @@ const ManageRoomForm = ({ hotelId }) => {
         <Input
           register={register}
           type="number"
+          label="Price"
           name="price"
           aria-label="price-input"
           errors={errors}
@@ -137,7 +139,8 @@ const ManageRoomForm = ({ hotelId }) => {
         <Input
           register={register}
           type="number"
-          name="quantity"
+          name="amountOfRooms"
+          label="Quantity"
           aria-label="label-input"
           errors={errors}
         />

@@ -9,7 +9,6 @@ export const postHotel = async (hotelData) => {
 
 export const getHotels = async (params) => {
   try {
-    console.log(params);
     const response = await api.get(`${uri}/get`, { params });
     return response.data;
   } catch (error) {

@@ -19,14 +19,14 @@ const requiredDatesSchema = object().shape({
 
 const BookingConfirmation = ({ roomType }) => {
   const { user } = useAuth();
-  const { searchParams } = useSearchParams();
+  const { roomSearchParams } = useSearchParams();
   const { togglePopup } = usePopup();
   const {
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: searchParams,
+    defaultValues: roomSearchParams,
     resolver: yupResolver(requiredDatesSchema),
   });
 
@@ -37,8 +37,8 @@ const BookingConfirmation = ({ roomType }) => {
       const bookingDetails = {
         hotelRoomTypeId: roomType.id,
         userEmail: user.sub,
-        checkInDate: searchParams.checkInDate,
-        checkOutDate: searchParams.checkOutDate,
+        checkInDate: roomSearchParams.checkInDate,
+        checkOutDate: roomSearchParams.checkOutDate,
       };
       console.log(bookingDetails);
 
@@ -51,8 +51,8 @@ const BookingConfirmation = ({ roomType }) => {
   };
 
   useEffect(() => {
-    reset(searchParams); // when parameters are updated we reset the values to the updates ones
-  }, [searchParams, reset]);
+    reset(roomSearchParams); // when parameters are updated we reset the values to the updates ones
+  }, [roomSearchParams, reset]);
 
   if (!roomType) return <LoadingSpinner />;
   return (

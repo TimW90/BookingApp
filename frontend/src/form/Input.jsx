@@ -14,7 +14,7 @@ const Input = ({ register, name, label, errors, type }) => {
       <input
         className="input input-bordered"
         type={type}
-        min={type == 'number' && 1}
+        min={type == 'number' ? 1 : undefined}
         placeholder={`${camelCaseToTitleCase(name)}...`}
         {...register(name)}
         autoComplete={name}

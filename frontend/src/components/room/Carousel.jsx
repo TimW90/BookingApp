@@ -48,6 +48,7 @@ const Carousel = ({ images }) => {
                       <button
                         onClick={() => scrollToItem(index - 1)}
                         className="btn btn-circle"
+                        type="button"
                       >
                         ❮
                       </button>
@@ -58,6 +59,7 @@ const Carousel = ({ images }) => {
                       <button
                         onClick={() => scrollToItem(index + 1)}
                         className="btn btn-circle"
+                        type="button"
                       >
                         ❯
                       </button>
@@ -68,12 +70,14 @@ const Carousel = ({ images }) => {
                       <button
                         onClick={() => scrollToItem(index - 1)}
                         className="btn btn-circle"
+                        type="button"
                       >
                         ❮
                       </button>
                       <button
                         onClick={() => scrollToItem(index + 1)}
                         className="btn btn-circle"
+                        type="button"
                       >
                         ❯
                       </button>
