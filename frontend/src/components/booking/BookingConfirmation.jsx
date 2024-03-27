@@ -9,6 +9,7 @@ import { useSearchParams } from '../searchbar/SearchParamsContext';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, date, ref } from 'yup';
 import { usePopup } from '../popup/PopupContext';
+import { useNavigate } from 'react-router-dom';
 
 const requiredDatesSchema = object().shape({
   checkInDate: date().required('Check-in date is required'),
@@ -21,6 +22,7 @@ const BookingConfirmation = ({ roomType }) => {
   const { user } = useAuth();
   const { roomSearchParams } = useSearchParams();
   const { togglePopup } = usePopup();
+  const navigate = useNavigate();
   const {
     handleSubmit,
     reset,
@@ -42,8 +44,10 @@ const BookingConfirmation = ({ roomType }) => {
       };
       console.log(bookingDetails);
 
-      const newBooking = postBooking(bookingDetails);
+      const newBooking = await postBooking(bookingDetails);
       togglePopup();
+      navigate('/my-bookings');
+
       console.log(newBooking);
     } catch (error) {
       console.error('Error while trying to book', error);

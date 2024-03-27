@@ -36,6 +36,7 @@ const RoomCard = ({ roomType, index }) => {
         </div>
       </div>
 
+      {/* // dont render when no searchparams */}
       {roomType.amountOfRooms <= 5 && (
         <div className="collapse-title flex justify-end items-center">
           <p className="text-red-400 m-1">Only {roomType.amountOfRooms} left</p>

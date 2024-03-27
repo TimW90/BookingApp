@@ -8,6 +8,7 @@ import { enumSimpleName } from '../util/util';
 import OccupantsDropdown from './OccupantsDropdown';
 import StarRatingInput from '@/form/StarRatingInput';
 import Input from '@/form/Input';
+import { date } from 'yup';
 
 const SearchBar = ({ isRoomSearchBar = false }) => {
   const {
@@ -17,6 +18,7 @@ const SearchBar = ({ isRoomSearchBar = false }) => {
     setRoomSearchParams,
   } = useSearchParams();
   const locations = useLocations();
+  console.log(roomSearchParams);
   const { register, handleSubmit, control } = useForm({
     defaultValues: isRoomSearchBar ? roomSearchParams : hotelSearchParams,
   });
