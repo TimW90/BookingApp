@@ -19,7 +19,7 @@ const SearchBar = ({ isRoomSearchBar = false }) => {
   } = useSearchParams();
   const locations = useLocations();
   console.log(roomSearchParams);
-  const { register, handleSubmit, control } = useForm({
+  const { register, handleSubmit, control, reset } = useForm({
     defaultValues: isRoomSearchBar ? roomSearchParams : hotelSearchParams,
   });
 
@@ -73,7 +73,7 @@ const SearchBar = ({ isRoomSearchBar = false }) => {
           </>
         )}
 
-        <button method="submit" className="btn border border-primary-content">
+        <button type="submit" className="btn border border-primary-content">
           Search
         </button>
       </form>

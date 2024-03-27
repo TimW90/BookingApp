@@ -34,16 +34,20 @@ public class HotelRoomTypeController {
       @RequestParam Long hotelId,
       @RequestParam(required = false) LocalDate checkInDate,
       @RequestParam(required = false) LocalDate checkOutDate,
-      @RequestParam(required = false) Integer amountOfPersons,
+      @RequestParam(required = false) Integer roomSize,
       @RequestParam(required = false) Integer amountOfRooms) {
 
     List<HotelRoomType> hotelRoomTypes = hotelRoomTypeRepository.findByHotelId(hotelId);
     List<HotelRoomTypeDTO> hotelRoomTypeDTOS = new ArrayList<>();
 
     for (HotelRoomType hotelRoomType : hotelRoomTypes) {
+      if (roomSize != null && hotelRoomType.getType().getCapacity() <= roomSize) continue;
+
       List<Room> availableRooms =
           hotelRoomTypeRepository.findAvailableRoomsForHotelRoomType(
               hotelRoomType, checkInDate, checkOutDate);
+
+      if (amountOfRooms != null && availableRooms.size() < amountOfRooms) continue;
 
       hotelRoomTypeDTOS.add(
           hotelRoomTypeDTOwithAmountOfRooms(hotelRoomType, availableRooms.size()));

@@ -3,17 +3,19 @@ import PreviewImage from '../images/PreviewImage';
 import { usePopup } from '../popup/PopupContext';
 import BookingConfirmation from '../booking/BookingConfirmation';
 import RequireAuth from '../auth/RequireAuth';
+import { useSearchParams } from '../searchbar/SearchParamsContext';
+import { useEffect, useState } from 'react';
 
 const RoomCard = ({ roomType, index }) => {
   const { setPopupContent, togglePopup } = usePopup();
-
-  if (!roomType) return;
+  const { roomsSearched } = useSearchParams();
 
   const openBookingConfirmation = () => {
     setPopupContent(<BookingConfirmation roomType={roomType} />);
     togglePopup();
   };
 
+  if (!roomType) return;
   return (
     <div className="collapse join-item bg-base-200 my-0.5">
       <input
@@ -36,10 +38,13 @@ const RoomCard = ({ roomType, index }) => {
         </div>
       </div>
 
-      {/* // dont render when no searchparams */}
-      {roomType.amountOfRooms <= 5 && (
+      {roomsSearched && (
         <div className="collapse-title flex justify-end items-center">
-          <p className="text-red-400 m-1">Only {roomType.amountOfRooms} left</p>
+          <p className="text-red-400 m-1">
+            {roomType.amountOfRooms > 0 && roomType.amountOfRooms <= 5
+              ? `Only ${roomType.amountOfRooms} left`
+              : 'No rooms left'}
+          </p>
         </div>
       )}
 
