@@ -5,6 +5,7 @@ import BookingConfirmation from '../booking/BookingConfirmation';
 import RequireAuth from '../auth/RequireAuth';
 import { useSearchParams } from '../searchbar/SearchParamsContext';
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const RoomCard = ({ roomType, index }) => {
   const { setPopupContent, togglePopup } = usePopup();
@@ -41,9 +42,10 @@ const RoomCard = ({ roomType, index }) => {
       {roomsSearched && (
         <div className="collapse-title flex justify-end items-center">
           <p className="text-red-400 m-1">
-            {roomType.amountOfRooms > 0 && roomType.amountOfRooms <= 5
-              ? `Only ${roomType.amountOfRooms} left`
-              : 'No rooms left'}
+            {roomType.amountOfRooms === 0 && 'No rooms left'}
+            {roomType.amountOfRooms > 0 &&
+              roomType.amountOfRooms <= 5 &&
+              `Only ${roomType.amountOfRooms} left`}
           </p>
         </div>
       )}
@@ -74,6 +76,15 @@ const RoomCard = ({ roomType, index }) => {
       </div>
     </div>
   );
+};
+
+RoomCard.propTypes = {
+  index: PropTypes.number,
+  roomType: PropTypes.shape({
+    base64Images: PropTypes.array,
+    name: PropTypes.string,
+    amountOfRooms: PropTypes.number,
+  }),
 };
 
 export default RoomCard;

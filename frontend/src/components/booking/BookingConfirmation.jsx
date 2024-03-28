@@ -32,8 +32,6 @@ const BookingConfirmation = ({ roomType }) => {
     resolver: yupResolver(requiredDatesSchema),
   });
 
-  console.log(roomType);
-
   const onConfirm = async (data) => {
     try {
       const bookingDetails = {
@@ -42,13 +40,10 @@ const BookingConfirmation = ({ roomType }) => {
         checkInDate: roomSearchParams.checkInDate,
         checkOutDate: roomSearchParams.checkOutDate,
       };
-      console.log(bookingDetails);
 
       const newBooking = await postBooking(bookingDetails);
       togglePopup();
       navigate('/my-bookings');
-
-      console.log(newBooking);
     } catch (error) {
       console.error('Error while trying to book', error);
     }

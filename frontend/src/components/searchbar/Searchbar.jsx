@@ -8,7 +8,10 @@ import { enumSimpleName } from '../util/util';
 import OccupantsDropdown from './OccupantsDropdown';
 import StarRatingInput from '@/form/StarRatingInput';
 import Input from '@/form/Input';
-import { date } from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { date, number, object } from 'yup';
+
+const hotelSearchSchema = object().shape({});
 
 const SearchBar = ({ isRoomSearchBar = false }) => {
   const {
@@ -16,19 +19,20 @@ const SearchBar = ({ isRoomSearchBar = false }) => {
     setHotelSearchParams,
     roomSearchParams,
     setRoomSearchParams,
+    setRoomsSearched,
   } = useSearchParams();
   const locations = useLocations();
-  console.log(roomSearchParams);
+  roomSearchParams;
   const { register, handleSubmit, control, reset } = useForm({
     defaultValues: isRoomSearchBar ? roomSearchParams : hotelSearchParams,
   });
 
   const onSubmit = (searchForm) => {
     if (isRoomSearchBar) {
-      console.log('Updating room search params', searchForm);
+      'Updating room search params', searchForm;
       setRoomSearchParams((prevParams) => ({ ...prevParams, ...searchForm }));
     } else {
-      console.log('Updating hotel search params', searchForm);
+      'Updating hotel search params', searchForm;
       setHotelSearchParams((prevParams) => ({ ...prevParams, ...searchForm }));
     }
   };
@@ -75,6 +79,18 @@ const SearchBar = ({ isRoomSearchBar = false }) => {
 
         <button type="submit" className="btn border border-primary-content">
           Search
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-md btn-circle btn-ghost text-center"
+          onClick={() => {
+            setRoomSearchParams(() => {});
+            setRoomsSearched(false);
+            reset();
+          }}
+        >
+          clear
         </button>
       </form>
     </div>

@@ -45,6 +45,7 @@ export const HotelProvider = ({ children }) => {
       setHotels((prev) => [newHotel, ...prev]);
     } catch (error) {
       console.error('Error adding new hotel:', error);
+      throw error;
     }
   };
 

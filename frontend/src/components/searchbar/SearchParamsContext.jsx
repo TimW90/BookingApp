@@ -8,7 +8,8 @@ export const SearchParamsProvider = ({ children }) => {
   const [roomsSearched, setRoomsSearched] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(roomSearchParams).length > 0) {
+    'searching', roomSearchParams;
+    if (roomSearchParams && Object.keys(roomSearchParams).length > 0) {
       setRoomsSearched(true);
     }
   }, [roomSearchParams]);
@@ -19,6 +20,7 @@ export const SearchParamsProvider = ({ children }) => {
     roomSearchParams,
     setRoomSearchParams,
     roomsSearched,
+    setRoomsSearched,
   };
 
   return (

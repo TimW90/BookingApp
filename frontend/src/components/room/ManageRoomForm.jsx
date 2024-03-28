@@ -75,7 +75,7 @@ const ManageRoomForm = ({ hotelId }) => {
     delete roomData.imageFiles; // Confuses the backend so we remove it
 
     try {
-      console.log('Posting room');
+      ('Posting room');
       await postHotelRoomTypes({ ...roomData, hotelId });
       setCarouselPreview([]);
       reset();

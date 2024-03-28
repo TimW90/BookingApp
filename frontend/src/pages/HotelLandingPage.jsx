@@ -32,11 +32,6 @@ const HotelLandingPage = () => {
   useEffect(() => {
     setIsRoomsLoading(true);
 
-    if (!roomSearchParams) {
-      setIsLoading(false);
-      return;
-    }
-
     const loadHotelRoomTypes = async () => {
       const fetchedRoomTypes = await fetchHotelRoomTypesByHotelId({
         ...roomSearchParams,

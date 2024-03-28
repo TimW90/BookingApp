@@ -41,7 +41,7 @@ public class HotelRoomTypeController {
     List<HotelRoomTypeDTO> hotelRoomTypeDTOS = new ArrayList<>();
 
     for (HotelRoomType hotelRoomType : hotelRoomTypes) {
-      if (roomSize != null && hotelRoomType.getType().getCapacity() <= roomSize) continue;
+      if (roomSize != null && hotelRoomType.getType().getCapacity() != roomSize) continue;
 
       List<Room> availableRooms =
           hotelRoomTypeRepository.findAvailableRoomsForHotelRoomType(
@@ -84,8 +84,8 @@ public class HotelRoomTypeController {
     for (int i = 0; i < hotelRoomTypeDTO.amountOfRooms(); i++) {
       Room newRoom = new Room(newHotelRoomType);
 
-      roomRepository.save(newRoom);
       newHotelRoomType.getRooms().add(newRoom);
+      roomRepository.save(newRoom);
     }
     return HotelRoomTypeDTO.createHotelRoomTypeDTO(newHotelRoomType);
   }

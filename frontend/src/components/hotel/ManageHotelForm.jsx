@@ -135,7 +135,9 @@ const ManageHotelForm = ({ hotel }) => {
         <TextArea register={register} name="description" errors={errors} />
         <SubmitButton isLoading={isSubmitting}>Confirm</SubmitButton>
 
-        {<ErrorMessage message={errors.root?.message} />}
+        <div className="flex justify-center">
+          <ErrorMessage message={errors.root?.message} />
+        </div>
       </form>
     </div>
   );

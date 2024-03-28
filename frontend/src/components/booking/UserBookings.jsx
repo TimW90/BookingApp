@@ -14,7 +14,6 @@ const UserBookings = () => {
       if (user) {
         const fetchedBookings = await fetchBookingsByUsername(user.sub);
         setBookings(fetchedBookings);
-        console.log(fetchedBookings);
       }
     };
 

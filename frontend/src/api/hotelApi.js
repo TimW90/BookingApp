@@ -13,6 +13,7 @@ export const getHotels = async (params) => {
     return response.data;
   } catch (error) {
     console.error('Failed to fetch hotels', error);
+    throw error;
   }
 };
 
