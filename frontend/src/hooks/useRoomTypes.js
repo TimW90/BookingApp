@@ -7,7 +7,7 @@ const useRoomTypes = () => {
   useEffect(() => {
     const loadRoomTypes = async () => {
       const fetchedRoomTypes = await getRoomTypes();
-      console.log(fetchedRoomTypes);
+      fetchedRoomTypes;
       setRoomTypes(fetchedRoomTypes);
     };
 

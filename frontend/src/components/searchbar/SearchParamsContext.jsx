@@ -3,11 +3,24 @@ import { createContext, useContext, useState, useEffect } from 'react';
 const SearchParamsContext = createContext();
 
 export const SearchParamsProvider = ({ children }) => {
-  const [searchParams, setSearchParams] = useState({});
+  const [hotelSearchParams, setHotelSearchParams] = useState({});
+  const [roomSearchParams, setRoomSearchParams] = useState({});
+  const [roomsSearched, setRoomsSearched] = useState(false);
+
+  useEffect(() => {
+    'searching', roomSearchParams;
+    if (roomSearchParams && Object.keys(roomSearchParams).length > 0) {
+      setRoomsSearched(true);
+    }
+  }, [roomSearchParams]);
 
   const contextValue = {
-    searchParams,
-    setSearchParams,
+    hotelSearchParams,
+    setHotelSearchParams,
+    roomSearchParams,
+    setRoomSearchParams,
+    roomsSearched,
+    setRoomsSearched,
   };
 
   return (

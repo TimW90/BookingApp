@@ -14,7 +14,6 @@ const UserBookings = () => {
       if (user) {
         const fetchedBookings = await fetchBookingsByUsername(user.sub);
         setBookings(fetchedBookings);
-        console.log(fetchedBookings);
       }
     };
 
@@ -49,8 +48,8 @@ const UserBookings = () => {
                 <tr key={booking.id}>
                   <td>{booking.hotelName}</td>
                   <td>{booking.roomName}</td>
-                  <td>{booking.checkIn}</td>
-                  <td>{booking.checkOut}</td>
+                  <td>{booking.checkInDate}</td>
+                  <td>{booking.checkOutDate}</td>
                   <td>€{booking.price}</td>
                   <td>
                     <button

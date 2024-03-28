@@ -5,3 +5,11 @@ export const capitalize = (string) => {
 export const enumSimpleName = (enumString) => {
   return capitalize(enumString.toLowerCase().replace('_', ' '));
 };
+
+export const insertSpaceBeforeCapitalLetter = (string) => {
+  return string.replace(/([a-z])([A-Z])/g, '$1 $2');
+};
+
+export const camelCaseToTitleCase = (string) => {
+  return capitalize(insertSpaceBeforeCapitalLetter(string));
+};

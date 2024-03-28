@@ -10,8 +10,8 @@ public record HotelRoomTypeDTO(
     String name,
     double price,
     String description,
-    List<ImageDTO> images,
-    int quantity) {
+    List<ImageDTO> base64Images,
+    int amountOfRooms) {
 
   public static HotelRoomTypeDTO createHotelRoomTypeDTO(HotelRoomType hotelRoomType) {
     return new HotelRoomTypeDTO(
@@ -21,7 +21,20 @@ public record HotelRoomTypeDTO(
         hotelRoomType.getName(),
         hotelRoomType.getPrice().doubleValue(),
         hotelRoomType.getDescription(),
-        hotelRoomType.getImagePaths().stream().map(ImageDTO::new).toList(),
+        hotelRoomType.getBase64Images().stream().map(ImageDTO::new).toList(),
         1);
+  }
+
+  public static HotelRoomTypeDTO hotelRoomTypeDTOwithAmountOfRooms(
+      HotelRoomType hotelRoomType, int amountOfRooms) {
+    return new HotelRoomTypeDTO(
+        hotelRoomType.getId(),
+        hotelRoomType.getHotel().getId(),
+        hotelRoomType.getType(),
+        hotelRoomType.getName(),
+        hotelRoomType.getPrice().doubleValue(),
+        hotelRoomType.getDescription(),
+        hotelRoomType.getBase64Images().stream().map(ImageDTO::new).toList(),
+        amountOfRooms);
   }
 }

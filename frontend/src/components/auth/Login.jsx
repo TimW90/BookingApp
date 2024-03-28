@@ -11,7 +11,7 @@ const loginSchema = object().shape({
     .email('Invalid email format')
     .required('Email is required'),
   password: string()
-    .min(4, 'Password must be at least 4 characters long')
+    .min(4, 'Password must 4 characters long')
     .required('Password is required'),
 });
 

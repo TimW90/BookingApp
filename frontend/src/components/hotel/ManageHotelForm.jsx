@@ -11,7 +11,7 @@ import { convertToBase64 } from '../images/ImageUtil';
 import Input from '@/form/Input';
 import Select from '@/form/Select';
 import StarRatingInput from '@/form/StarRatingInput';
-import FileInput from '@/form/FileInput';
+import FileInput from '@/form/FileImageInput';
 import TextArea from '@/form/TextArea';
 import SubmitButton from '@/form/SubmitButton';
 
@@ -111,6 +111,7 @@ const ManageHotelForm = ({ hotel }) => {
         <Input
           register={register}
           name="name"
+          label="Name"
           aria-label="label-input"
           errors={errors}
         />
@@ -126,6 +127,7 @@ const ManageHotelForm = ({ hotel }) => {
         <StarRatingInput
           register={register}
           name="starRating"
+          label="Star Rating"
           errors={errors}
         />
 
@@ -133,7 +135,9 @@ const ManageHotelForm = ({ hotel }) => {
         <TextArea register={register} name="description" errors={errors} />
         <SubmitButton isLoading={isSubmitting}>Confirm</SubmitButton>
 
-        {<ErrorMessage message={errors.root?.message} />}
+        <div className="flex justify-center">
+          <ErrorMessage message={errors.root?.message} />
+        </div>
       </form>
     </div>
   );

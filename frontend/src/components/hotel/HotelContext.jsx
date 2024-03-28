@@ -11,14 +11,16 @@ export const HotelProvider = ({ children }) => {
   const [error, setError] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const { searchParams } = useSearchParams();
+  const { hotelSearchParams } = useSearchParams();
+
+  useEffect(() => {
+    setPage(0);
+  }, [hotelSearchParams]);
 
   useEffect(() => {
     setLoading(true);
-
     const queryHotels = async () => {
-      const queryParams = { ...searchParams, page };
-      console.log('SearchParams or page changed', queryParams, page);
+      const queryParams = { ...hotelSearchParams, page };
       const queriedHotelPages = await getHotels(queryParams);
 
       if (page === 0) {
@@ -35,7 +37,7 @@ export const HotelProvider = ({ children }) => {
     };
 
     queryHotels();
-  }, [setHotels, searchParams, page]);
+  }, [setHotels, hotelSearchParams, page]);
 
   const handleAddHotel = async (hotelData) => {
     try {
@@ -43,6 +45,7 @@ export const HotelProvider = ({ children }) => {
       setHotels((prev) => [newHotel, ...prev]);
     } catch (error) {
       console.error('Error adding new hotel:', error);
+      throw error;
     }
   };
 

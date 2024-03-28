@@ -3,7 +3,6 @@ import { api } from './api';
 const uri = 'hotel-room-types';
 
 export const fetchHotelRoomTypesByHotelId = async (params) => {
-  console.log(params);
   try {
     const response = await api.get(`${uri}/availability`, { params });
     return response.data;
@@ -19,10 +18,7 @@ export const getRoomTypes = async () => {
 
 export const postHotelRoomTypes = async (roomData) => {
   try {
-    console.log('posting room type');
-    console.log(roomData);
     const response = await api.post(uri, roomData);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error while trying to post a new room', error.response.data);

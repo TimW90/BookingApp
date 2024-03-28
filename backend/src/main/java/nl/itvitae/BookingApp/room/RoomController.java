@@ -19,6 +19,8 @@ public class RoomController {
   private final ImageRepository imageRepository;
   private final HotelRoomTypeRepository hotelRoomTypeRepository;
 
+  // Most of this is moved to HotelRoomTypeController needs to be cleared in refactor
+
   //  @GetMapping
   //  public List<RoomDTO> findAll() {
   //    return roomRepository.findAll().stream().map(RoomDTO::new).toList();

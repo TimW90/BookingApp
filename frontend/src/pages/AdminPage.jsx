@@ -1,4 +1,4 @@
-import ManageHotel from '../components/hotel/ManageHotelForm';
+import ManageHotelForm from '../components/hotel/ManageHotelForm';
 import HotelAccordion from '@/components/hotel/HotelAccordion';
 import { usePopup } from '@/components/popup/PopupContext';
 
@@ -10,7 +10,7 @@ const AdminPage = () => {
       <button
         className="btn mb-6"
         onClick={() => {
-          setPopupContent(<ManageHotel />);
+          setPopupContent(<ManageHotelForm />);
           togglePopup();
         }}
       >

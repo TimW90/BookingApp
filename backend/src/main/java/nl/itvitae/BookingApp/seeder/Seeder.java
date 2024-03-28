@@ -1,7 +1,5 @@
 package nl.itvitae.BookingApp.seeder;
 
-import static nl.itvitae.BookingApp.util.ImageUtil.*;
-
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +18,7 @@ import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
 import nl.itvitae.BookingApp.user.User;
 import nl.itvitae.BookingApp.user.UserRepository;
+import nl.itvitae.BookingApp.util.ImageUtil;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -161,13 +160,15 @@ public class Seeder implements CommandLineRunner {
 
     HotelRoomType hotelRoomType = new HotelRoomType(hotel, type, name, price, description);
     hotelRoomTypeRepository.save(hotelRoomType);
+    hotel.getHotelRoomTypes().add(hotelRoomType);
 
     for (String imagePath : imagePaths) {
       int imageNumber = 1;
-      Image image = new Image(imagePath, imageNumber++);
-      imageRepository.save(image);
-      hotelRoomType.getImagePaths().add(image);
-      image.setHotelRoomType(hotelRoomType);
+      String base64Image = ImageUtil.convertImagePathToBase64String(imagePath);
+      Image newImage = new Image(base64Image, imageNumber++);
+      imageRepository.save(newImage);
+      hotelRoomType.getBase64Images().add(newImage);
+      newImage.setHotelRoomType(hotelRoomType);
     }
     return hotelRoomType;
   }
@@ -210,7 +211,7 @@ public class Seeder implements CommandLineRunner {
   private void seedRooms() {
     List<HotelRoomType> seededHotelRoomTypes = hotelRoomTypeRepository.findAll();
 
-    int minRooms = 5, maxRooms = 20;
+    int minRooms = 1, maxRooms = 5;
     for (HotelRoomType hotelRoomType : seededHotelRoomTypes) {
       int roomCount = (int) (Math.random() * maxRooms - minRooms + 1) + minRooms;
 
@@ -227,21 +228,19 @@ public class Seeder implements CommandLineRunner {
     User bookingUser = userRepository.findAll().getFirst(); // Has role USER
     List<Hotel> hotels = hotelRepository.findAll();
 
-    LocalDate checkInDate = LocalDate.now();
-    LocalDate checkOutDate = LocalDate.now().plusDays(5);
+    LocalDate checkInDate = LocalDate.now().minusYears(1).minusMonths(6);
+    LocalDate checkOutDate = checkInDate.plusDays(5);
 
     for (Hotel hotel : hotels) {
       for (HotelRoomType hotelRoomType : hotel.getHotelRoomTypes()) {
-        List<Room> availableRooms =
-            roomRepository.findAvailableRoomsByHotelRoomTypeAndDateRange(
-                hotelRoomType, checkInDate, checkOutDate);
 
-        if (!availableRooms.isEmpty()) {
-          Room availableRoom = availableRooms.getFirst();
-          Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, availableRoom);
-          bookingRepository.save(newBooking);
-          bookingUser.addBooking(newBooking);
-        }
+        Room availableRoom =
+            hotelRoomTypeRepository
+                .findAvailableRoomsForHotelRoomType(hotelRoomType, checkInDate, checkOutDate)
+                .getFirst();
+        Booking newBooking = new Booking(checkInDate, checkOutDate, bookingUser, availableRoom);
+        bookingRepository.save(newBooking);
+        bookingUser.addBooking(newBooking);
 
         // Update check-in/check-out dates for variety
         checkInDate = checkInDate.plusDays(10);

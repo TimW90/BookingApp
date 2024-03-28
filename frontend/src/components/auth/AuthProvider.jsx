@@ -16,13 +16,12 @@ export const AuthProvider = ({ children }) => {
 
   const processToken = (token) => {
     const decodedUser = jwtDecode(token);
-    console.log(decodedUser);
     setUser(decodedUser);
     setIsAdmin(decodedUser.roles.includes('ADMIN'));
   };
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       processToken(token);
     }
@@ -31,10 +30,9 @@ export const AuthProvider = ({ children }) => {
   const handleLogin = useCallback(
     async (loginRequest) => {
       try {
-        console.log(loginRequest);
         const response = await loginUser(loginRequest);
         const token = response.data;
-        sessionStorage.setItem('token', token);
+        localStorage.setItem('token', token);
         processToken(token);
         setFlashMessage('Logged in successfully!');
         setJwtHeader(token);
@@ -47,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   );
 
   const handleLogout = useCallback(() => {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
     setUser(null);
     setIsAdmin(false);
     setFlashMessage('Logged out successfully!');

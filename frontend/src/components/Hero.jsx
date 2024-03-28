@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import defaultImage from '@/images/hotel_placeholder.png';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const [data, setData] = useState(null);
@@ -32,7 +33,9 @@ const Hero = () => {
         <div>
           <h1 className="text-5xl font-bold">{data.name}</h1>
           <p className="py-6">{data.description}</p>
-          <button className="btn btn-primary">Go to Hotel</button>
+          <Link className="btn btn-secondary" to={`hotel/${data.id}`}>
+            Go to hotel
+          </Link>
         </div>
       </div>
     </div>

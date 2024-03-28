@@ -1,37 +1,38 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { number, object, string, mixed } from 'yup';
+import { number, object, string, mixed, array } from 'yup';
 import { usePopup } from '../popup/PopupContext';
 import { postHotelRoomTypes } from '@/api/hotelRoomTypesApi';
-import Form from '@/form/Form';
 import Input from '@/form/Input';
 import Select from '@/form/Select';
-import FileInput from '@/form/FileInput';
+import FileInput from '@/form/FileImageInput';
 import TextArea from '@/form/TextArea';
 import SubmitButton from '@/form/SubmitButton';
 import useRoomTypes from '@/hooks/useRoomTypes';
 import ErrorMessage from '../alerts/ErrorMessage';
 import PropTypes from 'prop-types';
-import { convertToBase64 } from '../images/ImageUtil';
+import { convertMultipleToBase64, convertToBase64 } from '../images/ImageUtil';
+import Carousel from './Carousel';
 
 const roomSchema = object().shape({
   name: string().required('Name is a required field'),
   type: string().required('Type is a required field'),
   price: number()
+    .typeError('Price is a required field')
     .required('Price is a required field')
     .positive('Price should be a positive number'),
-  images: mixed(),
+  imageFiles: mixed(),
   description: string()
     .required('Description is a required field')
     .min(15, 'Description should be a minimum of 15 characters'),
-  quantity: number()
+  amountOfRooms: number()
+    .typeError('Quantity is a required field')
     .required('Quantity is a required field')
     .min(1, 'Quantity should be atleast 1'),
 });
 
 const ManageRoomForm = ({ hotelId }) => {
-  console.log(hotelId);
   const {
     register,
     setError,
@@ -45,15 +46,19 @@ const ManageRoomForm = ({ hotelId }) => {
 
   const { togglePopup } = usePopup();
   const roomTypes = useRoomTypes();
-  const [imagePreview, setImagePreview] = useState('');
-  const previewImage = watch('image');
+  const [carouselPreview, setCarouselPreview] = useState([]);
+  const previewImages = watch('imageFiles');
 
   useEffect(() => {
-    if (previewImage && previewImage.length > 0) {
-      const file = previewImage[0];
-      setImagePreview(URL.createObjectURL(file));
-    }
-  }, [previewImage]);
+    const convertImages = async () => {
+      if (previewImages) {
+        const images = await convertMultipleToBase64(previewImages);
+        setCarouselPreview(images);
+      }
+    };
+
+    convertImages();
+  }, [previewImages]);
 
   // useEffect(() => {
   //   if (isPopupOpen) {
@@ -62,19 +67,18 @@ const ManageRoomForm = ({ hotelId }) => {
   // }, [reset, isSubmitSuccessful, isPopupOpen, room]);
 
   const onSubmit = async (roomData) => {
-    roomData.base64Images = [];
-    if (roomData.images) {
-      for (let i = 0; i < roomData.images.length; i++) {
-        const image = roomData.images[i];
-        const base64Image = await convertToBase64(image);
-        roomData.base64Images[i] = { base64Image, imageNumber: i };
-      }
+    if (roomData.imageFiles) {
+      roomData.base64Images = await convertMultipleToBase64(
+        roomData.imageFiles
+      );
     }
-    delete roomData.images;
+    delete roomData.imageFiles; // Confuses the backend so we remove it
+
     try {
-      const newRoomType = await postHotelRoomTypes({ ...roomData, hotelId });
-      console.log(JSON.stringify(newRoomType) + ' has been made');
-      setImagePreview('');
+      ('Posting room');
+      await postHotelRoomTypes({ ...roomData, hotelId });
+      setCarouselPreview([]);
+      reset();
       togglePopup();
     } catch (error) {
       console.error(error);
@@ -99,6 +103,7 @@ const ManageRoomForm = ({ hotelId }) => {
           register={register}
           type="text"
           name="name"
+          label="Name"
           aria-label="label-input"
           errors={errors}
         />
@@ -115,27 +120,33 @@ const ManageRoomForm = ({ hotelId }) => {
         <Input
           register={register}
           type="number"
+          label="Price"
           name="price"
           aria-label="price-input"
           errors={errors}
         />
 
-        <FileInput register={register} name="images" errors={errors} />
-        {imagePreview && <img src={imagePreview} alt="room preview image" />}
+        {carouselPreview && <Carousel images={carouselPreview} />}
+        <FileInput
+          register={register}
+          label="Images"
+          name="imageFiles"
+          errors={errors}
+        />
+
         <TextArea register={register} name="description" errors={errors} />
 
         <Input
           register={register}
           type="number"
-          name="quantity"
+          name="amountOfRooms"
+          label="Quantity"
           aria-label="label-input"
           errors={errors}
         />
 
-        {/* <SubmitButton isLoading={isSubmitting}>Confirm</SubmitButton> */}
-        <input type="submit"></input>
-
-        {/* {errors.root && <ErrorMessage message={errors.root.message} />} */}
+        <SubmitButton isLoading={isSubmitting}>Confirm</SubmitButton>
+        {errors.root && <ErrorMessage message={errors.root.message} />}
       </form>
     </div>
   );

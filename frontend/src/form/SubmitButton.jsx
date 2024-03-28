@@ -2,14 +2,16 @@ import PropTypes from 'prop-types';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 
 const SubmitButton = ({ isLoading, children, onClick }) => (
-  <button
-    type="submit"
-    className="btn m-1"
-    onClick={onClick}
-    disabled={isLoading}
-  >
-    {isLoading ? <LoadingSpinner /> : children}
-  </button>
+  <div className="flex justify-center pt-4">
+    <button
+      type="submit"
+      className="btn m-1"
+      onClick={onClick}
+      disabled={isLoading}
+    >
+      {isLoading ? <LoadingSpinner /> : children}
+    </button>
+  </div>
 );
 
 export default SubmitButton;

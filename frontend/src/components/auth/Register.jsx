@@ -30,7 +30,6 @@ const Register = () => {
   });
 
   const onSubmit = async (userData) => {
-    console.log(userData);
     try {
       await postUser(userData);
       await handleLogin({

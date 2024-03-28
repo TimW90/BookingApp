@@ -13,6 +13,7 @@ const DatePicker = ({ register }) => {
           </svg>
         </div>
         <input
+          min={new Date().toISOString().split('T')[0]}
           name="start"
           type="date"
           className="input input-bordered bg-primary-content text-sm rounded-lg block w-full ps-10 p-2.5"
@@ -34,6 +35,7 @@ const DatePicker = ({ register }) => {
         </div>
         <input
           name="end"
+          min={new Date().toISOString().split('T')[0]}
           type="date"
           className="input input-bordered bg-primary-content text-sm rounded-lg block w-full ps-10 p-2.5"
           placeholder="Check-Out"

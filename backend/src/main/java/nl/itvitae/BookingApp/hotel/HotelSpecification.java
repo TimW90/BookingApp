@@ -3,7 +3,6 @@ package nl.itvitae.BookingApp.hotel;
 import org.springframework.data.jpa.domain.Specification;
 
 public class HotelSpecification {
-
   public static Specification<Hotel> isInLocation(Location location) {
     return (root, query, criteriaBuilder) ->
         location == null

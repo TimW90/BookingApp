@@ -1,18 +1,15 @@
 package nl.itvitae.BookingApp.hotelroomtype;
 
-import static nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeDTO.createHotelRoomTypeDTO;
+import static nl.itvitae.BookingApp.hotelroomtype.HotelRoomTypeDTO.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-
 import lombok.RequiredArgsConstructor;
 import nl.itvitae.BookingApp.exception.ResourceNotFoundException;
 import nl.itvitae.BookingApp.hotel.HotelRepository;
 import nl.itvitae.BookingApp.image.Image;
-import nl.itvitae.BookingApp.image.ImageDTO;
 import nl.itvitae.BookingApp.image.ImageRepository;
 import nl.itvitae.BookingApp.room.Room;
 import nl.itvitae.BookingApp.room.RoomRepository;
@@ -33,34 +30,30 @@ public class HotelRoomTypeController {
   private final RoomRepository roomRepository;
 
   @GetMapping("/availability")
-  public ResponseEntity<List<HotelRoomTypeAvailabilityDTO>> getRoomTypesWithAvailability(
+  public ResponseEntity<List<HotelRoomTypeDTO>> getRoomTypesWithAvailability(
       @RequestParam Long hotelId,
       @RequestParam(required = false) LocalDate checkInDate,
-      @RequestParam(required = false) LocalDate checkOutDate) {
+      @RequestParam(required = false) LocalDate checkOutDate,
+      @RequestParam(required = false) Integer roomSize,
+      @RequestParam(required = false) Integer amountOfRooms) {
 
     List<HotelRoomType> hotelRoomTypes = hotelRoomTypeRepository.findByHotelId(hotelId);
-    List<HotelRoomTypeAvailabilityDTO> hotelRoomTypeAvailabilityDTOS = new ArrayList<>();
+    List<HotelRoomTypeDTO> hotelRoomTypeDTOS = new ArrayList<>();
 
-    // No dates provided, return all hotel room types without availability count
-    if (checkInDate == null || checkOutDate == null) {
-      for (HotelRoomType hotelRoomType : hotelRoomTypes) {
-        hotelRoomTypeAvailabilityDTOS.add(
-            new HotelRoomTypeAvailabilityDTO(createHotelRoomTypeDTO(hotelRoomType), null));
-      }
-    } else {
-      // Dates provided, calculate availability
-      for (HotelRoomType hotelRoomType : hotelRoomTypes) {
-        Long amountOfAvailableRooms =
-            hotelRoomTypeRepository.countAvailableRoomsForHotelRoomType(
-                hotelRoomType, checkInDate, checkOutDate);
+    for (HotelRoomType hotelRoomType : hotelRoomTypes) {
+      if (roomSize != null && hotelRoomType.getType().getCapacity() != roomSize) continue;
 
-        hotelRoomTypeAvailabilityDTOS.add(
-            new HotelRoomTypeAvailabilityDTO(
-                createHotelRoomTypeDTO(hotelRoomType), amountOfAvailableRooms));
-      }
+      List<Room> availableRooms =
+          hotelRoomTypeRepository.findAvailableRoomsForHotelRoomType(
+              hotelRoomType, checkInDate, checkOutDate);
+
+      if (amountOfRooms != null && availableRooms.size() < amountOfRooms) continue;
+
+      hotelRoomTypeDTOS.add(
+          hotelRoomTypeDTOwithAmountOfRooms(hotelRoomType, availableRooms.size()));
     }
 
-    return ResponseEntity.ok(hotelRoomTypeAvailabilityDTOS);
+    return ResponseEntity.ok(hotelRoomTypeDTOS);
   }
 
   @PostMapping
@@ -69,7 +62,7 @@ public class HotelRoomTypeController {
         hotelRepository
             .findById(hotelRoomTypeDTO.hotelId())
             .orElseThrow(() -> new ResourceNotFoundException("Hotel not found"));
-    List<Room> newRooms = new ArrayList<>();
+
     HotelRoomType newHotelRoomType =
         new HotelRoomType(
             hotel,
@@ -77,18 +70,22 @@ public class HotelRoomTypeController {
             hotelRoomTypeDTO.name(),
             hotelRoomTypeDTO.price(),
             hotelRoomTypeDTO.description());
-    hotelRoomTypeRepository.save(newHotelRoomType);
-    //    List<ImageDTO> newImages = hotelRoomTypeDTO.images();
-    //    imageRepository.saveAll(newImages);
 
-    for (int i = 0; i < hotelRoomTypeDTO.quantity(); i++) {
+    List<Image> newImages =
+        imageRepository.saveAll(hotelRoomTypeDTO.base64Images().stream().map(Image::new).toList());
+
+    for (Image image : newImages) {
+      image.setHotelRoomType(newHotelRoomType);
+    }
+
+    newHotelRoomType.setBase64Images(newImages);
+    hotelRoomTypeRepository.save(newHotelRoomType);
+
+    for (int i = 0; i < hotelRoomTypeDTO.amountOfRooms(); i++) {
       Room newRoom = new Room(newHotelRoomType);
-      //      for (Image image : newImages) {
-      //        image.setHotelRoomType(newRoom.getHotelRoomType());
-      //      }
-      roomRepository.save(newRoom);
+
       newHotelRoomType.getRooms().add(newRoom);
-      newRooms.add(newRoom);
+      roomRepository.save(newRoom);
     }
     return HotelRoomTypeDTO.createHotelRoomTypeDTO(newHotelRoomType);
   }
@@ -98,7 +95,4 @@ public class HotelRoomTypeController {
     System.out.println("Getting enum RoomTypes...");
     return Arrays.stream(RoomType.values()).map(Enum::name).toList();
   }
-
-  public record HotelRoomTypeAvailabilityDTO(
-      HotelRoomTypeDTO hotelRoomTypeDTO, Long availableRoomsCount) {}
 }

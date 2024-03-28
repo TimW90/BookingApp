@@ -14,6 +14,11 @@ const HotelAccordion = ({ isAdminPage }) => {
     <>
       <SearchBar />
       <Accordion>
+        {hotels.length === 0 && (
+          <div className="flex text-xl w-full justify-center my-10">
+            <h1 className="text-5xl">No results...</h1>
+          </div>
+        )}
         {hotels.map((hotel, index) => (
           <AccordionCard
             key={hotel.id}
