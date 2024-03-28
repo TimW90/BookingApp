@@ -40,7 +40,7 @@ const SearchBar = ({ isRoomSearchBar = false }) => {
   return (
     <div className="flex w-full">
       <form
-        className="flex flex-col sm:flex-row w-full justify-center bg-base-100 gap-4 mx-96 items-center border border-base-content border-opacity-50 rounded-lg my-4 px-4 py-1 z-10 "
+        className="flex flex-col sm:flex-row w-full justify-center bg-base-100 gap-4 mx-72 items-center border border-base-content border-opacity-50 rounded-lg my-4 px-4 py-1 z-10 "
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* This part only renders on an hotel landing page */}
@@ -81,17 +81,19 @@ const SearchBar = ({ isRoomSearchBar = false }) => {
           Search
         </button>
 
-        <button
-          type="button"
-          className="btn btn-md btn-circle btn-ghost text-center"
-          onClick={() => {
-            setRoomSearchParams(() => {});
-            setRoomsSearched(false);
-            reset();
-          }}
-        >
-          clear
-        </button>
+        {isRoomSearchBar && (
+          <button
+            type="button"
+            className="btn btn-md btn-circle btn-ghost text-center"
+            onClick={() => {
+              setRoomSearchParams(() => {});
+              setRoomsSearched(false);
+              reset();
+            }}
+          >
+            clear
+          </button>
+        )}
       </form>
     </div>
   );
