@@ -81,17 +81,19 @@ const SearchBar = ({ isRoomSearchBar = false }) => {
           Search
         </button>
 
-        <button
-          type="button"
-          className="btn btn-md btn-circle btn-ghost text-center"
-          onClick={() => {
-            setRoomSearchParams(() => {});
-            setRoomsSearched(false);
-            reset();
-          }}
-        >
-          clear
-        </button>
+        {isRoomSearchBar && (
+          <button
+            type="button"
+            className="btn btn-md btn-circle btn-ghost text-center"
+            onClick={() => {
+              setRoomSearchParams(() => {});
+              setRoomsSearched(false);
+              reset();
+            }}
+          >
+            clear
+          </button>
+        )}
       </form>
     </div>
   );
