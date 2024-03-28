@@ -35,6 +35,7 @@ public class HotelRoomType {
   @Column(nullable = false)
   private BigDecimal price;
 
+  @Column(length = 1500)
   private String description;
 
   @OneToMany(mappedBy = "hotelRoomType")

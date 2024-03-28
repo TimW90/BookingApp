@@ -182,16 +182,16 @@ public class Seeder implements CommandLineRunner {
               saveHotelRoomType(
                   hotel,
                   RoomType.SINGLE_ROOM,
-                  "Single Comfort Room",
+                  "Comfort Single Room",
                   120,
-                  "A nice and cozy room for one person",
+                  "Welcome to our cozy Comfort Single Room, tailored for solo travelers seeking comfort and convenience. This room features a comfortable single bed with soft linens, ensuring a restful night's sleep. Thoughtfully decorated with modern furnishings, it offers a welcoming ambiance and views of the surrounding area. Equipped with a writing desk, it provides a space for work or leisure activities. Whether you're here for business or leisure, our Comfort Single Room offers a comfortable retreat for your stay.",
                   List.of("src/main/resources/static/images/room_1_1.png")),
               saveHotelRoomType(
                   hotel,
                   RoomType.DOUBLE_ROOM,
-                  "Double Comfort Room",
+                  "Comfort Double Room",
                   220,
-                  "A nice and cozy room for two persons",
+                  "Welcome to our Comfort Double Room, ideal for a comfortable stay for two. This spacious room features a plush queen-sized bed adorned with crisp linens and a selection of pillows, promising a restful night's sleep. Enjoy stunning views through large windows while relaxing in this inviting space. Whether you're here for business or leisure, our Comfort Double Room promises comfort and relaxation throughout your stay.",
                   List.of(
                       "src/main/resources/static/images/room_2_1.png",
                       "src/main/resources/static/images/room_2_2.png")),
@@ -200,7 +200,7 @@ public class Seeder implements CommandLineRunner {
                   RoomType.QUADRUPLE_ROOM,
                   "Quadruple Deluxe Room",
                   400,
-                  "A big luxurious room for up to four persons",
+                  "Welcome to our spacious Quadruple Deluxe Room, perfect for families or groups of up to four. This room features two plush queen-sized beds with luxurious linens, ensuring a restful night's sleep for everyone. The en-suite bathroom is elegantly appointed with a refreshing rain shower. Whether you're exploring the city or unwinding after a day of activities, our Quadruple Deluxe Room offers comfort and convenience for an unforgettable stay.",
                   List.of(
                       "src/main/resources/static/images/room_3_1.png",
                       "src/main/resources/static/images/room_3_2.png",
